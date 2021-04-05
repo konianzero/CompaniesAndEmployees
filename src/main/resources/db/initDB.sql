@@ -12,7 +12,7 @@ CREATE TABLE companies
     address                 VARCHAR     NOT NULL,
     phone_number            TEXT        NOT NULL
 );
-CREATE UNIQUE INDEX products_unique_idx
+CREATE UNIQUE INDEX companies_unique_idx
     ON companies (name);
 
 CREATE TABLE employees
@@ -24,5 +24,5 @@ CREATE TABLE employees
     company_id      INTEGER     NOT NULL,
     FOREIGN KEY (company_id) REFERENCES companies (id) ON DELETE CASCADE
 );
-CREATE UNIQUE INDEX articles_unique_idx
+CREATE UNIQUE INDEX employees_unique_idx
     ON employees (company_id, name);
