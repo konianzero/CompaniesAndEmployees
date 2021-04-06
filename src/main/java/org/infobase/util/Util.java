@@ -1,6 +1,7 @@
 package org.infobase.util;
 
 import org.infobase.model.Company;
+import org.infobase.model.Employee;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
@@ -24,6 +25,30 @@ public class Util {
             company.setAddress(rs.getString("address"));
             company.setPhoneNumber(rs.getString("phone_number"));
             return company;
+        }
+    }
+
+    public static EmployeeMapper getEmployeeMapper() {
+        return new EmployeeMapper();
+    }
+
+    private static final class EmployeeMapper implements RowMapper<Employee> {
+        public Employee mapRow(ResultSet rs, int rowNum) throws SQLException {
+            Employee employee = new Employee();
+            employee.setId(rs.getInt("emp_id"));
+            employee.setName(rs.getString("emp_name"));
+            employee.setDate(rs.getDate("birth_date").toLocalDate());
+            employee.setEmail(rs.getString("email"));
+            employee.setCompany(
+                    new Company(
+                            rs.getInt("comp_id"),
+                            rs.getString("comp_name"),
+                            rs.getLong("tin"),
+                            rs.getString("address"),
+                            rs.getString("phone_number")
+                    )
+            );
+            return employee;
         }
     }
 }

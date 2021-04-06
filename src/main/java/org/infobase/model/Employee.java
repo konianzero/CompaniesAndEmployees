@@ -20,7 +20,7 @@ public class Employee extends AbstractNamedEntity {
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "company_id", nullable = false)
     private Company company;
 
