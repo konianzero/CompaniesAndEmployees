@@ -22,8 +22,8 @@ public class CompanyRepository {
     private static final String UPDATE_QUERY = "UPDATE companies" +
                                                " SET name=:name, tin=:tin, address=:address, phone_number=:phone_number" +
                                                " WHERE id=:id";
-    private static final String SELECT_BY_ID_QUERY = "SELECT id, name, tin, address, phone_number FROM companies WHERE id=:id";
-    private static final String SELECT_ALL_QUERY = "SELECT id, name, tin, address, phone_number FROM companies";
+    private static final String SELECT_BY_ID_QUERY = "SELECT * FROM companies WHERE id=:id";
+    private static final String SELECT_ALL_QUERY = "SELECT * FROM companies";
     private static final String DELETE_QUERY = "DELETE FROM companies WHERE id=:id";
 
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
@@ -34,27 +34,24 @@ public class CompanyRepository {
 
     @Transactional
     public int save(Company company) {
-        SqlParameterSource map = new MapSqlParameterSource()
-                .addValue("id", company.getId())
-                .addValue("name", company.getName())
-                .addValue("tin", company.getTin())
-                .addValue("address", company.getAddress())
-                .addValue("phone_number", company.getPhoneNumber());
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        namedParameterJdbcTemplate.update(INSERT_QUERY, map, keyHolder, new String[]{"id"});
+        namedParameterJdbcTemplate.update(INSERT_QUERY, getParameterMap(company), keyHolder, new String[]{"id"});
 
         return Objects.requireNonNull(keyHolder.getKey()).intValue();
     }
 
     @Transactional
     public boolean update(Company company) {
-        SqlParameterSource map = new MapSqlParameterSource()
+        return namedParameterJdbcTemplate.update(UPDATE_QUERY, getParameterMap(company)) != 0;
+    }
+
+    private SqlParameterSource getParameterMap(Company company) {
+        return new MapSqlParameterSource()
                 .addValue("id", company.getId())
                 .addValue("name", company.getName())
                 .addValue("tin", company.getTin())
                 .addValue("address", company.getAddress())
                 .addValue("phone_number", company.getPhoneNumber());
-        return namedParameterJdbcTemplate.update(UPDATE_QUERY, map) != 0;
     }
 
     public Company get(int id) {
