@@ -1,18 +1,18 @@
 package org.infobase.repository;
 
 import org.infobase.model.Company;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Objects;
+
+import static org.infobase.util.Util.getCompanyMapper;
 
 @Repository
 public class CompanyRepository {
@@ -34,21 +34,21 @@ public class CompanyRepository {
 
     @Transactional
     public int save(Company company) {
-        MapSqlParameterSource map = new MapSqlParameterSource()
+        SqlParameterSource map = new MapSqlParameterSource()
                 .addValue("id", company.getId())
                 .addValue("name", company.getName())
                 .addValue("tin", company.getTin())
                 .addValue("address", company.getAddress())
                 .addValue("phone_number", company.getPhoneNumber());
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        namedParameterJdbcTemplate.update(INSERT_QUERY, map, keyHolder, new String[]{"idy"});
+        namedParameterJdbcTemplate.update(INSERT_QUERY, map, keyHolder, new String[]{"id"});
 
         return Objects.requireNonNull(keyHolder.getKey()).intValue();
     }
 
     @Transactional
     public boolean update(Company company) {
-        MapSqlParameterSource map = new MapSqlParameterSource()
+        SqlParameterSource map = new MapSqlParameterSource()
                 .addValue("id", company.getId())
                 .addValue("name", company.getName())
                 .addValue("tin", company.getTin())
@@ -58,27 +58,15 @@ public class CompanyRepository {
     }
 
     public Company get(int id) {
-        return namedParameterJdbcTemplate.queryForObject(SELECT_BY_ID_QUERY, new MapSqlParameterSource("id", id), new CompanyMapper());
+        return namedParameterJdbcTemplate.queryForObject(SELECT_BY_ID_QUERY, new MapSqlParameterSource("id", id), getCompanyMapper());
     }
 
     public List<Company> getAll() {
-        return namedParameterJdbcTemplate.query(SELECT_ALL_QUERY, new CompanyMapper());
+        return namedParameterJdbcTemplate.query(SELECT_ALL_QUERY, getCompanyMapper());
     }
 
     @Transactional
     public boolean delete(int id) {
         return namedParameterJdbcTemplate.update(DELETE_QUERY, new MapSqlParameterSource("id", id)) != 0;
-    }
-
-    private static final class CompanyMapper implements RowMapper<Company> {
-        public Company mapRow(ResultSet rs, int rowNum) throws SQLException {
-            Company company = new Company();
-            company.setId(rs.getInt("id"));
-            company.setName(rs.getString("name"));
-            company.setTin(rs.getLong("tin"));
-            company.setAddress(rs.getString("address"));
-            company.setPhoneNumber(rs.getString("phone_number"));
-            return company;
-        }
     }
 }
