@@ -1,6 +1,5 @@
 package org.infobase.model;
 
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -14,7 +13,7 @@ import javax.validation.constraints.Size;
 public class Company extends AbstractNamedEntity {
     @NotNull
     @Column(name = "tin", nullable = false)
-    private int tin;
+    private long tin;
 
     @NotBlank
     @Column(name = "address", nullable = false)
@@ -29,14 +28,14 @@ public class Company extends AbstractNamedEntity {
     public Company() {
     }
 
-    public Company(Integer id, String name, int tin, String address, String phoneNumber) {
+    public Company(Integer id, String name, long tin, String address, String phoneNumber) {
         super(id, name);
         this.tin = tin;
         this.address = address;
         this.phoneNumber = phoneNumber;
     }
 
-    public int getTin() {
+    public long getTin() {
         return tin;
     }
 

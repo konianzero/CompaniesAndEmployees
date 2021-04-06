@@ -1,14 +1,14 @@
-DROP TABLE IF EXISTS companies;
 DROP TABLE IF EXISTS employees;
+DROP TABLE IF EXISTS companies;
 DROP SEQUENCE IF EXISTS global_seq;
 
-CREATE SEQUENCE global_seq AS INTEGER START WITH 100000;
+CREATE SEQUENCE global_seq AS INTEGER START WITH 1000;
 
 CREATE TABLE companies
 (
     id                      INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
     name                    VARCHAR     NOT NULL,
-    tin                     INTEGER     NOT NULL,
+    tin                     BIGINT      NOT NULL,
     address                 VARCHAR     NOT NULL,
     phone_number            TEXT        NOT NULL
 );
