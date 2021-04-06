@@ -39,7 +39,7 @@ public class Company extends AbstractNamedEntity {
         return tin;
     }
 
-    public void setTin(int tin) {
+    public void setTin(long tin) {
         this.tin = tin;
     }
 
