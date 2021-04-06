@@ -19,7 +19,7 @@ CREATE TABLE employees
 (
     id              INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
     name            VARCHAR     NOT NULL,
-    birth_date      TIMESTAMP   NOT NULL,
+    birth_date      DATE        NOT NULL,
     email           VARCHAR     NOT NULL,
     company_id      INTEGER     NOT NULL,
     FOREIGN KEY (company_id) REFERENCES companies (id) ON DELETE CASCADE
