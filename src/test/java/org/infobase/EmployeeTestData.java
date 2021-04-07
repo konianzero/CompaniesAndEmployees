@@ -10,7 +10,6 @@ import static org.infobase.CompanyTestData.COMPANY_2;
 import static org.infobase.model.AbstractBaseEntity.START_SEQ;
 
 public class EmployeeTestData {
-//    public static final TestMatcher<Employee> EMPLOYEE_MATCHER = TestMatcher.usingEqualsComparator(Employee.class);
     public static final TestMatcher<Employee> EMPLOYEE_MATCHER = TestMatcher.usingIgnoringFieldsComparator(Employee.class, "company");
 
     public static final int EMPLOYEE_1_ID = START_SEQ + 2;
