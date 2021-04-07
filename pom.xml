@@ -16,12 +16,18 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
+        <jetty.plugin.version>9.4.39.v20210325</jetty.plugin.version>
+
         <spring.version>5.3.0</spring.version>
         <spring-data-jdbc.version>2.1.7</spring-data-jdbc.version>
 
+        <vaadin.version>14.5.1</vaadin.version>
+        <vaadin-server.version>8.12.4</vaadin-server.version>
+        <vaadin-client-compiled.version>8.12.4</vaadin-client-compiled.version>
+        <vaadin-themes.version>8.12.4</vaadin-themes.version>
+
         <postgresql.version>42.2.17</postgresql.version>
 
-        <javax.version>2.2</javax.version>
         <jakarta.validation.version>2.0.2</jakarta.validation.version>
 
         <junit.jupiter.version>5.7.0</junit.jupiter.version>
@@ -30,8 +36,6 @@
     </properties>
 
     <build>
-        <finalName>info</finalName>
-        <defaultGoal>package</defaultGoal>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -42,8 +46,28 @@
                     <target>${java.version}</target>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.eclipse.jetty</groupId>
+                <artifactId>jetty-maven-plugin</artifactId>
+                <version>${jetty.plugin.version}</version>
+                <configuration>
+                    <scanIntervalSeconds>2</scanIntervalSeconds>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.vaadin</groupId>
+                <artifactId>vaadin-maven-plugin</artifactId>
+                <version>${vaadin.version}</version>
+            </plugin>
         </plugins>
     </build>
+
+    <repositories>
+        <repository>
+            <id>vaadin-addons</id>
+            <url>https://maven.vaadin.com/vaadin-addons</url>
+        </repository>
+    </repositories>
 
     <dependencies>
         <dependency>
@@ -53,14 +77,31 @@
         </dependency>
 
         <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.0.1</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.vaadin</groupId>
+            <artifactId>vaadin-server</artifactId>
+            <version>${vaadin-server.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.vaadin</groupId>
+            <artifactId>vaadin-client-compiled</artifactId>
+            <version>${vaadin-client-compiled.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.vaadin</groupId>
+            <artifactId>vaadin-themes</artifactId>
+            <version>${vaadin-themes.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-jdbc</artifactId>
             <version>${spring-data-jdbc.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>javax.persistence</groupId>
-            <artifactId>javax.persistence-api</artifactId>
-            <version>${javax.version}</version>
         </dependency>
         <dependency>
             <groupId>jakarta.validation</groupId>
@@ -89,6 +130,7 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
+            <version>5.3.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -102,9 +144,9 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-framework-bom</artifactId>
-                <version>${spring.version}</version>
+                <groupId>com.vaadin</groupId>
+                <artifactId>vaadin-bom</artifactId>
+                <version>${vaadin.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
