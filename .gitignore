@@ -1,5 +1,7 @@
 .idea
+node_modules
 out
 target
 *.iml
+*.js
 log

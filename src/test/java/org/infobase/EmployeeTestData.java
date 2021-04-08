@@ -3,6 +3,8 @@ package org.infobase;
 import org.infobase.model.Employee;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.infobase.CompanyTestData.COMPANY_1;
@@ -23,7 +25,7 @@ public class EmployeeTestData {
                                                           LocalDate.of(2000, 2, 2),
                                                     "petr@mail.com", COMPANY_2);
 
-    public static final List<Employee> ALL_EMPLOYEES = List.of(EMPLOYEE_1, EMPLOYEE_2);
+    public static final List<Employee> ALL_EMPLOYEES = new ArrayList<>(Arrays.asList(EMPLOYEE_1, EMPLOYEE_2));
 
     public static Employee getNew() {
         return new Employee(null,

@@ -2,6 +2,8 @@ package org.infobase;
 
 import org.infobase.model.Company;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.infobase.model.AbstractBaseEntity.START_SEQ;
@@ -14,7 +16,7 @@ public class CompanyTestData {
     public static final Company COMPANY_1 = new Company(COMPANY_1_ID, "Компания_1", 1234123412L, "Улица 1", "+79005554466");
     public static final Company COMPANY_2 = new Company(COMPANY_1_ID + 1, "Компания_2", 5678567856L, "Проспект 2", "+75008887799");
 
-    public static final List<Company> ALL_COMPANIES = List.of(COMPANY_1, COMPANY_2);
+    public static final List<Company> ALL_COMPANIES = new ArrayList<>(Arrays.asList(COMPANY_1, COMPANY_2));
 
     public static Company getNew() {
         return new Company(null, "Новая Компания", 1111111111L, "Новая Улица 1", "+71002222222");
