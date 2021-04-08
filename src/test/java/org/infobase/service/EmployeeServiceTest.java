@@ -4,6 +4,7 @@ import org.infobase.CompanyTestData;
 import org.infobase.model.Employee;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.EmptyResultDataAccessException;
 
 import java.util.List;
@@ -11,7 +12,8 @@ import java.util.List;
 import static org.infobase.EmployeeTestData.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-class EmployeeServiceTest extends AbstractServiceTest {
+@SpringBootTest
+class EmployeeServiceTest {
 
     @Autowired
     private EmployeeService employeeService;

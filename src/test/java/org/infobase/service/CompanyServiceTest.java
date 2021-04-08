@@ -3,6 +3,7 @@ package org.infobase.service;
 import org.infobase.model.Company;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.EmptyResultDataAccessException;
 
 import java.util.List;
@@ -10,7 +11,8 @@ import java.util.List;
 import static org.infobase.CompanyTestData.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-class CompanyServiceTest extends AbstractServiceTest {
+@SpringBootTest
+class CompanyServiceTest {
 
     @Autowired
     private CompanyService companyService;

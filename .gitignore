@@ -4,4 +4,5 @@ out
 target
 *.iml
 *.js
+*.json
 log
