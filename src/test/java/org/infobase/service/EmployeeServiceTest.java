@@ -1,18 +1,23 @@
 package org.infobase.service;
 
-import org.infobase.CompanyTestData;
 import org.infobase.model.Employee;
+import org.infobase.to.EmployeeTo;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.jdbc.SqlConfig;
 
 import java.util.List;
 
 import static org.infobase.EmployeeTestData.*;
+import static org.infobase.util.EmployeeUtil.createTo;
+import static org.infobase.util.EmployeeUtil.createToList;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
+@Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
 class EmployeeServiceTest {
 
     @Autowired
@@ -23,27 +28,26 @@ class EmployeeServiceTest {
         Employee newEmployee = getNew();
         int id = employeeService.save(newEmployee);
         newEmployee.setId(id);
-        EMPLOYEE_MATCHER.assertMatch(employeeService.get(id), newEmployee);
+        EMPLOYEE_TO_MATCHER.assertMatch(employeeService.get(id), createTo(newEmployee));
     }
 
     @Test
     void update() {
         Employee updated = getUpdated();
         employeeService.update(updated);
-        EMPLOYEE_MATCHER.assertMatch(employeeService.get(EMPLOYEE_1_ID), updated);
+        EMPLOYEE_TO_MATCHER.assertMatch(employeeService.get(EMPLOYEE_1_ID), createTo(updated));
     }
 
     @Test
     void get() {
-        Employee actual = employeeService.get(EMPLOYEE_1_ID);
-        EMPLOYEE_MATCHER.assertMatch(actual, EMPLOYEE_1);
-        CompanyTestData.COMPANY_MATCHER.assertMatch(actual.getCompany(), CompanyTestData.COMPANY_1);
+        EmployeeTo actual = employeeService.get(EMPLOYEE_1_ID);
+        EMPLOYEE_TO_MATCHER.assertMatch(actual, createTo(EMPLOYEE_1));
     }
 
     @Test
     void getAll() {
-        List<Employee> actual = employeeService.getAll();
-        EMPLOYEE_MATCHER.assertMatch(actual, ALL_EMPLOYEES);
+        List<EmployeeTo> actual = employeeService.getAll();
+        EMPLOYEE_TO_MATCHER.assertMatch(actual, createToList(ALL_EMPLOYEES));
     }
 
     @Test

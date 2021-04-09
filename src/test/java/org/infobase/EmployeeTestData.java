@@ -1,6 +1,7 @@
 package org.infobase;
 
 import org.infobase.model.Employee;
+import org.infobase.to.EmployeeTo;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import static org.infobase.model.AbstractBaseEntity.START_SEQ;
 
 public class EmployeeTestData {
     public static final TestMatcher<Employee> EMPLOYEE_MATCHER = TestMatcher.usingIgnoringFieldsComparator(Employee.class, "company");
+    public static final TestMatcher<EmployeeTo> EMPLOYEE_TO_MATCHER = TestMatcher.usingEqualsComparator(EmployeeTo.class);
 
     public static final int EMPLOYEE_1_ID = START_SEQ + 2;
     
