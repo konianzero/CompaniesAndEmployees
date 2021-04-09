@@ -2,6 +2,8 @@ package org.infobase.service;
 
 import org.infobase.model.Employee;
 import org.infobase.repository.EmployeeRepository;
+import org.infobase.to.EmployeeTo;
+import org.infobase.util.EmployeeUtil;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,12 +25,12 @@ public class EmployeeService {
         employeeRepository.update(employee);
     }
 
-    public Employee get(int id) {
-        return employeeRepository.get(id);
+    public EmployeeTo get(int id) {
+        return EmployeeUtil.createTo(employeeRepository.get(id));
     }
 
-    public List<Employee> getAll() {
-        return employeeRepository.getAll();
+    public List<EmployeeTo> getAll() {
+        return EmployeeUtil.createToList(employeeRepository.getAll());
     }
 
     public void delete(int id) {
