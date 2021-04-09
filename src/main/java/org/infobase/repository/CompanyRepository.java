@@ -32,8 +32,15 @@ public class CompanyRepository {
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
     }
 
+    public int saveOrUpdate(Company company) {
+        if (company.getId() == null) {
+            return save(company);
+        }
+        return update(company);
+    }
+
     @Transactional
-    public int save(Company company) {
+    protected int save(Company company) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         namedParameterJdbcTemplate.update(INSERT_QUERY, getParameterMap(company), keyHolder, new String[]{"id"});
 
@@ -41,8 +48,8 @@ public class CompanyRepository {
     }
 
     @Transactional
-    public boolean update(Company company) {
-        return namedParameterJdbcTemplate.update(UPDATE_QUERY, getParameterMap(company)) != 0;
+    protected int update(Company company) {
+        return namedParameterJdbcTemplate.update(UPDATE_QUERY, getParameterMap(company));
     }
 
     private SqlParameterSource getParameterMap(Company company) {

@@ -15,12 +15,8 @@ public class CompanyService {
         this.companyRepository = companyRepository;
     }
 
-    public int save(Company company) {
-        return companyRepository.save(company);
-    }
-
-    public void update(Company company) {
-        companyRepository.update(company);
+    public int saveOrUpdate(Company company) {
+        return companyRepository.saveOrUpdate(company);
     }
 
     public Company get(int id) {

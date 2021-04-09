@@ -1,4 +1,4 @@
-package org.infobase.web.component;
+package org.infobase.web.component.grid;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.grid.Grid;
@@ -28,11 +28,26 @@ public class EmployeeGrid extends Grid<EmployeeTo> implements EntityGrid {
 
     @Override
     public Component getComponent() {
-        fill();
         return this;
     }
 
+    @Override
     public void fill() {
         setItems(employeeService.getAll());
+    }
+
+    @Override
+    public void onCreate() {
+
+    }
+
+    @Override
+    public void onEdit() {
+
+    }
+
+    @Override
+    public void onDelete() {
+
     }
 }

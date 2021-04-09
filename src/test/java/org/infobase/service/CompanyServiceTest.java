@@ -23,7 +23,7 @@ class CompanyServiceTest {
     @Test
     void save() {
         Company newCompany = getNew();
-        int id = companyService.save(newCompany);
+        int id = companyService.saveOrUpdate(newCompany);
         newCompany.setId(id);
         COMPANY_MATCHER.assertMatch(companyService.get(id), newCompany);
     }
@@ -31,7 +31,7 @@ class CompanyServiceTest {
     @Test
     void update() {
         Company updated = getUpdated();
-        companyService.update(updated);
+        companyService.saveOrUpdate(updated);
         COMPANY_MATCHER.assertMatch(companyService.get(COMPANY_1_ID), updated);
     }
 

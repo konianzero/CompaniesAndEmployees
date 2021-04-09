@@ -1,24 +1,18 @@
-package org.infobase.web.view;
+package org.infobase.web;
 
-import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.Tabs;
-import org.infobase.model.Company;
-import org.infobase.model.Employee;
-import org.infobase.service.CompanyService;
 
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
-import org.infobase.service.EmployeeService;
-import org.infobase.web.component.CompanyGrid;
-import org.infobase.web.component.EmployeeGrid;
-import org.infobase.web.component.EntityGrid;
+import org.infobase.web.component.grid.CompanyGrid;
+import org.infobase.web.component.grid.EmployeeGrid;
+import org.infobase.web.component.grid.EntityGrid;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -47,26 +41,30 @@ public class MainView extends VerticalLayout {
         Tab companyTab = new Tab("Компании");
         Tab employeeTab = new Tab("Сотрудники");
         Tabs tabs = new Tabs(companyTab, employeeTab);
-        // Pre-selected tabs
+        // Pre-selected tab
         tabs.setSelectedTab(companyTab);
         companyGrid.fill();
         employeeGrid.setVisible(false);
 
-        Map<Tab, EntityGrid> tabsToPages = new HashMap<>();
-        tabsToPages.put(companyTab, companyGrid);
-        tabsToPages.put(employeeTab, employeeGrid);
+        Map<Tab, EntityGrid> tabComponents = new HashMap<>();
+        tabComponents.put(companyTab, companyGrid);
+        tabComponents.put(employeeTab, employeeGrid);
 
         Div pages = new Div(companyGrid, employeeGrid);
         pages.setSizeFull();
 
         tabs.addSelectedChangeListener(event -> {
-            tabsToPages.values().forEach(grid -> grid.getComponent().setVisible(false));
+            tabComponents.values().forEach(grid -> grid.getComponent().setVisible(false));
 
-            EntityGrid grid = tabsToPages.get(tabs.getSelectedTab());
+            EntityGrid grid = tabComponents.get(tabs.getSelectedTab());
             grid.fill();
             grid.getComponent().setVisible(true);
         });
 
         add(actions, tabs, pages);
+
+        addBtn.addClickListener(e -> tabComponents.get(tabs.getSelectedTab()).onCreate());
+        editBtn.addClickListener(e -> tabComponents.get(tabs.getSelectedTab()).onEdit());
+        delBtn.addClickListener(e -> tabComponents.get(tabs.getSelectedTab()).onDelete());
     }
 }
