@@ -2,7 +2,6 @@ package org.infobase.web.view;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.Tabs;
 import org.infobase.model.Company;
@@ -61,13 +60,22 @@ public class MainView extends VerticalLayout {
 
         Div companyPage = new Div(companyGrid);
         Div employeePage = new Div(employeeGrid);
+        // без этого ширина нулевая
+        companyPage.setSizeFull();
+        employeePage.setSizeFull();
+        // для предварительно выбранной вкладки
+        companyGrid.setItems(companyService.getAll());
+        employeePage.setVisible(false);
 
         Map<Tab, Component> tabsToPages = new HashMap<>();
         tabsToPages.put(companyTab, companyPage);
         tabsToPages.put(employeeTab, employeePage);
 
         Tabs tabs = new Tabs(companyTab, employeeTab);
+        tabs.setSelectedTab(companyTab);
+
         Div pages = new Div(companyPage, employeePage);
+        pages.setSizeFull();
 
         tabs.addSelectedChangeListener(event -> {
             tabsToPages.values().forEach(page -> page.setVisible(false));
