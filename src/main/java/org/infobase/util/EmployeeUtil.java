@@ -13,9 +13,9 @@ public class EmployeeUtil {
         return EmployeeMapper.INSTANCE.toEmployeeTo(employee);
     }
 
-    public static List<EmployeeTo> createToList(List<Employee> dishes) {
-        return dishes.stream()
-                .map(EmployeeUtil::createTo)
-                .collect(Collectors.toList());
+    public static List<EmployeeTo> createToList(List<Employee> employees) {
+        return employees.stream()
+                        .map(EmployeeUtil::createTo)
+                        .collect(Collectors.toList());
     }
 }
