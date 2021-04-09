@@ -37,7 +37,7 @@ public class Util {
             Employee employee = new Employee();
             employee.setId(rs.getInt("emp_id"));
             employee.setName(rs.getString("emp_name"));
-            employee.setDate(rs.getDate("birth_date").toLocalDate());
+            employee.setBirthDate(rs.getDate("birth_date").toLocalDate());
             employee.setEmail(rs.getString("email"));
             employee.setCompany(
                     new Company(

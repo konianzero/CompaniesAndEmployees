@@ -8,7 +8,7 @@ import java.time.LocalDate;
 
 public class Employee extends AbstractNamedEntity {
     @NotNull
-    private LocalDate date;
+    private LocalDate birthDate;
 
     @Email
     @NotBlank
@@ -20,19 +20,19 @@ public class Employee extends AbstractNamedEntity {
     public Employee() {
     }
 
-    public Employee(Integer id, String name, LocalDate date, String email, Company company) {
+    public Employee(Integer id, String name, LocalDate birthDate, String email, Company company) {
         super(id, name);
-        this.date = date;
+        this.birthDate = birthDate;
         this.email = email;
         this.company = company;
     }
 
-    public LocalDate getDate() {
-        return date;
+    public LocalDate getBirthDate() {
+        return birthDate;
     }
 
-    public void setDate(LocalDate date) {
-        this.date = date;
+    public void setBirthDate(LocalDate birthDate) {
+        this.birthDate = birthDate;
     }
 
     public String getEmail() {
@@ -56,7 +56,7 @@ public class Employee extends AbstractNamedEntity {
         return "Employee{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", date=" + date +
+                ", date=" + birthDate +
                 ", email='" + email + '\'' +
                 ", company=" + company +
                 '}';

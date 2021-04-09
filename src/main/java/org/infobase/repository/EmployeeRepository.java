@@ -56,7 +56,7 @@ public class EmployeeRepository {
         return new MapSqlParameterSource()
                 .addValue("id", employee.getId())
                 .addValue("name", employee.getName())
-                .addValue("birth_date", employee.getDate())
+                .addValue("birth_date", employee.getBirthDate())
                 .addValue("email", employee.getEmail())
                 .addValue("company_id", employee.getCompany().getId());
     }
