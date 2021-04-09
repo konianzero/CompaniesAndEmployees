@@ -16,6 +16,9 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
 import org.infobase.service.EmployeeService;
+import org.infobase.web.component.CompanyGrid;
+import org.infobase.web.component.EmployeeGrid;
+import org.infobase.web.component.EntityGrid;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,16 +26,17 @@ import java.util.Map;
 @Route
 public class MainView extends VerticalLayout {
 
-    private final CompanyService companyService;
-    private final EmployeeService employeeService;
+    private final CompanyGrid companyGrid;
+    private final EmployeeGrid employeeGrid;
 
-    final Grid<Company> companyGrid;
-    final Grid<Employee> employeeGrid;
+    public MainView(CompanyGrid companyGrid, EmployeeGrid employeeGrid) {
+        this.companyGrid = companyGrid;
+        this.employeeGrid = employeeGrid;
 
-    public MainView(CompanyService companyService, EmployeeService employeeService) {
-        this.companyService = companyService;
-        this.employeeService = employeeService;
+        init();
+    }
 
+    private void init() {
         TextField filter = new TextField("", "Поиск");
         Button addBtn = new Button("Добавить", VaadinIcon.PLUS.create());
         Button editBtn = new Button("Редактировать", VaadinIcon.PENCIL.create());
@@ -40,55 +44,29 @@ public class MainView extends VerticalLayout {
 
         HorizontalLayout actions = new HorizontalLayout(addBtn, editBtn, delBtn, filter);
 
-        this.companyGrid = new Grid<>();
-        companyGrid.setHeight("300px");
-        companyGrid.addColumn(Company::getId).setHeader("ID");
-        companyGrid.addColumn(Company::getName).setHeader("Название");
-        companyGrid.addColumn(Company::getTin).setHeader("ИНН");
-        companyGrid.addColumn(Company::getAddress).setHeader("Адрес");
-        companyGrid.addColumn(Company::getPhoneNumber).setHeader("Телефонный номер");
-
-        this.employeeGrid = new Grid<>();
-        employeeGrid.setHeight("300px");
-        employeeGrid.addColumn(Employee::getId).setHeader("ID");
-        employeeGrid.addColumn(Employee::getName).setHeader("ФИО");
-        employeeGrid.addColumn(Employee::getBirthDate).setHeader("Дата Рождения");
-        employeeGrid.addColumn(Employee::getEmail).setHeader("Электронная поста");
-
         Tab companyTab = new Tab("Компании");
         Tab employeeTab = new Tab("Сотрудники");
-
-        Div companyPage = new Div(companyGrid);
-        Div employeePage = new Div(employeeGrid);
-        // без этого ширина нулевая
-        companyPage.setSizeFull();
-        employeePage.setSizeFull();
-        // для предварительно выбранной вкладки
-        companyGrid.setItems(companyService.getAll());
-        employeePage.setVisible(false);
-
-        Map<Tab, Component> tabsToPages = new HashMap<>();
-        tabsToPages.put(companyTab, companyPage);
-        tabsToPages.put(employeeTab, employeePage);
-
         Tabs tabs = new Tabs(companyTab, employeeTab);
+        // Pre-selected tabs
         tabs.setSelectedTab(companyTab);
+        companyGrid.fill();
+        employeeGrid.setVisible(false);
 
-        Div pages = new Div(companyPage, employeePage);
+        Map<Tab, EntityGrid> tabsToPages = new HashMap<>();
+        tabsToPages.put(companyTab, companyGrid);
+        tabsToPages.put(employeeTab, employeeGrid);
+
+        Div pages = new Div(companyGrid, employeeGrid);
         pages.setSizeFull();
 
         tabs.addSelectedChangeListener(event -> {
-            tabsToPages.values().forEach(page -> page.setVisible(false));
-            setItemsToGrid();
-            Component selectedPage = tabsToPages.get(tabs.getSelectedTab());
-            selectedPage.setVisible(true);
+            tabsToPages.values().forEach(grid -> grid.getComponent().setVisible(false));
+
+            EntityGrid grid = tabsToPages.get(tabs.getSelectedTab());
+            grid.fill();
+            grid.getComponent().setVisible(true);
         });
 
         add(actions, tabs, pages);
-    }
-
-    private void setItemsToGrid() {
-        companyGrid.setItems(companyService.getAll());
-        employeeGrid.setItems(employeeService.getAll());
     }
 }
