@@ -1,12 +1,11 @@
 package org.infobase.model;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 public class Company extends AbstractNamedEntity {
-    @NotNull
-    private long tin;
+    @NotBlank
+    private String tin;
 
     @NotBlank
     @Size(min = 30, max = 5000)
@@ -19,18 +18,18 @@ public class Company extends AbstractNamedEntity {
     public Company() {
     }
 
-    public Company(Integer id, String name, long tin, String address, String phoneNumber) {
+    public Company(Integer id, String name, String tin, String address, String phoneNumber) {
         super(id, name);
         this.tin = tin;
         this.address = address;
         this.phoneNumber = phoneNumber;
     }
 
-    public long getTin() {
+    public String getTin() {
         return tin;
     }
 
-    public void setTin(long tin) {
+    public void setTin(String tin) {
         this.tin = tin;
     }
 

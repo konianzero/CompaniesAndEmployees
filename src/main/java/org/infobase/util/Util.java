@@ -21,7 +21,7 @@ public class Util {
             Company company = new Company();
             company.setId(rs.getInt("id"));
             company.setName(rs.getString("name"));
-            company.setTin(rs.getLong("tin"));
+            company.setTin(rs.getString("tin"));
             company.setAddress(rs.getString("address"));
             company.setPhoneNumber(rs.getString("phone_number"));
             return company;
@@ -43,7 +43,7 @@ public class Util {
                     new Company(
                             rs.getInt("comp_id"),
                             rs.getString("comp_name"),
-                            rs.getLong("tin"),
+                            rs.getString("tin"),
                             rs.getString("address"),
                             rs.getString("phone_number")
                     )

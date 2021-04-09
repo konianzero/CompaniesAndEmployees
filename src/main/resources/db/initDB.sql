@@ -8,7 +8,7 @@ CREATE TABLE companies
 (
     id                      INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
     name                    VARCHAR     NOT NULL,
-    tin                     BIGINT      NOT NULL,
+    tin                     VARCHAR      NOT NULL,
     address                 VARCHAR     NOT NULL,
     phone_number            TEXT        NOT NULL
 );
