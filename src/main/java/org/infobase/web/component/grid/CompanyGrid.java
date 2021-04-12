@@ -1,5 +1,7 @@
 package org.infobase.web.component.grid;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
@@ -8,10 +10,10 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
+
 import org.infobase.model.Company;
 import org.infobase.service.CompanyService;
 import org.infobase.web.component.dialog.CompanyDialog;
-import org.springframework.beans.factory.annotation.Autowired;
 
 @SpringComponent
 @UIScope

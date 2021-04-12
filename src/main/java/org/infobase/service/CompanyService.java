@@ -1,10 +1,11 @@
 package org.infobase.service;
 
-import org.infobase.model.Company;
-import org.infobase.repository.CompanyRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
+import org.infobase.model.Company;
+import org.infobase.repository.CompanyRepository;
 
 @Service
 public class CompanyService {

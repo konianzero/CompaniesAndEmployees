@@ -1,10 +1,11 @@
 package org.infobase.util.mapper;
 
-import org.infobase.model.Employee;
-import org.infobase.to.EmployeeTo;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
+
+import org.infobase.model.Employee;
+import org.infobase.to.EmployeeTo;
 
 @Mapper
 public interface EmployeeMapper {

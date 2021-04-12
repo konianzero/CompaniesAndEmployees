@@ -1,11 +1,11 @@
 package org.infobase.util;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.infobase.model.Employee;
 import org.infobase.to.EmployeeTo;
 import org.infobase.util.mapper.EmployeeMapper;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class EmployeeUtil {
 

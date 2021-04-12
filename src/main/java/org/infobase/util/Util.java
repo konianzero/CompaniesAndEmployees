@@ -1,11 +1,12 @@
 package org.infobase.util;
 
-import org.infobase.model.Company;
-import org.infobase.model.Employee;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import org.infobase.model.Company;
+import org.infobase.model.Employee;
 
 public class Util {
 

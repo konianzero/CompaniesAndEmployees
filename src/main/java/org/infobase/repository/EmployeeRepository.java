@@ -1,6 +1,5 @@
 package org.infobase.repository;
 
-import org.infobase.model.Employee;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -11,6 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
+
+import org.infobase.model.Employee;
 
 import static org.infobase.util.Util.getEmployeeMapper;
 

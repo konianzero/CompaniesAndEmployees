@@ -8,17 +8,15 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
+
 import org.infobase.model.Company;
 import org.infobase.service.CompanyService;
-
-import java.util.function.Consumer;
 
 @SpringComponent
 @UIScope
 public class CompanyDialog extends Dialog {
 
     private final CompanyService companyService;
-
     private final Binder<Company> binder;
 
     private Company company;

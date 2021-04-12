@@ -1,12 +1,13 @@
 package org.infobase.service;
 
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
 import org.infobase.model.Employee;
 import org.infobase.repository.EmployeeRepository;
 import org.infobase.to.EmployeeTo;
 import org.infobase.util.EmployeeUtil;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class EmployeeService {
