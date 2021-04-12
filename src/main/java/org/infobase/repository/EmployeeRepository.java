@@ -49,8 +49,8 @@ public class EmployeeRepository {
     }
 
     @Transactional
-    public boolean update(Employee employee) {
-        return namedParameterJdbcTemplate.update(UPDATE_QUERY, getParameterMap(employee)) != 0;
+    public int update(Employee employee) {
+        return namedParameterJdbcTemplate.update(UPDATE_QUERY, getParameterMap(employee));
     }
 
     private SqlParameterSource getParameterMap(Employee employee) {

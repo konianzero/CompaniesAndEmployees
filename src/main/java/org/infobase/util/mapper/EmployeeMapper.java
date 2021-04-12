@@ -13,4 +13,6 @@ public interface EmployeeMapper {
 
     @Mapping(target = "companyName", source = "employee.company.name")
     EmployeeTo toEmployeeTo(Employee employee);
+
+    Employee toEmployee(EmployeeTo employeeTo);
 }

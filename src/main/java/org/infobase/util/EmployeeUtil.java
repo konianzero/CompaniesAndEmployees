@@ -18,4 +18,8 @@ public class EmployeeUtil {
                         .map(EmployeeUtil::createTo)
                         .collect(Collectors.toList());
     }
+
+    public static Employee createEntity(EmployeeTo employeeTo) {
+        return EmployeeMapper.INSTANCE.toEmployee(employeeTo);
+    }
 }

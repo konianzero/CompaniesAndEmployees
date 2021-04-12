@@ -25,17 +25,17 @@ class EmployeeServiceTest {
 
     @Test
     void save() {
-        Employee newEmployee = getNew();
-        int id = employeeService.save(newEmployee);
-        newEmployee.setId(id);
-        EMPLOYEE_TO_MATCHER.assertMatch(employeeService.get(id), createTo(newEmployee));
+        EmployeeTo newEmployeeTo = createTo(getNew());
+        int id = employeeService.saveOrUpdate(newEmployeeTo);
+        newEmployeeTo.setId(id);
+        EMPLOYEE_TO_MATCHER.assertMatch(employeeService.get(id), newEmployeeTo);
     }
 
     @Test
     void update() {
-        Employee updated = getUpdated();
-        employeeService.update(updated);
-        EMPLOYEE_TO_MATCHER.assertMatch(employeeService.get(EMPLOYEE_1_ID), createTo(updated));
+        EmployeeTo updatedTo = createTo(getUpdated());
+        employeeService.saveOrUpdate(updatedTo);
+        EMPLOYEE_TO_MATCHER.assertMatch(employeeService.get(EMPLOYEE_1_ID), updatedTo);
     }
 
     @Test
