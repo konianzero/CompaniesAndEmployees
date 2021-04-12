@@ -23,32 +23,31 @@ public class EmployeeDialog extends Dialog {
     private EmployeeTo employeeTo;
     private Runnable onSave;
 
+    private TextField name = new TextField("", "ФИО");
+    private DatePicker birthDate = new DatePicker("");
+    private TextField email = new TextField("", "Электронная почта");
+    private TextField companyName = new TextField("", "Компания");
+    private Button saveBtn = new Button("Сохранить");
+    private Button cancelBtn = new Button("Отменить");
+
     public EmployeeDialog(EmployeeService employeeService) {
         this.employeeService = employeeService;
 
-        Button saveBtn = new Button("Сохранить");
-        saveBtn.addClickListener(e -> save());
-
-        Button cancelBtn = new Button("Отменить");
-        cancelBtn.addClickListener(e -> close());
-
-        DatePicker birthDate = new DatePicker("");
         birthDate.setPlaceholder("Дата Рождения");
-        TextField name = new TextField("", "ФИО");
-        TextField email = new TextField("", "Электронная почта");
-        TextField companyName = new TextField("", "Компания");
-        VerticalLayout inputLayout = new VerticalLayout(name, birthDate, email, companyName);
-
-        HorizontalLayout actionLayout = new HorizontalLayout(saveBtn, cancelBtn);
-
-        VerticalLayout layout = new VerticalLayout(inputLayout, actionLayout);
-        add(layout);
 
         binder = new Binder<>(EmployeeTo.class);
         binder.forField(birthDate)
               .asRequired("Пожалуйста, выберите дату")
               .bind(EmployeeTo::getBirthDate, EmployeeTo::setBirthDate);
         binder.bindInstanceFields(this);
+
+        saveBtn.addClickListener(e -> save());
+        cancelBtn.addClickListener(e -> close());
+
+        VerticalLayout inputLayout = new VerticalLayout(name, birthDate, email, companyName);
+        HorizontalLayout actionLayout = new HorizontalLayout(saveBtn, cancelBtn);
+        VerticalLayout layout = new VerticalLayout(inputLayout, actionLayout);
+        add(layout);
     }
 
     public void setOnSave(Runnable onSave) {

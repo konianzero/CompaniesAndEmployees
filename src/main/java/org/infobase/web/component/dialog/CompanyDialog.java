@@ -22,28 +22,26 @@ public class CompanyDialog extends Dialog {
     private Company company;
     private Runnable onSave;
 
+    private TextField name = new TextField("", "Название");
+    private TextField tin = new TextField("", "ИНН");
+    private TextField address = new TextField("", "Адрес");
+    private TextField phoneNumber = new TextField("", "Телефон");
+    private Button saveBtn = new Button("Сохранить");
+    private Button cancelBtn = new Button("Отменить");
+
     public CompanyDialog(CompanyService companyService) {
         this.companyService = companyService;
 
-        Button saveBtn = new Button("Сохранить");
-        saveBtn.addClickListener(e -> save());
-
-        Button cancelBtn = new Button("Отменить");
-        cancelBtn.addClickListener(e -> close());
-
-        TextField name = new TextField("", "Название");
-        TextField tin = new TextField("", "ИНН");
-        TextField address = new TextField("", "Адрес");
-        TextField phoneNumber = new TextField("", "Телефон");
-        VerticalLayout inputLayout = new VerticalLayout(name, tin, address, phoneNumber);
-
-        HorizontalLayout actionLayout = new HorizontalLayout(saveBtn, cancelBtn);
-
-        VerticalLayout layout = new VerticalLayout(inputLayout, actionLayout);
-        add(layout);
-
         binder = new Binder<>(Company.class);
         binder.bindInstanceFields(this);
+
+        saveBtn.addClickListener(e -> save());
+        cancelBtn.addClickListener(e -> close());
+
+        VerticalLayout inputLayout = new VerticalLayout(name, tin, address, phoneNumber);
+        HorizontalLayout actionLayout = new HorizontalLayout(saveBtn, cancelBtn);
+        VerticalLayout layout = new VerticalLayout(inputLayout, actionLayout);
+        add(layout);
     }
 
     public void setOnSave(Runnable onSave) {
