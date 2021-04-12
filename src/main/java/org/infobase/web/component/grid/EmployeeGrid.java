@@ -1,11 +1,5 @@
 package org.infobase.web.component.grid;
 
-import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.html.Span;
-import com.vaadin.flow.component.notification.Notification;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
-import org.infobase.model.Employee;
-import org.infobase.web.component.dialog.EmployeeDialog;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.flow.component.Component;
@@ -13,8 +7,9 @@ import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
 
-import org.infobase.service.EmployeeService;
 import org.infobase.to.EmployeeTo;
+import org.infobase.service.EmployeeService;
+import org.infobase.web.component.dialog.EmployeeDialog;
 
 @SpringComponent
 @UIScope
@@ -70,25 +65,7 @@ public class EmployeeGrid extends Grid<EmployeeTo> implements EntityGrid {
     public void onDelete() {
         if (!isVisible()) { return; }
 
-        preRemoveNotification();
-    }
-
-    private void preRemoveNotification() {
-        Button yes = new Button("Да");
-        Button no = new Button("Нет");
-        HorizontalLayout btnLayout = new HorizontalLayout(yes, no);
-        btnLayout.setSpacing(true);
-        Span text = new Span("Подтвердите удаление сотрудника");
-
-        Notification notification = new Notification(text, btnLayout);
-        notification.setPosition(Notification.Position.MIDDLE);
-        notification.open();
-
-        yes.addClickListener(event -> {
-            deleteEmployee();
-            notification.close();
-        });
-        no.addClickListener(event -> notification.close());
+        preRemoveNotification(this::deleteEmployee);
     }
 
     private void deleteEmployee() {

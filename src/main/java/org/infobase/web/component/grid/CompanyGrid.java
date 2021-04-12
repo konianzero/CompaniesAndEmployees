@@ -3,11 +3,7 @@ package org.infobase.web.component.grid;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
-import com.vaadin.flow.component.html.Span;
-import com.vaadin.flow.component.notification.Notification;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
 
@@ -70,25 +66,7 @@ public class CompanyGrid extends Grid<Company> implements EntityGrid {
     public void onDelete() {
         if (!isVisible()) { return; }
 
-        preRemoveNotification();
-    }
-
-    private void preRemoveNotification() {
-        Button yes = new Button("Да");
-        Button no = new Button("Нет");
-        HorizontalLayout btnLayout = new HorizontalLayout(yes, no);
-        btnLayout.setSpacing(true);
-        Span text = new Span("Подтвердите удаление компании");
-
-        Notification notification = new Notification(text, btnLayout);
-        notification.setPosition(Notification.Position.MIDDLE);
-        notification.open();
-
-        yes.addClickListener(event -> {
-            deleteCompany();
-            notification.close();
-        });
-        no.addClickListener(event -> notification.close());
+        preRemoveNotification(this::deleteCompany);
     }
 
     private void deleteCompany() {
