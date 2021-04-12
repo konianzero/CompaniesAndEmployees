@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="30 seconds">
+
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>%-61(%d{HH:mm:ss.SSS} %highlight(%-5level) %cyan(%logger{0})) : %green(%msg%n)</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="org.infobase" level="info"/>
+
+    <root level="info">
+        <appender-ref ref="console"/>
+    </root>
+</configuration>

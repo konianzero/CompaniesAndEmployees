@@ -1,6 +1,8 @@
 package org.infobase.service;
 
 import org.infobase.repository.CompanyRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,6 +14,7 @@ import org.infobase.util.EmployeeUtil;
 
 @Service
 public class EmployeeService {
+    private static final Logger log = LoggerFactory.getLogger(EmployeeService.class);
 
     private final EmployeeRepository employeeRepository;
     private final CompanyRepository companyRepository;
@@ -26,20 +29,25 @@ public class EmployeeService {
         employee.setCompany(companyRepository.getByName(employeeTo.getCompanyName()));
 
         if (employee.getId() == null) {
+            log.info("Save {}", employeeTo);
             return employeeRepository.save(employee);
         }
+        log.info("Save {}", employeeTo);
         return employeeRepository.update(employee);
     }
 
     public EmployeeTo get(int id) {
+        log.info("Get employee with id:{}", id);
         return EmployeeUtil.createTo(employeeRepository.get(id));
     }
 
     public List<EmployeeTo> getAll() {
+        log.debug("Get all employees");
         return EmployeeUtil.createToList(employeeRepository.getAll());
     }
 
     public void delete(int id) {
+        log.info("Delete employee with id:{}", id);
         employeeRepository.delete(id);
     }
 }
