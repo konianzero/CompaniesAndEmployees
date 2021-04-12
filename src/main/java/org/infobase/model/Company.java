@@ -8,7 +8,6 @@ public class Company extends AbstractNamedEntity {
     private String tin;
 
     @NotBlank
-    @Size(min = 30, max = 5000)
     private String address;
 
     @NotBlank

@@ -1,5 +1,6 @@
 package org.infobase.web;
 
+import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.Tabs;
@@ -31,18 +32,29 @@ public class MainView extends VerticalLayout {
     }
 
     private void init() {
-        TextField filter = new TextField("", "Поиск");
+        // add search
+        ComboBox<String> searchField = new ComboBox<>();
+        searchField.setPlaceholder("Выбери поле");
+        searchField.setRequired(true);
+        searchField.setClearButtonVisible(true);
+
+        TextField searchText = new TextField("", "Поиск");
+        HorizontalLayout filter = new HorizontalLayout(searchField, searchText);
+
+        // add buttons
         Button addBtn = new Button("Добавить", VaadinIcon.PLUS.create());
         Button editBtn = new Button("Редактировать", VaadinIcon.PENCIL.create());
         Button delBtn = new Button("Удалить", VaadinIcon.MINUS.create());
 
         HorizontalLayout actions = new HorizontalLayout(addBtn, editBtn, delBtn, filter);
 
+        // add tabs
         Tab companyTab = new Tab("Компании");
         Tab employeeTab = new Tab("Сотрудники");
         Tabs tabs = new Tabs(companyTab, employeeTab);
-        // Pre-selected tab
+        // pre-selected tab
         tabs.setSelectedTab(companyTab);
+        searchField.setItems(companyGrid.getHeaders());
         companyGrid.fill();
         employeeGrid.setVisible(false);
 
@@ -53,18 +65,26 @@ public class MainView extends VerticalLayout {
         Div pages = new Div(companyGrid, employeeGrid);
         pages.setSizeFull();
 
+        // add tab change listener
         tabs.addSelectedChangeListener(event -> {
             tabComponents.values().forEach(grid -> grid.getComponent().setVisible(false));
 
             EntityGrid grid = tabComponents.get(tabs.getSelectedTab());
+            searchField.setItems(grid.getHeaders());
             grid.fill();
             grid.getComponent().setVisible(true);
         });
 
-        add(actions, tabs, pages);
-
+        //  add click listeners
         addBtn.addClickListener(e -> tabComponents.get(tabs.getSelectedTab()).onCreate());
         editBtn.addClickListener(e -> tabComponents.get(tabs.getSelectedTab()).onEdit());
         delBtn.addClickListener(e -> tabComponents.get(tabs.getSelectedTab()).onDelete());
+
+        // search
+        searchText.addValueChangeListener(e ->
+            tabComponents.get(tabs.getSelectedTab()).onSearch(searchField.getValue(), e.getValue())
+        );
+
+        add(actions, tabs, pages);
     }
 }

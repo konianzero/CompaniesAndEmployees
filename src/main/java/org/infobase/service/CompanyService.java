@@ -38,6 +38,11 @@ public class CompanyService {
         return companyRepository.getAll();
     }
 
+    public List<Company> search(String columnName, String textToSearch) {
+        log.info("Search companies by field '{}' with \"{}\"", columnName, textToSearch);
+        return companyRepository.search(columnName, textToSearch);
+    }
+
     public void delete(int id) {
         log.info("Delete company with id:{}", id);
         companyRepository.delete(id);

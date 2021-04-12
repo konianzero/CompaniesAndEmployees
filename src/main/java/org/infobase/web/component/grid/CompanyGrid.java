@@ -11,12 +11,21 @@ import org.infobase.model.Company;
 import org.infobase.service.CompanyService;
 import org.infobase.web.component.dialog.CompanyDialog;
 
+import java.util.*;
+
 @SpringComponent
 @UIScope
 public class CompanyGrid extends Grid<Company> implements EntityGrid {
 
     private final CompanyService companyService;
     private final CompanyDialog companyDialog;
+    
+    private final Map<String, String> headersMap = Map.of(
+            "Название", "name",
+        "ИНН", "tin",
+        "Адрес", "address",
+        "Телефон", "phone_number");
+
 
     @Autowired
     public CompanyGrid(CompanyService companyService, CompanyDialog companyDialog) {
@@ -38,6 +47,10 @@ public class CompanyGrid extends Grid<Company> implements EntityGrid {
         return this;
     }
 
+    public Collection<String> getHeaders() {
+        return headersMap.keySet();
+    }
+
     @Override
     public void fill() {
         setItems(companyService.getAll());
@@ -55,11 +68,17 @@ public class CompanyGrid extends Grid<Company> implements EntityGrid {
         companyDialog.open();
     }
 
+    @Override
     public void onEdit() {
         if (!isVisible()) { return; }
 
         companyDialog.edit(getSelectedCompany());
         companyDialog.open();
+    }
+
+    @Override
+    public void onSearch(String columnHeader, String textToSearch) {
+        setItems(companyService.search(headersMap.get(columnHeader), textToSearch));
     }
 
     @Override
