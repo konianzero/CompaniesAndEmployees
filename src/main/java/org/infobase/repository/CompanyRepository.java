@@ -24,6 +24,7 @@ public class CompanyRepository {
                                                " SET name=:name, tin=:tin, address=:address, phone_number=:phone_number" +
                                                " WHERE id=:id";
     private static final String SELECT_BY_ID_QUERY = "SELECT * FROM companies WHERE id=:id";
+    private static final String SELECT_BY_NAME_QUERY = "SELECT * FROM companies WHERE name=:name";
     private static final String SELECT_ALL_QUERY = "SELECT * FROM companies";
     private static final String DELETE_QUERY = "DELETE FROM companies WHERE id=:id";
 
@@ -33,15 +34,8 @@ public class CompanyRepository {
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
     }
 
-    public int saveOrUpdate(Company company) {
-        if (company.getId() == null) {
-            return save(company);
-        }
-        return update(company);
-    }
-
     @Transactional
-    protected int save(Company company) {
+    public int save(Company company) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         namedParameterJdbcTemplate.update(INSERT_QUERY, getParameterMap(company), keyHolder, new String[]{"id"});
 
@@ -49,7 +43,7 @@ public class CompanyRepository {
     }
 
     @Transactional
-    protected int update(Company company) {
+    public int update(Company company) {
         return namedParameterJdbcTemplate.update(UPDATE_QUERY, getParameterMap(company));
     }
 
@@ -62,8 +56,12 @@ public class CompanyRepository {
                 .addValue("phone_number", company.getPhoneNumber());
     }
 
-    public Company get(int id) {
+    public Company getById(int id) {
         return namedParameterJdbcTemplate.queryForObject(SELECT_BY_ID_QUERY, new MapSqlParameterSource("id", id), getCompanyMapper());
+    }
+
+    public Company getByName(String name) {
+        return namedParameterJdbcTemplate.queryForObject(SELECT_BY_NAME_QUERY, new MapSqlParameterSource("name", name), getCompanyMapper());
     }
 
     public List<Company> getAll() {

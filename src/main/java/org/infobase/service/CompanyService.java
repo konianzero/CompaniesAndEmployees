@@ -17,11 +17,14 @@ public class CompanyService {
     }
 
     public int saveOrUpdate(Company company) {
-        return companyRepository.saveOrUpdate(company);
+        if (company.getId() == null) {
+            return companyRepository.save(company);
+        }
+        return companyRepository.update(company);
     }
 
     public Company get(int id) {
-        return companyRepository.get(id);
+        return companyRepository.getById(id);
     }
 
     public List<Company> getAll() {
