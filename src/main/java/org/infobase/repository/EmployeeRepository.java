@@ -8,6 +8,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
@@ -32,6 +33,11 @@ public class EmployeeRepository {
                                                    " c.id comp_id, c.name comp_name, c.tin, c.address, c.phone_number " +
                                                    "FROM employees AS e " +
                                                    "LEFT JOIN companies AS c ON c.id = e.company_id ";
+    private static final String SEARCH_QUERY = "SELECT e.id emp_id, e.name AS emp_name, e.birth_date, e.email," +
+            " c.id comp_id, c.name comp_name, c.tin, c.address, c.phone_number " +
+            "FROM employees AS e " +
+            "LEFT JOIN companies AS c ON c.id = e.company_id " +
+            "WHERE %s";
     private static final String DELETE_QUERY = "DELETE FROM employees WHERE id=:id";
 
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
@@ -68,6 +74,32 @@ public class EmployeeRepository {
 
     public List<Employee> getAll() {
         return namedParameterJdbcTemplate.query(SELECT_ALL_QUERY, getEmployeeMapper());
+    }
+
+    public List<Employee> search(String columnName, String textToSearch) {
+        String sql;
+        SqlParameterSource map;
+        switch (columnName) {
+            case "comp_name":
+                sql = String.format(SEARCH_QUERY, "lower(c.name) LIKE :search");
+                map = new MapSqlParameterSource("search", "%" + textToSearch.toLowerCase() + "%");
+                break;
+            case "birth_date":
+                sql = String.format(SEARCH_QUERY, "e.birth_date=:birth_date");
+                map = new MapSqlParameterSource("birth_date", LocalDate.parse(textToSearch));
+                break;
+            case "name":
+                sql = String.format(SEARCH_QUERY, "lower(e.name) LIKE :search");
+                map = new MapSqlParameterSource("search", "%" + textToSearch.toLowerCase() + "%");
+                break;
+            case "email":
+                sql = String.format(SEARCH_QUERY, "lower(e.email) LIKE :search");
+                map = new MapSqlParameterSource("search", "%" + textToSearch.toLowerCase() + "%");
+                break;
+            default:
+                return getAll();
+        }
+        return namedParameterJdbcTemplate.query(sql, map, getEmployeeMapper());
     }
 
     @Transactional

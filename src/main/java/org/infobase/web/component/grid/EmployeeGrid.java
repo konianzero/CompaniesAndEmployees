@@ -11,12 +11,23 @@ import org.infobase.to.EmployeeTo;
 import org.infobase.service.EmployeeService;
 import org.infobase.web.component.dialog.EmployeeDialog;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Map;
+
 @SpringComponent
 @UIScope
 public class EmployeeGrid extends Grid<EmployeeTo> implements EntityGrid {
 
     private final EmployeeService employeeService;
     private final EmployeeDialog employeeDialog;
+
+    private final Map<String, String> headersMap = Map.of(
+            "ФИО", "name",
+            "Дата Рождения", "birth_date",
+            "Электронная почта", "email",
+            "Компания", "comp_name");
 
     @Autowired
     public EmployeeGrid(EmployeeService employeeService, EmployeeDialog employeeDialog) {
@@ -36,6 +47,11 @@ public class EmployeeGrid extends Grid<EmployeeTo> implements EntityGrid {
     @Override
     public Component getComponent() {
         return this;
+    }
+
+    @Override
+    public Collection<String> getHeaders() {
+        return headersMap.keySet();
     }
 
     @Override
@@ -59,6 +75,11 @@ public class EmployeeGrid extends Grid<EmployeeTo> implements EntityGrid {
 
         employeeDialog.edit(getSelectedEmployee());
         employeeDialog.open();
+    }
+
+    @Override
+    public void onSearch(String columnHeader, String textToSearch) {
+        setItems(employeeService.search(headersMap.get(columnHeader), textToSearch));
     }
 
     @Override

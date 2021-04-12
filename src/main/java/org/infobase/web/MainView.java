@@ -13,6 +13,7 @@ import com.vaadin.flow.router.Route;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import org.infobase.web.component.grid.CompanyGrid;
 import org.infobase.web.component.grid.EmployeeGrid;
@@ -34,7 +35,7 @@ public class MainView extends VerticalLayout {
     private void init() {
         // add search
         ComboBox<String> searchField = new ComboBox<>();
-        searchField.setPlaceholder("Выбери поле");
+        searchField.setPlaceholder("Выберите поле");
         searchField.setRequired(true);
         searchField.setClearButtonVisible(true);
 
@@ -81,9 +82,18 @@ public class MainView extends VerticalLayout {
         delBtn.addClickListener(e -> tabComponents.get(tabs.getSelectedTab()).onDelete());
 
         // search
-        searchText.addValueChangeListener(e ->
-            tabComponents.get(tabs.getSelectedTab()).onSearch(searchField.getValue(), e.getValue())
-        );
+        searchField.addValueChangeListener(e -> {
+            if (Objects.isNull(e.getValue())) {
+                tabComponents.get(tabs.getSelectedTab()).fill();
+                searchText.setValue("");
+            }
+        });
+
+        searchText.addValueChangeListener(e -> {
+            if (Objects.nonNull(searchField.getValue())) {
+                tabComponents.get(tabs.getSelectedTab()).onSearch(searchField.getValue(), e.getValue());
+            }
+        });
 
         add(actions, tabs, pages);
     }
