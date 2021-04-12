@@ -1,6 +1,7 @@
 package org.infobase.web.component.dialog;
 
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -11,7 +12,6 @@ import com.vaadin.flow.spring.annotation.UIScope;
 
 import org.infobase.service.EmployeeService;
 import org.infobase.to.EmployeeTo;
-import org.infobase.util.converter.StringToDateConverter;
 
 @SpringComponent
 @UIScope
@@ -24,7 +24,7 @@ public class EmployeeDialog extends Dialog {
     private Runnable onSave;
 
     private TextField name = new TextField("", "ФИО");
-    private TextField birthDate = new TextField("", "Дата Рождения");
+    private DatePicker birthDate = new DatePicker("");
     private TextField email = new TextField("", "Электронная почта");
     private TextField companyName = new TextField("", "Компания");
     private Button saveBtn = new Button("Сохранить");
@@ -33,9 +33,11 @@ public class EmployeeDialog extends Dialog {
     public EmployeeDialog(EmployeeService employeeService) {
         this.employeeService = employeeService;
 
+        birthDate.setPlaceholder("Дата Рождения");
+
         binder = new Binder<>(EmployeeTo.class);
         binder.forField(birthDate)
-              .withConverter(new StringToDateConverter())
+              .asRequired("Пожалуйста, выберите дату")
               .bind(EmployeeTo::getBirthDate, EmployeeTo::setBirthDate);
         binder.bindInstanceFields(this);
 
@@ -68,6 +70,7 @@ public class EmployeeDialog extends Dialog {
     }
 
     private void save() {
+        binder.validate();
         employeeService.saveOrUpdate(employeeTo);
         onSave.run();
         close();
