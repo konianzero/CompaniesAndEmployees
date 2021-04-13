@@ -6,6 +6,7 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
+import com.vaadin.flow.data.validator.RegexpValidator;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
 
@@ -33,6 +34,14 @@ public class CompanyDialog extends Dialog {
         this.companyService = companyService;
 
         binder = new BeanValidationBinder<>(Company.class);
+        binder.forField(phoneNumber)
+              .withValidator(
+                      new RegexpValidator(
+                              "Указанный номер не соответствует формату",
+                              "^(8|\\+7) \\(\\d{3}\\) \\d{3}-\\d{2}-\\d{2}$"
+                      )
+              )
+              .bind(Company::getPhoneNumber, Company::setPhoneNumber);
         binder.bindInstanceFields(this);
 
         saveBtn.addClickListener(e -> save());
