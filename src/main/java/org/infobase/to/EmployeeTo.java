@@ -17,7 +17,7 @@ public class EmployeeTo {
     @NotNull
     private LocalDate birthDate;
 
-    @Email
+//    @Email
     @NotBlank
     @Size(max = 100)
     private String email;

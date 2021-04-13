@@ -7,6 +7,7 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
+import com.vaadin.flow.data.validator.EmailValidator;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
 
@@ -39,6 +40,9 @@ public class EmployeeDialog extends Dialog {
         binder.forField(birthDate)
               .asRequired("Пожалуйста, выберите дату")
               .bind(EmployeeTo::getBirthDate, EmployeeTo::setBirthDate);
+        binder.forField(email)
+              .withValidator(new EmailValidator("Поле должно иметь формат адреса электронной почты"))
+              .bind(EmployeeTo::getEmail, EmployeeTo::setEmail);
         binder.bindInstanceFields(this);
 
         saveBtn.addClickListener(e -> save());
