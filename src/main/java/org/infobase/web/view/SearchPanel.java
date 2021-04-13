@@ -1,11 +1,11 @@
 package org.infobase.web.view;
 
 import com.vaadin.flow.component.combobox.ComboBox;
-import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
+import org.infobase.web.component.LocalizedDatePicker;
 
 @SpringComponent
 @UIScope
@@ -13,7 +13,7 @@ public class SearchPanel {
 
     final ComboBox<String> searchColumn;
     final TextField searchText;
-    final DatePicker birthDatePicker;
+    final LocalizedDatePicker birthDatePicker;
 
     final HorizontalLayout filter;
 
@@ -27,7 +27,7 @@ public class SearchPanel {
         searchText.setEnabled(true);
         searchText.setVisible(true);
 
-        birthDatePicker = new DatePicker("");
+        birthDatePicker = new LocalizedDatePicker("");
         birthDatePicker.setEnabled(false);
         birthDatePicker.setVisible(false);
 
