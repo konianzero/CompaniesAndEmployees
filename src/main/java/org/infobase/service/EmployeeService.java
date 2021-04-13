@@ -1,6 +1,5 @@
 package org.infobase.service;
 
-import org.infobase.repository.CompanyRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -8,6 +7,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 import org.infobase.model.Employee;
+import org.infobase.repository.CompanyRepository;
 import org.infobase.repository.EmployeeRepository;
 import org.infobase.to.EmployeeTo;
 import org.infobase.util.EmployeeUtil;
