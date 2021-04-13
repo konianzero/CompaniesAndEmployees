@@ -7,7 +7,7 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 
 public interface OnRemoveNotification {
 
-    default void preRemoveNotification(Runnable delete) {
+    default void preRemoveNotification(Runnable deleteCallback) {
         Button yes = new Button("Да");
         Button no = new Button("Нет");
         HorizontalLayout btnLayout = new HorizontalLayout(yes, no);
@@ -19,7 +19,7 @@ public interface OnRemoveNotification {
         notification.open();
 
         yes.addClickListener(event -> {
-            delete.run();
+            deleteCallback.run();
             notification.close();
         });
         no.addClickListener(event -> notification.close());

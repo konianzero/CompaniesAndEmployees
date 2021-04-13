@@ -6,7 +6,7 @@ import javax.validation.constraints.Size;
 public class AbstractNamedEntity extends AbstractBaseEntity {
 
     @NotBlank
-    @Size(min = 2)
+    @Size(min = 2, max = 100)
     protected String name;
 
     protected AbstractNamedEntity() {
