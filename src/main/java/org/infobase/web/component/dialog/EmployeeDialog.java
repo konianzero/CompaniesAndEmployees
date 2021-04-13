@@ -6,7 +6,7 @@ import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
-import com.vaadin.flow.data.binder.Binder;
+import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
 
@@ -18,7 +18,7 @@ import org.infobase.to.EmployeeTo;
 public class EmployeeDialog extends Dialog {
 
     private final EmployeeService employeeService;
-    private final Binder<EmployeeTo> binder;
+    private final BeanValidationBinder<EmployeeTo> binder;
 
     private EmployeeTo employeeTo;
     private Runnable onSave;
@@ -35,7 +35,7 @@ public class EmployeeDialog extends Dialog {
 
         birthDate.setPlaceholder("Дата Рождения");
 
-        binder = new Binder<>(EmployeeTo.class);
+        binder = new BeanValidationBinder<>(EmployeeTo.class);
         binder.forField(birthDate)
               .asRequired("Пожалуйста, выберите дату")
               .bind(EmployeeTo::getBirthDate, EmployeeTo::setBirthDate);
@@ -70,7 +70,8 @@ public class EmployeeDialog extends Dialog {
     }
 
     private void save() {
-        binder.validate();
+        if (binder.validate().hasErrors()) { return; }
+
         employeeService.saveOrUpdate(employeeTo);
         onSave.run();
         close();

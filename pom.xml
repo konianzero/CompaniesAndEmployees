@@ -23,6 +23,7 @@
         <java.version>11</java.version>
         <vaadin.version>14.5.1</vaadin.version>
         <org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
+        <hibernate-validator.version>6.1.6.Final</hibernate-validator.version>
     </properties>
 
     <dependencies>
@@ -48,6 +49,11 @@
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct</artifactId>
             <version>${org.mapstruct.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate.validator</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>${hibernate-validator.version}</version>
         </dependency>
 
     </dependencies>

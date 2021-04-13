@@ -5,6 +5,7 @@ import javax.validation.constraints.Size;
 
 public class Company extends AbstractNamedEntity {
     @NotBlank
+    @Size(min = 10, max = 10)
     private String tin;
 
     @NotBlank

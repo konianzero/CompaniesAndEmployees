@@ -1,21 +1,11 @@
 package org.infobase.model;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
 import java.time.LocalDate;
 
 public class Employee extends AbstractNamedEntity {
-    @NotNull
+
     private LocalDate birthDate;
-
-    @Email
-    @NotBlank
-    @Size(max = 100)
     private String email;
-
     private Company company;
 
     public Employee() {

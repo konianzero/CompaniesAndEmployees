@@ -5,7 +5,7 @@ import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
-import com.vaadin.flow.data.binder.Binder;
+import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
 
@@ -17,7 +17,7 @@ import org.infobase.service.CompanyService;
 public class CompanyDialog extends Dialog {
 
     private final CompanyService companyService;
-    private final Binder<Company> binder;
+    private final BeanValidationBinder<Company> binder;
 
     private Company company;
     private Runnable onSave;
@@ -32,7 +32,7 @@ public class CompanyDialog extends Dialog {
     public CompanyDialog(CompanyService companyService) {
         this.companyService = companyService;
 
-        binder = new Binder<>(Company.class);
+        binder = new BeanValidationBinder<>(Company.class);
         binder.bindInstanceFields(this);
 
         saveBtn.addClickListener(e -> save());
@@ -64,6 +64,8 @@ public class CompanyDialog extends Dialog {
     }
 
     private void save() {
+        if (binder.validate().hasErrors()) { return; }
+
         companyService.saveOrUpdate(company);
         onSave.run();
         close();
