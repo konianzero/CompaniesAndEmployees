@@ -61,13 +61,15 @@ public class MainView extends VerticalLayout {
 
         searchPanel.searchText.addKeyPressListener(e -> {
             if (Objects.nonNull(searchPanel.searchColumn.getValue())) {
-                tabsPanel.tabComponents.get(tabsPanel.tabs.getSelectedTab()).onSearch(searchPanel.searchColumn.getValue(), searchPanel.searchText.getValue());
+                tabsPanel.tabComponents.get(tabsPanel.tabs.getSelectedTab())
+                                       .onSearch(searchPanel.searchColumn.getValue(), searchPanel.searchText.getValue());
             }
         });
 
         searchPanel.birthDatePicker.addValueChangeListener(e -> {
             if (Objects.nonNull(searchPanel.searchColumn.getValue())) {
-                tabsPanel.tabComponents.get(tabsPanel.tabs.getSelectedTab()).onSearch(searchPanel.searchColumn.getValue(), e.getValue().toString());
+                tabsPanel.tabComponents.get(tabsPanel.tabs.getSelectedTab())
+                                       .onSearch(searchPanel.searchColumn.getValue(), e.getValue().toString());
             }
         });
 
