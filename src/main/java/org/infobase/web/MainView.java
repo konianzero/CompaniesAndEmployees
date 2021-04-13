@@ -1,6 +1,7 @@
 package org.infobase.web;
 
 import com.vaadin.flow.component.combobox.ComboBox;
+import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.Tabs;
@@ -34,13 +35,20 @@ public class MainView extends VerticalLayout {
 
     private void init() {
         // add search
-        ComboBox<String> searchField = new ComboBox<>();
-        searchField.setPlaceholder("Выберите поле");
-        searchField.setRequired(true);
-        searchField.setClearButtonVisible(true);
+        ComboBox<String> searchColumn = new ComboBox<>();
+        searchColumn.setPlaceholder("Выберите поле");
+        searchColumn.setRequired(true);
+        searchColumn.setClearButtonVisible(true);
 
         TextField searchText = new TextField("", "Поиск");
-        HorizontalLayout filter = new HorizontalLayout(searchField, searchText);
+        searchText.setEnabled(true);
+        searchText.setVisible(true);
+
+        DatePicker birthDatePicker = new DatePicker("");
+        birthDatePicker.setEnabled(false);
+        birthDatePicker.setVisible(false);
+
+        HorizontalLayout filter = new HorizontalLayout(searchColumn, searchText, birthDatePicker);
 
         // add buttons
         Button addBtn = new Button("Добавить", VaadinIcon.PLUS.create());
@@ -55,7 +63,7 @@ public class MainView extends VerticalLayout {
         Tabs tabs = new Tabs(companyTab, employeeTab);
         // pre-selected tab
         tabs.setSelectedTab(companyTab);
-        searchField.setItems(companyGrid.getHeaders());
+        searchColumn.setItems(companyGrid.getHeaders());
         companyGrid.fill();
         employeeGrid.setVisible(false);
 
@@ -71,7 +79,7 @@ public class MainView extends VerticalLayout {
             tabComponents.values().forEach(grid -> grid.getComponent().setVisible(false));
 
             EntityGrid grid = tabComponents.get(tabs.getSelectedTab());
-            searchField.setItems(grid.getHeaders());
+            searchColumn.setItems(grid.getHeaders());
             grid.fill();
             grid.getComponent().setVisible(true);
         });
@@ -81,17 +89,39 @@ public class MainView extends VerticalLayout {
         editBtn.addClickListener(e -> tabComponents.get(tabs.getSelectedTab()).onEdit());
         delBtn.addClickListener(e -> tabComponents.get(tabs.getSelectedTab()).onDelete());
 
-        // search
-        searchField.addValueChangeListener(e -> {
+        // search actions
+        searchColumn.addValueChangeListener(e -> {
             if (Objects.isNull(e.getValue())) {
                 tabComponents.get(tabs.getSelectedTab()).fill();
                 searchText.setValue("");
+                searchText.setEnabled(true);
+                searchText.setVisible(true);
+                birthDatePicker.setEnabled(false);
+                birthDatePicker.setVisible(false);
+                return;
+            }
+            if (e.getValue().equals("Дата Рождения")) {
+                searchText.setEnabled(false);
+                searchText.setVisible(false);
+                birthDatePicker.setEnabled(true);
+                birthDatePicker.setVisible(true);
+            } else {
+                searchText.setEnabled(true);
+                searchText.setVisible(true);
+                birthDatePicker.setEnabled(false);
+                birthDatePicker.setVisible(false);
             }
         });
 
         searchText.addValueChangeListener(e -> {
-            if (Objects.nonNull(searchField.getValue())) {
-                tabComponents.get(tabs.getSelectedTab()).onSearch(searchField.getValue(), e.getValue());
+            if (Objects.nonNull(searchColumn.getValue())) {
+                tabComponents.get(tabs.getSelectedTab()).onSearch(searchColumn.getValue(), e.getValue());
+            }
+        });
+
+        birthDatePicker.addValueChangeListener(e -> {
+            if (Objects.nonNull(searchColumn.getValue())) {
+                tabComponents.get(tabs.getSelectedTab()).onSearch(searchColumn.getValue(), e.getValue().toString());
             }
         });
 
