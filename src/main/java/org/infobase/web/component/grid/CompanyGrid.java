@@ -26,7 +26,6 @@ public class CompanyGrid extends Grid<Company> implements EntityGrid {
             "Адрес", "address",
             "Телефон", "phone_number");
 
-    @Autowired
     public CompanyGrid(CompanyService companyService, CompanyDialog companyDialog) {
         this.companyService = companyService;
         this.companyDialog = companyDialog;

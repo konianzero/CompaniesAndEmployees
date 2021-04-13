@@ -27,7 +27,6 @@ public class EmployeeGrid extends Grid<EmployeeTo> implements EntityGrid {
             "Электронная почта", "email",
             "Компания", "comp_name");
 
-    @Autowired
     public EmployeeGrid(EmployeeService employeeService, EmployeeDialog employeeDialog) {
         this.employeeService = employeeService;
         this.employeeDialog = employeeDialog;
