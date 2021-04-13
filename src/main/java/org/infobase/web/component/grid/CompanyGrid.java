@@ -22,9 +22,9 @@ public class CompanyGrid extends Grid<Company> implements EntityGrid {
     
     private final Map<String, String> headersMap = Map.of(
             "Название", "name",
-        "ИНН", "tin",
-        "Адрес", "address",
-        "Телефон", "phone_number");
+            "ИНН", "tin",
+            "Адрес", "address",
+            "Телефон", "phone_number");
 
     @Autowired
     public CompanyGrid(CompanyService companyService, CompanyDialog companyDialog) {
