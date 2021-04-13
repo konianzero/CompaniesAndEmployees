@@ -59,9 +59,9 @@ public class MainView extends VerticalLayout {
             }
         });
 
-        searchPanel.searchText.addValueChangeListener(e -> {
+        searchPanel.searchText.addKeyPressListener(e -> {
             if (Objects.nonNull(searchPanel.searchColumn.getValue())) {
-                tabsPanel.tabComponents.get(tabsPanel.tabs.getSelectedTab()).onSearch(searchPanel.searchColumn.getValue(), e.getValue());
+                tabsPanel.tabComponents.get(tabsPanel.tabs.getSelectedTab()).onSearch(searchPanel.searchColumn.getValue(), searchPanel.searchText.getValue());
             }
         });
 
