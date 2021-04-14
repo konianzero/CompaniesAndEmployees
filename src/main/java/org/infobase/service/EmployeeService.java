@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 import org.infobase.model.Employee;
-import org.infobase.repository.CompanyRepository;
-import org.infobase.repository.EmployeeRepository;
+import org.infobase.dao.impl.CompanyDaoImpl;
+import org.infobase.dao.impl.EmployeeDaoImpl;
 import org.infobase.to.EmployeeTo;
 import org.infobase.util.EmployeeUtil;
 
@@ -16,43 +16,43 @@ import org.infobase.util.EmployeeUtil;
 public class EmployeeService {
     private static final Logger log = LoggerFactory.getLogger(EmployeeService.class);
 
-    private final EmployeeRepository employeeRepository;
-    private final CompanyRepository companyRepository;
+    private final EmployeeDaoImpl employeeDaoImpl;
+    private final CompanyDaoImpl companyDaoImpl;
 
-    public EmployeeService(EmployeeRepository employeeRepository, CompanyRepository companyRepository) {
-        this.employeeRepository = employeeRepository;
-        this.companyRepository = companyRepository;
+    public EmployeeService(EmployeeDaoImpl employeeDaoImpl, CompanyDaoImpl companyDaoImpl) {
+        this.employeeDaoImpl = employeeDaoImpl;
+        this.companyDaoImpl = companyDaoImpl;
     }
 
     public int saveOrUpdate(EmployeeTo employeeTo) {
         Employee employee = EmployeeUtil.createEntity(employeeTo);
-        employee.setCompany(companyRepository.getByName(employeeTo.getCompanyName()));
+        employee.setCompany(companyDaoImpl.getByName(employeeTo.getCompanyName()));
 
         if (employee.getId() == null) {
             log.info("Save {}", employeeTo);
-            return employeeRepository.save(employee);
+            return employeeDaoImpl.save(employee);
         }
         log.info("Save {}", employeeTo);
-        return employeeRepository.update(employee);
+        return employeeDaoImpl.update(employee);
     }
 
     public EmployeeTo get(int id) {
         log.info("Get employee with id:{}", id);
-        return EmployeeUtil.createTo(employeeRepository.get(id));
+        return EmployeeUtil.createTo(employeeDaoImpl.get(id));
     }
 
     public List<EmployeeTo> getAll() {
         log.debug("Get all employees");
-        return EmployeeUtil.createToList(employeeRepository.getAll());
+        return EmployeeUtil.createToList(employeeDaoImpl.getAll());
     }
 
     public List<EmployeeTo> search(String columnName, String textToSearch) {
         log.info("Search employees by field '{}' with \"{}\"", columnName, textToSearch);
-        return EmployeeUtil.createToList(employeeRepository.search(columnName, textToSearch));
+        return EmployeeUtil.createToList(employeeDaoImpl.search(columnName, textToSearch));
     }
 
     public void delete(int id) {
         log.info("Delete employee with id:{}", id);
-        employeeRepository.delete(id);
+        employeeDaoImpl.delete(id);
     }
 }

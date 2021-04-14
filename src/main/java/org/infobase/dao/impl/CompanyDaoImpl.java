@@ -1,5 +1,6 @@
-package org.infobase.repository;
+package org.infobase.dao.impl;
 
+import org.infobase.dao.CompanyDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,11 +17,11 @@ import java.util.List;
 import java.util.Objects;
 
 import org.infobase.model.Company;
-import org.infobase.repository.mappers.CompanyMapper;
+import org.infobase.dao.mappers.CompanyMapper;
 
 @Repository
-public class CompanyRepository {
-    private static final Logger log = LoggerFactory.getLogger(CompanyRepository.class);
+public class CompanyDaoImpl implements CompanyDao {
+    private static final Logger log = LoggerFactory.getLogger(CompanyDaoImpl.class);
 
     private static final String INSERT_QUERY = "INSERT INTO companies (name, tin, address, phone_number)" +
                                                " VALUES (:name, :tin, :address, :phone_number)";
@@ -39,7 +40,7 @@ public class CompanyRepository {
 
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    public CompanyRepository(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
+    public CompanyDaoImpl(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
     }
 

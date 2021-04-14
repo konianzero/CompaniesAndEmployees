@@ -1,5 +1,6 @@
-package org.infobase.repository;
+package org.infobase.dao.impl;
 
+import org.infobase.dao.EmployeeDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,11 +18,11 @@ import java.util.List;
 import java.util.Objects;
 
 import org.infobase.model.Employee;
-import org.infobase.repository.mappers.EmployeeMapper;
+import org.infobase.dao.mappers.EmployeeMapper;
 
 @Repository
-public class EmployeeRepository {
-    private static final Logger log = LoggerFactory.getLogger(EmployeeRepository.class);
+public class EmployeeDaoImpl implements EmployeeDao {
+    private static final Logger log = LoggerFactory.getLogger(EmployeeDaoImpl.class);
 
     private static final String INSERT_QUERY = "INSERT INTO employees (name, birth_date, email, company_id)" +
                                                " VALUES (:name, :birth_date, :email, :company_id)";
@@ -46,7 +47,7 @@ public class EmployeeRepository {
 
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    public EmployeeRepository(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
+    public EmployeeDaoImpl(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
     }
 

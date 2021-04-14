@@ -8,52 +8,52 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.infobase.model.Company;
-import org.infobase.repository.CompanyRepository;
+import org.infobase.dao.impl.CompanyDaoImpl;
 
 @Service
 public class CompanyService {
     private static final Logger log = LoggerFactory.getLogger(CompanyService.class);
 
-    private final CompanyRepository companyRepository;
+    private final CompanyDaoImpl companyDaoImpl;
 
-    public CompanyService(CompanyRepository companyRepository) {
-        this.companyRepository = companyRepository;
+    public CompanyService(CompanyDaoImpl companyDaoImpl) {
+        this.companyDaoImpl = companyDaoImpl;
     }
 
     public int saveOrUpdate(Company company) {
         if (company.getId() == null) {
             log.info("Save {}", company);
-            return companyRepository.save(company);
+            return companyDaoImpl.save(company);
         }
         log.info("Update {}", company);
-        return companyRepository.update(company);
+        return companyDaoImpl.update(company);
     }
 
     public Company get(int id) {
         log.info("Get company with id:{}", id);
-        return companyRepository.getById(id);
+        return companyDaoImpl.getById(id);
     }
 
     public List<Company> getAll() {
         log.debug("Get all companies");
-        return companyRepository.getAll();
+        return companyDaoImpl.getAll();
     }
 
     public List<String> getNames() {
         log.debug("Get all companies");
-        return companyRepository.getAll()
-                                .stream()
-                                .map(Company::getName)
-                                .collect(Collectors.toList());
+        return companyDaoImpl.getAll()
+                             .stream()
+                             .map(Company::getName)
+                             .collect(Collectors.toList());
     }
 
     public List<Company> search(String textToSearch) {
         log.info("Search companies with \"{}\"", textToSearch);
-        return companyRepository.search(textToSearch);
+        return companyDaoImpl.search(textToSearch);
     }
 
     public void delete(int id) {
         log.info("Delete company with id:{}", id);
-        companyRepository.delete(id);
+        companyDaoImpl.delete(id);
     }
 }

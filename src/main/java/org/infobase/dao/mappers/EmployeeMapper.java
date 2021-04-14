@@ -1,4 +1,4 @@
-package org.infobase.repository.mappers;
+package org.infobase.dao.mappers;
 
 import org.springframework.jdbc.core.RowMapper;
 
