@@ -35,6 +35,8 @@ public class CompanyGrid extends EntityGrid<Company> {
         addColumn(Company::getTin).setHeader("ИНН");
         addColumn(Company::getAddress).setHeader("Адрес");
         addColumn(Company::getPhoneNumber).setHeader("Телефон");
+
+        setSelectionListener();
     }
 
     @Override

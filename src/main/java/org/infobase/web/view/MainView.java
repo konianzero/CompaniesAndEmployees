@@ -5,6 +5,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import org.infobase.web.component.grid.EntityGrid;
 
@@ -32,6 +33,7 @@ public class MainView extends VerticalLayout {
 
             EntityGrid grid = tabsPanel.tabComponents.get(tabsPanel.tabs.getSelectedTab());
             searchPanel.searchColumn.setItems(grid.getHeaders());
+            grid.disableEditButtons();
             grid.fill();
             grid.getComponent().setVisible(true);
         });

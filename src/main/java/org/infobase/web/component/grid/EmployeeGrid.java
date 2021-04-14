@@ -42,6 +42,8 @@ public class EmployeeGrid extends EntityGrid<EmployeeTo> {
         addColumn(EmployeeTo::getBirthDate).setHeader("Дата Рождения");
         addColumn(EmployeeTo::getEmail).setHeader("Электронная почта");
         addColumn(EmployeeTo::getCompanyName).setHeader("Компания");
+
+        setSelectionListener();
     }
 
     private List<String> getCompaniesNames() {

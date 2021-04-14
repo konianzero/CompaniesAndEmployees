@@ -15,7 +15,17 @@ public abstract class EntityGrid<T> extends Grid<T> implements OnRemoveNotificat
     public abstract void onSearch(String columnHeader, String textToSearch);
     public abstract void onDelete();
 
+    private Consumer<Boolean> enableEditButtons;
+
     public void setEnableEditButtons(Consumer<Boolean> enableEditButtons) {
+        this.enableEditButtons = enableEditButtons;
+    }
+
+    public void disableEditButtons() {
+        enableEditButtons.accept(false);
+    }
+
+    protected void setSelectionListener() {
         addSelectionListener(e -> e.getFirstSelectedItem()
                 .ifPresentOrElse(
                         c -> enableEditButtons.accept(true),
