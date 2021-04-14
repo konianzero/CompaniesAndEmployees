@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.infobase.model.Company;
 import org.infobase.repository.CompanyRepository;
@@ -36,6 +37,14 @@ public class CompanyService {
     public List<Company> getAll() {
         log.debug("Get all companies");
         return companyRepository.getAll();
+    }
+
+    public List<String> getNames() {
+        log.debug("Get all companies");
+        return companyRepository.getAll()
+                                .stream()
+                                .map(Company::getName)
+                                .collect(Collectors.toList());
     }
 
     public List<Company> search(String columnName, String textToSearch) {

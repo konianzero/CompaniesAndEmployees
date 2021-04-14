@@ -15,6 +15,7 @@ public class SearchPanel {
     final ComboBox<String> searchColumn;
     final TextField searchText;
     final LocalizedDatePicker birthDatePicker;
+    final CompanyComboBox<String> companyPicker;
 
     final HorizontalLayout filter;
 
@@ -26,10 +27,11 @@ public class SearchPanel {
 
         searchText = new TextField("", "Поиск");
         birthDatePicker = new LocalizedDatePicker();
+        companyPicker = new CompanyComboBox<>();
 
         setSearchTextVisibleAndEnable(true);
 
-        filter = new HorizontalLayout(searchColumn, searchText, birthDatePicker);
+        filter = new HorizontalLayout(searchColumn, searchText, birthDatePicker, companyPicker);
     }
 
     public void setDatePickerVisibleAndEnable(boolean bool) {
@@ -38,6 +40,7 @@ public class SearchPanel {
 
         if (bool) {
             setSearchTextVisibleAndEnable(false);
+            setCompanyPickerVisibleAndEnable(false);
         }
     }
 
@@ -46,6 +49,17 @@ public class SearchPanel {
         searchText.setVisible(bool);
 
         if (bool) {
+            setDatePickerVisibleAndEnable(false);
+            setCompanyPickerVisibleAndEnable(false);
+        }
+    }
+
+    public void setCompanyPickerVisibleAndEnable(boolean bool) {
+        companyPicker.setEnabled(bool);
+        companyPicker.setVisible(bool);
+
+        if (bool) {
+            setSearchTextVisibleAndEnable(false);
             setDatePickerVisibleAndEnable(false);
         }
     }

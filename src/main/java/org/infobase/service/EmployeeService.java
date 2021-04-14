@@ -48,7 +48,7 @@ public class EmployeeService {
 
     public List<EmployeeTo> search(String columnName, String textToSearch) {
         log.info("Search employees by field '{}' with \"{}\"", columnName, textToSearch);
-        return EmployeeUtil.createToList(employeeRepository.search(columnName, textToSearch.toLowerCase()));
+        return EmployeeUtil.createToList(employeeRepository.search(columnName, textToSearch));
     }
 
     public void delete(int id) {

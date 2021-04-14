@@ -33,6 +33,7 @@ public class MainView extends VerticalLayout {
 
             EntityGrid grid = tabsPanel.tabComponents.get(tabsPanel.tabs.getSelectedTab());
             searchPanel.searchColumn.setItems(grid.getHeaders());
+            searchPanel.companyPicker.setCompaniesNamesAsItems(tabsPanel.employeeGrid.getCompaniesNames());
             grid.disableEditButtons();
             grid.fill();
             grid.getComponent().setVisible(true);
@@ -57,6 +58,9 @@ public class MainView extends VerticalLayout {
             else if (e.getValue().equals("Дата Рождения")) {
                 searchPanel.setDatePickerVisibleAndEnable(true);
             }
+            else if (e.getValue().equals("Компания")) {
+                searchPanel.setCompanyPickerVisibleAndEnable(true);
+            }
             else {
                 searchPanel.setSearchTextVisibleAndEnable(true);
             }
@@ -73,6 +77,13 @@ public class MainView extends VerticalLayout {
             if (Objects.nonNull(searchPanel.searchColumn.getValue())) {
                 tabsPanel.tabComponents.get(tabsPanel.tabs.getSelectedTab())
                                        .onSearch(searchPanel.searchColumn.getValue(), e.getValue().toString());
+            }
+        });
+
+        searchPanel.companyPicker.addValueChangeListener(e -> {
+            if (Objects.nonNull(searchPanel.searchColumn.getValue())) {
+                tabsPanel.tabComponents.get(tabsPanel.tabs.getSelectedTab())
+                                       .onSearch(searchPanel.searchColumn.getValue(), e.getValue());
             }
         });
 

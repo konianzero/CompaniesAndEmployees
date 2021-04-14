@@ -82,7 +82,7 @@ public class EmployeeRepository {
         switch (columnName) {
             case "name":
                 sql = String.format(SEARCH_QUERY, "lower(e.name) LIKE :search");
-                map = new MapSqlParameterSource("search", "%" + textToSearch + "%");
+                map = new MapSqlParameterSource("search", "%" + textToSearch.toLowerCase() + "%");
                 break;
             case "birth_date":
                 sql = String.format(SEARCH_QUERY, "e.birth_date=:birth_date");
@@ -90,11 +90,11 @@ public class EmployeeRepository {
                 break;
             case "email":
                 sql = String.format(SEARCH_QUERY, "lower(e.email) LIKE :search");
-                map = new MapSqlParameterSource("search", "%" + textToSearch + "%");
+                map = new MapSqlParameterSource("search", "%" + textToSearch.toLowerCase() + "%");
                 break;
             case "comp_name":
-                sql = String.format(SEARCH_QUERY, "lower(c.name) LIKE :search");
-                map = new MapSqlParameterSource("search", "%" + textToSearch + "%");
+                sql = String.format(SEARCH_QUERY, "c.name=:name");
+                map = new MapSqlParameterSource("name", textToSearch);
                 break;
             default:
                 return getAll();

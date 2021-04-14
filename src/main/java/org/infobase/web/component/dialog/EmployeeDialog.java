@@ -1,7 +1,6 @@
 package org.infobase.web.component.dialog;
 
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -13,6 +12,7 @@ import com.vaadin.flow.spring.annotation.UIScope;
 
 import org.infobase.service.EmployeeService;
 import org.infobase.to.EmployeeTo;
+import org.infobase.web.component.CompanyComboBox;
 import org.infobase.web.component.LocalizedDatePicker;
 
 import java.util.List;
@@ -30,7 +30,7 @@ public class EmployeeDialog extends Dialog {
     private TextField name = new TextField("", "ФИО");
     private LocalizedDatePicker birthDate = new LocalizedDatePicker();
     private TextField email = new TextField("", "Электронная почта");
-    private ComboBox<String> companyName = new ComboBox<>();
+    private CompanyComboBox<String> companyName = new CompanyComboBox<>();
     private Button saveBtn = new Button("Сохранить");
     private Button cancelBtn = new Button("Отменить");
 
@@ -38,8 +38,6 @@ public class EmployeeDialog extends Dialog {
         this.employeeService = employeeService;
 
         birthDate.setPlaceholder("Дата Рождения");
-        companyName.setPlaceholder("Компания");
-        companyName.setClearButtonVisible(true);
 
         binder = new BeanValidationBinder<>(EmployeeTo.class);
         binder.forField(birthDate)
@@ -60,8 +58,8 @@ public class EmployeeDialog extends Dialog {
         add(layout);
     }
 
-    public void setItemsToCompanyComboBox(List<String> companies) {
-        companyName.setItems(companies);
+    public void setItemsToCompanyComboBox(List<String> companiesNames) {
+        companyName.setCompaniesNamesAsItems(companiesNames);
     }
 
     public void setOnSave(Runnable onSave) {

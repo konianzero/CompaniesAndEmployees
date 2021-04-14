@@ -4,7 +4,6 @@ import com.vaadin.flow.component.Component;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
 
-import org.infobase.model.Company;
 import org.infobase.service.CompanyService;
 import org.infobase.to.EmployeeTo;
 import org.infobase.service.EmployeeService;
@@ -13,7 +12,6 @@ import org.infobase.web.component.dialog.EmployeeDialog;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @SpringComponent
 @UIScope
@@ -46,11 +44,8 @@ public class EmployeeGrid extends EntityGrid<EmployeeTo> {
         setSelectionListener();
     }
 
-    private List<String> getCompaniesNames() {
-        return companyService.getAll()
-                             .stream()
-                             .map(Company::getName)
-                             .collect(Collectors.toList());
+    public List<String> getCompaniesNames() {
+        return companyService.getNames();
     }
 
     @Override
