@@ -7,8 +7,7 @@ import java.util.Locale;
 
 public class LocalizedDatePicker extends DatePicker {
 
-    public LocalizedDatePicker(String label) {
-        super(label);
+    public LocalizedDatePicker() {
         localize();
     }
 

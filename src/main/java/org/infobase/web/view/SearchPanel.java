@@ -27,7 +27,7 @@ public class SearchPanel {
         searchText.setEnabled(true);
         searchText.setVisible(true);
 
-        birthDatePicker = new LocalizedDatePicker("");
+        birthDatePicker = new LocalizedDatePicker();
         birthDatePicker.setEnabled(false);
         birthDatePicker.setVisible(false);
 

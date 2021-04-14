@@ -28,7 +28,7 @@ public class EmployeeDialog extends Dialog {
     private Runnable onSave;
 
     private TextField name = new TextField("", "ФИО");
-    private LocalizedDatePicker birthDate = new LocalizedDatePicker("");
+    private LocalizedDatePicker birthDate = new LocalizedDatePicker();
     private TextField email = new TextField("", "Электронная почта");
     private ComboBox<String> companyName = new ComboBox<>();
     private Button saveBtn = new Button("Сохранить");
