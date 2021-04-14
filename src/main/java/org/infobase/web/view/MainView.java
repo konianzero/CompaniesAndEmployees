@@ -36,6 +36,10 @@ public class MainView extends VerticalLayout {
             grid.getComponent().setVisible(true);
         });
 
+        // Enable edit and del buttons when grid item selected, otherwise disabled
+        tabsPanel.companyGrid.setEnableEditButtons(buttonsPanel::setEditAndDelEnabled);
+        tabsPanel.employeeGrid.setEnableEditButtons(buttonsPanel::setEditAndDelEnabled);
+
         //  add click listeners
         buttonsPanel.addBtn.addClickListener(e -> tabsPanel.tabComponents.get(tabsPanel.tabs.getSelectedTab()).onCreate());
         buttonsPanel.editBtn.addClickListener(e -> tabsPanel.tabComponents.get(tabsPanel.tabs.getSelectedTab()).onEdit());

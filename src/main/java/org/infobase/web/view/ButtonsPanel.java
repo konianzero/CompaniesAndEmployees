@@ -21,6 +21,14 @@ public class ButtonsPanel {
         editBtn = new Button("Редактировать", VaadinIcon.PENCIL.create());
         delBtn = new Button("Удалить", VaadinIcon.MINUS.create());
 
+        editBtn.setEnabled(false);
+        delBtn.setEnabled(false);
+
         buttons = new HorizontalLayout(addBtn, editBtn, delBtn);
+    }
+
+    public void setEditAndDelEnabled(Boolean bool) {
+        editBtn.setEnabled(bool);
+        delBtn.setEnabled(bool);
     }
 }

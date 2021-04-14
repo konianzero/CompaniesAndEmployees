@@ -1,7 +1,6 @@
 package org.infobase.web.component.grid;
 
 import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
 
@@ -13,11 +12,11 @@ import java.util.*;
 
 @SpringComponent
 @UIScope
-public class CompanyGrid extends Grid<Company> implements EntityGrid {
+public class CompanyGrid extends EntityGrid<Company> {
 
     private final CompanyService companyService;
     private final CompanyDialog companyDialog;
-    
+
     private final Map<String, String> headersMap = Map.of(
             "Название", "name",
             "ИНН", "tin",
@@ -81,7 +80,7 @@ public class CompanyGrid extends Grid<Company> implements EntityGrid {
     public void onDelete() {
         if (!isVisible()) { return; }
 
-        preRemoveNotification(this::deleteCompany);
+        preRemoveNotification(this::deleteCompany, "Будет удалена компания и все её сотрудники.");
     }
 
     private void deleteCompany() {

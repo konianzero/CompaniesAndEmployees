@@ -1,7 +1,6 @@
 package org.infobase.web.component.grid;
 
 import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
 
@@ -18,12 +17,12 @@ import java.util.stream.Collectors;
 
 @SpringComponent
 @UIScope
-public class EmployeeGrid extends Grid<EmployeeTo> implements EntityGrid {
+public class EmployeeGrid extends EntityGrid<EmployeeTo> {
 
     private final CompanyService companyService;
     private final EmployeeService employeeService;
     private final EmployeeDialog employeeDialog;
-    
+
     private final Map<String, String> headersMap = Map.of(
             "ФИО", "name",
             "Дата Рождения", "birth_date",
