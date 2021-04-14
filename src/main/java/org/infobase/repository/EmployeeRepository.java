@@ -17,8 +17,7 @@ import java.util.List;
 import java.util.Objects;
 
 import org.infobase.model.Employee;
-
-import static org.infobase.util.Util.getEmployeeMapper;
+import org.infobase.repository.mappers.EmployeeMapper;
 
 @Repository
 public class EmployeeRepository {
@@ -85,7 +84,11 @@ public class EmployeeRepository {
     public Employee get(int id) {
         Employee result = null;
         try {
-            result = namedParameterJdbcTemplate.queryForObject(SELECT_BY_ID_QUERY, new MapSqlParameterSource("id", id), getEmployeeMapper());
+            result = namedParameterJdbcTemplate.queryForObject(
+                    SELECT_BY_ID_QUERY,
+                    new MapSqlParameterSource("id", id),
+                    new EmployeeMapper()
+            );
         } catch (DataAccessException dae) {
             log.error(dae.toString());
         }
@@ -95,7 +98,7 @@ public class EmployeeRepository {
     public List<Employee> getAll() {
         List<Employee> result = null;
         try {
-            result = namedParameterJdbcTemplate.query(SELECT_ALL_QUERY, getEmployeeMapper());
+            result = namedParameterJdbcTemplate.query(SELECT_ALL_QUERY, new EmployeeMapper());
         } catch (DataAccessException dae) {
             log.error(dae.toString());
         }
@@ -129,7 +132,7 @@ public class EmployeeRepository {
 
         List<Employee> result = null;
         try {
-            result = namedParameterJdbcTemplate.query(sql, map, getEmployeeMapper());
+            result = namedParameterJdbcTemplate.query(sql, map, new EmployeeMapper());
         } catch (DataAccessException dae) {
             log.error(dae.toString());
         }

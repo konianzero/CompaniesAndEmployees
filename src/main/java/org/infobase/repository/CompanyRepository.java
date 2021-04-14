@@ -16,8 +16,7 @@ import java.util.List;
 import java.util.Objects;
 
 import org.infobase.model.Company;
-
-import static org.infobase.util.Util.getCompanyMapper;
+import org.infobase.repository.mappers.CompanyMapper;
 
 @Repository
 public class CompanyRepository {
@@ -78,7 +77,11 @@ public class CompanyRepository {
     public Company getById(int id) {
         Company result = null;
         try {
-            result = namedParameterJdbcTemplate.queryForObject(SELECT_BY_ID_QUERY, new MapSqlParameterSource("id", id), getCompanyMapper());
+            result = namedParameterJdbcTemplate.queryForObject(
+                    SELECT_BY_ID_QUERY,
+                    new MapSqlParameterSource("id", id),
+                    new CompanyMapper()
+            );
         } catch (DataAccessException dae) {
             log.error(dae.toString());
         }
@@ -91,7 +94,7 @@ public class CompanyRepository {
             result = namedParameterJdbcTemplate.queryForObject(
                     SELECT_BY_NAME_QUERY,
                     new MapSqlParameterSource("name", name),
-                    getCompanyMapper()
+                    new CompanyMapper()
             );
         } catch (DataAccessException dae) {
             log.error(dae.toString());
@@ -102,7 +105,7 @@ public class CompanyRepository {
     public List<Company> getAll() {
         List<Company> result = null;
         try {
-            result = namedParameterJdbcTemplate.query(SELECT_ALL_QUERY, getCompanyMapper());
+            result = namedParameterJdbcTemplate.query(SELECT_ALL_QUERY, new CompanyMapper());
         } catch (DataAccessException dae) {
             log.error(dae.toString());
         }
@@ -115,7 +118,7 @@ public class CompanyRepository {
             result = namedParameterJdbcTemplate.query(
                     SEARCH_QUERY,
                     new MapSqlParameterSource("search", "%" + textToSearch.toLowerCase() + "%"),
-                    getCompanyMapper()
+                    new CompanyMapper()
             );
         } catch (DataAccessException dae) {
             log.error(dae.toString());
