@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.function.Consumer;
 
 public abstract class EntityGrid<T> extends Grid<T> implements OnRemoveNotification {
+    public abstract String getName();
     public abstract Component getComponent();
     public abstract Collection<String> getHeaders();
     public abstract void fill();

@@ -5,7 +5,6 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
 
 import java.util.Objects;
-import java.util.Optional;
 
 import org.infobase.web.component.grid.EntityGrid;
 
@@ -32,8 +31,13 @@ public class MainView extends VerticalLayout {
             tabsPanel.tabComponents.values().forEach(grid -> grid.getComponent().setVisible(false));
 
             EntityGrid grid = tabsPanel.tabComponents.get(tabsPanel.tabs.getSelectedTab());
-            searchPanel.searchColumn.setItems(grid.getHeaders());
-            searchPanel.companyPicker.setCompaniesNamesAsItems(tabsPanel.employeeGrid.getCompaniesNames());
+            if (grid.getName().equals("Компании")) {
+                searchPanel.setSearchColumnVisibleAndEnable(false);
+            } else {
+                searchPanel.setSearchColumnVisibleAndEnable(true);
+                searchPanel.searchColumn.setItems(grid.getHeaders());
+                searchPanel.companyPicker.setCompaniesNamesAsItems(tabsPanel.employeeGrid.getCompaniesNames());
+            }
             grid.disableEditButtons();
             grid.fill();
             grid.getComponent().setVisible(true);
@@ -43,12 +47,12 @@ public class MainView extends VerticalLayout {
         tabsPanel.companyGrid.setEnableEditButtons(buttonsPanel::setEditAndDelEnabled);
         tabsPanel.employeeGrid.setEnableEditButtons(buttonsPanel::setEditAndDelEnabled);
 
-        //  add click listeners
+        //  Add click listeners
         buttonsPanel.addBtn.addClickListener(e -> tabsPanel.tabComponents.get(tabsPanel.tabs.getSelectedTab()).onCreate());
         buttonsPanel.editBtn.addClickListener(e -> tabsPanel.tabComponents.get(tabsPanel.tabs.getSelectedTab()).onEdit());
         buttonsPanel.delBtn.addClickListener(e -> tabsPanel.tabComponents.get(tabsPanel.tabs.getSelectedTab()).onDelete());
 
-        // search actions
+        // Search actions
         searchPanel.searchColumn.addValueChangeListener(e -> {
             if (Objects.isNull(e.getValue())) {
                 tabsPanel.tabComponents.get(tabsPanel.tabs.getSelectedTab()).fill();
@@ -67,9 +71,12 @@ public class MainView extends VerticalLayout {
         });
 
         searchPanel.searchText.addKeyPressListener(e -> {
-            if (Objects.nonNull(searchPanel.searchColumn.getValue())) {
+            if (searchPanel.searchColumn.isEnabled() && Objects.nonNull(searchPanel.searchColumn.getValue())) {
                 tabsPanel.tabComponents.get(tabsPanel.tabs.getSelectedTab())
                                        .onSearch(searchPanel.searchColumn.getValue(), searchPanel.searchText.getValue());
+            } else {
+                tabsPanel.tabComponents.get(tabsPanel.tabs.getSelectedTab())
+                        .onSearch("", searchPanel.searchText.getValue());
             }
         });
 
@@ -87,7 +94,7 @@ public class MainView extends VerticalLayout {
             }
         });
 
-        // add to layout
+        // Add to layout
         HorizontalLayout actions = new HorizontalLayout();
         actions.add(buttonsPanel.buttons, searchPanel.filter);
         add(actions, tabsPanel.tabs, tabsPanel.pages);
@@ -95,7 +102,7 @@ public class MainView extends VerticalLayout {
 
     private void setPreSelectedTab() {
         tabsPanel.tabs.setSelectedTab(tabsPanel.companyTab);
-        searchPanel.searchColumn.setItems(tabsPanel.companyGrid.getHeaders());
+        searchPanel.setSearchColumnVisibleAndEnable(false);
         tabsPanel.companyGrid.fill();
         tabsPanel.employeeGrid.setVisible(false);
     }

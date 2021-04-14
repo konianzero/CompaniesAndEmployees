@@ -26,7 +26,11 @@ public class CompanyRepository {
     private static final String SELECT_BY_ID_QUERY = "SELECT * FROM companies WHERE id=:id";
     private static final String SELECT_BY_NAME_QUERY = "SELECT * FROM companies WHERE name=:name";
     private static final String SELECT_ALL_QUERY = "SELECT * FROM companies";
-    private static final String SEARCH_QUERY = "SELECT * FROM companies WHERE lower(%s) LIKE :search";
+    private static final String SEARCH_QUERY = "SELECT * FROM companies " +
+                                               "WHERE lower(name) LIKE :search " +
+                                               "OR lower(tin) LIKE :search " +
+                                               "OR lower(address) LIKE :search " +
+                                               "OR lower(phone_number) LIKE :search ";
     private static final String DELETE_QUERY = "DELETE FROM companies WHERE id=:id";
 
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
@@ -73,9 +77,9 @@ public class CompanyRepository {
         return namedParameterJdbcTemplate.query(SELECT_ALL_QUERY, getCompanyMapper());
     }
 
-    public List<Company> search(String columnName, String textToSearch) {
+    public List<Company> search(String textToSearch) {
         return namedParameterJdbcTemplate.query(
-                String.format(SEARCH_QUERY, columnName),
+                SEARCH_QUERY,
                 new MapSqlParameterSource("search", "%" + textToSearch.toLowerCase() + "%"),
                 getCompanyMapper()
         );

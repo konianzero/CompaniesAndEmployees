@@ -30,8 +30,8 @@ public class TabsPanel {
         this.companyGrid = companyGrid;
         this.employeeGrid = employeeGrid;
 
-        companyTab = new Tab("Компании");
-        employeeTab = new Tab("Сотрудники");
+        companyTab = new Tab(this.companyGrid.getName());
+        employeeTab = new Tab(this.employeeGrid.getName());
         tabs = new Tabs(companyTab, employeeTab);
 
         tabComponents = new HashMap<>();

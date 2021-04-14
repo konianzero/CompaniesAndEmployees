@@ -17,6 +17,8 @@ import java.util.Map;
 @UIScope
 public class EmployeeGrid extends EntityGrid<EmployeeTo> {
 
+    private static final String NAME = "Сотрудники";
+
     private final CompanyService companyService;
     private final EmployeeService employeeService;
     private final EmployeeDialog employeeDialog;
@@ -46,6 +48,11 @@ public class EmployeeGrid extends EntityGrid<EmployeeTo> {
 
     public List<String> getCompaniesNames() {
         return companyService.getNames();
+    }
+
+    @Override
+    public String getName() {
+        return NAME;
     }
 
     @Override

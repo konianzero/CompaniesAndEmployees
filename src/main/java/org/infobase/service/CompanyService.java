@@ -47,9 +47,9 @@ public class CompanyService {
                                 .collect(Collectors.toList());
     }
 
-    public List<Company> search(String columnName, String textToSearch) {
-        log.info("Search companies by field '{}' with \"{}\"", columnName, textToSearch);
-        return companyRepository.search(columnName, textToSearch);
+    public List<Company> search(String textToSearch) {
+        log.info("Search companies with \"{}\"", textToSearch);
+        return companyRepository.search(textToSearch);
     }
 
     public void delete(int id) {

@@ -34,6 +34,17 @@ public class SearchPanel {
         filter = new HorizontalLayout(searchColumn, searchText, birthDatePicker, companyPicker);
     }
 
+    public void setSearchColumnVisibleAndEnable(boolean bool) {
+        searchColumn.setEnabled(bool);
+        searchColumn.setVisible(bool);
+
+        if (!bool) {
+            setSearchTextVisibleAndEnable(true);
+            setDatePickerVisibleAndEnable(false);
+            setCompanyPickerVisibleAndEnable(false);
+        }
+    }
+
     public void setDatePickerVisibleAndEnable(boolean bool) {
         birthDatePicker.setEnabled(bool);
         birthDatePicker.setVisible(bool);

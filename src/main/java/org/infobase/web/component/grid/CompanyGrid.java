@@ -14,6 +14,8 @@ import java.util.*;
 @UIScope
 public class CompanyGrid extends EntityGrid<Company> {
 
+    private static final String NAME = "Компании";
+
     private final CompanyService companyService;
     private final CompanyDialog companyDialog;
 
@@ -37,6 +39,11 @@ public class CompanyGrid extends EntityGrid<Company> {
         addColumn(Company::getPhoneNumber).setHeader("Телефон");
 
         setSelectionListener();
+    }
+
+    @Override
+    public String getName() {
+        return NAME;
     }
 
     @Override
@@ -75,7 +82,7 @@ public class CompanyGrid extends EntityGrid<Company> {
 
     @Override
     public void onSearch(String columnHeader, String textToSearch) {
-        setItems(companyService.search(headersMap.get(columnHeader), textToSearch));
+        setItems(companyService.search(textToSearch));
     }
 
     @Override
