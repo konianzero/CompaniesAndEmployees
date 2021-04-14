@@ -1,5 +1,9 @@
 package org.infobase.repository;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -17,6 +21,7 @@ import static org.infobase.util.Util.getCompanyMapper;
 
 @Repository
 public class CompanyRepository {
+    private static final Logger log = LoggerFactory.getLogger(CompanyRepository.class);
 
     private static final String INSERT_QUERY = "INSERT INTO companies (name, tin, address, phone_number)" +
                                                " VALUES (:name, :tin, :address, :phone_number)";
@@ -42,14 +47,23 @@ public class CompanyRepository {
     @Transactional
     public int save(Company company) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        namedParameterJdbcTemplate.update(INSERT_QUERY, getParameterMap(company), keyHolder, new String[]{"id"});
-
+        try {
+            namedParameterJdbcTemplate.update(INSERT_QUERY, getParameterMap(company), keyHolder, new String[]{"id"});
+        } catch (DataAccessException dae) {
+            log.error(dae.toString());
+        }
         return Objects.requireNonNull(keyHolder.getKey()).intValue();
     }
 
     @Transactional
     public int update(Company company) {
-        return namedParameterJdbcTemplate.update(UPDATE_QUERY, getParameterMap(company));
+        int result = 0;
+        try {
+            result = namedParameterJdbcTemplate.update(UPDATE_QUERY, getParameterMap(company));
+        } catch (DataAccessException dae) {
+            log.error(dae.toString());
+        }
+        return result;
     }
 
     private SqlParameterSource getParameterMap(Company company) {
@@ -62,31 +76,61 @@ public class CompanyRepository {
     }
 
     public Company getById(int id) {
-        return namedParameterJdbcTemplate.queryForObject(SELECT_BY_ID_QUERY, new MapSqlParameterSource("id", id), getCompanyMapper());
+        Company result = null;
+        try {
+            result = namedParameterJdbcTemplate.queryForObject(SELECT_BY_ID_QUERY, new MapSqlParameterSource("id", id), getCompanyMapper());
+        } catch (DataAccessException dae) {
+            log.error(dae.toString());
+        }
+        return result;
     }
 
     public Company getByName(String name) {
-        return namedParameterJdbcTemplate.queryForObject(
-                SELECT_BY_NAME_QUERY,
-                new MapSqlParameterSource("name", name),
-                getCompanyMapper()
-        );
+        Company result = null;
+        try {
+            result = namedParameterJdbcTemplate.queryForObject(
+                    SELECT_BY_NAME_QUERY,
+                    new MapSqlParameterSource("name", name),
+                    getCompanyMapper()
+            );
+        } catch (DataAccessException dae) {
+            log.error(dae.toString());
+        }
+        return result;
     }
 
     public List<Company> getAll() {
-        return namedParameterJdbcTemplate.query(SELECT_ALL_QUERY, getCompanyMapper());
+        List<Company> result = null;
+        try {
+            result = namedParameterJdbcTemplate.query(SELECT_ALL_QUERY, getCompanyMapper());
+        } catch (DataAccessException dae) {
+            log.error(dae.toString());
+        }
+        return result;
     }
 
     public List<Company> search(String textToSearch) {
-        return namedParameterJdbcTemplate.query(
-                SEARCH_QUERY,
-                new MapSqlParameterSource("search", "%" + textToSearch.toLowerCase() + "%"),
-                getCompanyMapper()
-        );
+        List<Company> result = null;
+        try {
+            result = namedParameterJdbcTemplate.query(
+                    SEARCH_QUERY,
+                    new MapSqlParameterSource("search", "%" + textToSearch.toLowerCase() + "%"),
+                    getCompanyMapper()
+            );
+        } catch (DataAccessException dae) {
+            log.error(dae.toString());
+        }
+        return result;
     }
 
     @Transactional
     public boolean delete(int id) {
-        return namedParameterJdbcTemplate.update(DELETE_QUERY, new MapSqlParameterSource("id", id)) != 0;
+        boolean result = false;
+        try {
+            result = namedParameterJdbcTemplate.update(DELETE_QUERY, new MapSqlParameterSource("id", id)) != 0;
+        } catch (DataAccessException dae) {
+            log.error(dae.toString());
+        }
+        return result;
     }
 }

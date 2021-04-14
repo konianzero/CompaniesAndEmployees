@@ -1,5 +1,9 @@
 package org.infobase.repository;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -18,6 +22,7 @@ import static org.infobase.util.Util.getEmployeeMapper;
 
 @Repository
 public class EmployeeRepository {
+    private static final Logger log = LoggerFactory.getLogger(EmployeeRepository.class);
 
     private static final String INSERT_QUERY = "INSERT INTO employees (name, birth_date, email, company_id)" +
                                                " VALUES (:name, :birth_date, :email, :company_id)";
@@ -49,14 +54,23 @@ public class EmployeeRepository {
     @Transactional
     public int save(Employee employee) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        namedParameterJdbcTemplate.update(INSERT_QUERY, getParameterMap(employee), keyHolder, new String[]{"id"});
-
+        try {
+            namedParameterJdbcTemplate.update(INSERT_QUERY, getParameterMap(employee), keyHolder, new String[]{"id"});
+        } catch (DataAccessException dae) {
+            log.error(dae.toString());
+        }
         return Objects.requireNonNull(keyHolder.getKey()).intValue();
     }
 
     @Transactional
     public int update(Employee employee) {
-        return namedParameterJdbcTemplate.update(UPDATE_QUERY, getParameterMap(employee));
+        int result = 0;
+        try {
+            result = namedParameterJdbcTemplate.update(UPDATE_QUERY, getParameterMap(employee));
+        } catch (DataAccessException dae) {
+            log.error(dae.toString());
+        }
+        return result;
     }
 
     private SqlParameterSource getParameterMap(Employee employee) {
@@ -69,11 +83,23 @@ public class EmployeeRepository {
     }
 
     public Employee get(int id) {
-        return namedParameterJdbcTemplate.queryForObject(SELECT_BY_ID_QUERY, new MapSqlParameterSource("id", id), getEmployeeMapper());
+        Employee result = null;
+        try {
+            result = namedParameterJdbcTemplate.queryForObject(SELECT_BY_ID_QUERY, new MapSqlParameterSource("id", id), getEmployeeMapper());
+        } catch (DataAccessException dae) {
+            log.error(dae.toString());
+        }
+        return result;
     }
 
     public List<Employee> getAll() {
-        return namedParameterJdbcTemplate.query(SELECT_ALL_QUERY, getEmployeeMapper());
+        List<Employee> result = null;
+        try {
+            result = namedParameterJdbcTemplate.query(SELECT_ALL_QUERY, getEmployeeMapper());
+        } catch (DataAccessException dae) {
+            log.error(dae.toString());
+        }
+        return result;
     }
 
     public List<Employee> search(String columnName, String textToSearch) {
@@ -99,11 +125,25 @@ public class EmployeeRepository {
             default:
                 return getAll();
         }
-        return namedParameterJdbcTemplate.query(sql, map, getEmployeeMapper());
+
+
+        List<Employee> result = null;
+        try {
+            result = namedParameterJdbcTemplate.query(sql, map, getEmployeeMapper());
+        } catch (DataAccessException dae) {
+            log.error(dae.toString());
+        }
+        return result;
     }
 
     @Transactional
     public boolean delete(int id) {
-        return namedParameterJdbcTemplate.update(DELETE_QUERY, new MapSqlParameterSource("id", id)) != 0;
+        boolean result = false;
+        try {
+            result = namedParameterJdbcTemplate.update(DELETE_QUERY, new MapSqlParameterSource("id", id)) != 0;
+        } catch (DataAccessException dae) {
+            log.error(dae.toString());
+        }
+        return result;
     }
 }
