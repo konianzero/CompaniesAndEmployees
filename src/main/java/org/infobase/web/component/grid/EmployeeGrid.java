@@ -5,27 +5,33 @@ import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
 
+import org.infobase.model.Company;
+import org.infobase.service.CompanyService;
 import org.infobase.to.EmployeeTo;
 import org.infobase.service.EmployeeService;
 import org.infobase.web.component.dialog.EmployeeDialog;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @SpringComponent
 @UIScope
 public class EmployeeGrid extends Grid<EmployeeTo> implements EntityGrid {
 
+    private final CompanyService companyService;
     private final EmployeeService employeeService;
     private final EmployeeDialog employeeDialog;
-
+    
     private final Map<String, String> headersMap = Map.of(
             "ФИО", "name",
             "Дата Рождения", "birth_date",
             "Электронная почта", "email",
             "Компания", "comp_name");
 
-    public EmployeeGrid(EmployeeService employeeService, EmployeeDialog employeeDialog) {
+    public EmployeeGrid(CompanyService companyService, EmployeeService employeeService, EmployeeDialog employeeDialog) {
+        this.companyService = companyService;
         this.employeeService = employeeService;
         this.employeeDialog = employeeDialog;
 
@@ -37,6 +43,13 @@ public class EmployeeGrid extends Grid<EmployeeTo> implements EntityGrid {
         addColumn(EmployeeTo::getBirthDate).setHeader("Дата Рождения");
         addColumn(EmployeeTo::getEmail).setHeader("Электронная почта");
         addColumn(EmployeeTo::getCompanyName).setHeader("Компания");
+    }
+
+    private List<String> getCompaniesNames() {
+        return companyService.getAll()
+                             .stream()
+                             .map(Company::getName)
+                             .collect(Collectors.toList());
     }
 
     @Override
@@ -54,21 +67,23 @@ public class EmployeeGrid extends Grid<EmployeeTo> implements EntityGrid {
         setItems(employeeService.getAll());
     }
 
-    private EmployeeTo getSelectedEmployee() { return getSelectedItems().stream().findFirst().orElseThrow(); }
-
     @Override
     public void onCreate() {
         if (!isVisible()) { return; }
 
-        employeeDialog.edit(new EmployeeTo());
-        employeeDialog.open();
+        processingEmployee(new EmployeeTo());
     }
 
     @Override
     public void onEdit() {
         if (!isVisible()) { return; }
 
-        employeeDialog.edit(getSelectedEmployee());
+        processingEmployee(getSelectedEmployee());
+    }
+
+    private void processingEmployee(EmployeeTo employeeTo) {
+        employeeDialog.setItemsToCompanyComboBox(getCompaniesNames());
+        employeeDialog.edit(employeeTo);
         employeeDialog.open();
     }
 
@@ -81,11 +96,13 @@ public class EmployeeGrid extends Grid<EmployeeTo> implements EntityGrid {
     public void onDelete() {
         if (!isVisible()) { return; }
 
-        preRemoveNotification(this::deleteEmployee);
+        preRemoveNotification(this::deleteEmployee, "Сотрудник будет удалён.");
     }
 
     private void deleteEmployee() {
         employeeService.delete(getSelectedEmployee().getId());
         fill();
     }
+
+    private EmployeeTo getSelectedEmployee() { return getSelectedItems().stream().findFirst().orElseThrow(); }
 }
