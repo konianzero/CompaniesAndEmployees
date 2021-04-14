@@ -53,15 +53,12 @@ public class MainView extends VerticalLayout {
                 tabsPanel.tabComponents.get(tabsPanel.tabs.getSelectedTab()).fill();
                 searchPanel.searchText.setValue("");
                 searchPanel.setSearchTextVisibleAndEnable(true);
-                searchPanel.setDatePickerVisibleAndEnable(false);
             }
             else if (e.getValue().equals("Дата Рождения")) {
-                searchPanel.setSearchTextVisibleAndEnable(false);
                 searchPanel.setDatePickerVisibleAndEnable(true);
             }
             else {
                 searchPanel.setSearchTextVisibleAndEnable(true);
-                searchPanel.setDatePickerVisibleAndEnable(false);
             }
         });
 

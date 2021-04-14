@@ -5,6 +5,7 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
+import org.infobase.web.component.CompanyComboBox;
 import org.infobase.web.component.LocalizedDatePicker;
 
 @SpringComponent
@@ -24,12 +25,9 @@ public class SearchPanel {
         searchColumn.setClearButtonVisible(true);
 
         searchText = new TextField("", "Поиск");
-        searchText.setEnabled(true);
-        searchText.setVisible(true);
-
         birthDatePicker = new LocalizedDatePicker();
-        birthDatePicker.setEnabled(false);
-        birthDatePicker.setVisible(false);
+
+        setSearchTextVisibleAndEnable(true);
 
         filter = new HorizontalLayout(searchColumn, searchText, birthDatePicker);
     }
@@ -37,10 +35,18 @@ public class SearchPanel {
     public void setDatePickerVisibleAndEnable(boolean bool) {
         birthDatePicker.setEnabled(bool);
         birthDatePicker.setVisible(bool);
+
+        if (bool) {
+            setSearchTextVisibleAndEnable(false);
+        }
     }
 
     public void setSearchTextVisibleAndEnable(boolean bool) {
         searchText.setEnabled(bool);
         searchText.setVisible(bool);
+
+        if (bool) {
+            setDatePickerVisibleAndEnable(false);
+        }
     }
 }
