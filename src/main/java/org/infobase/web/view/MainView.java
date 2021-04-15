@@ -1,10 +1,13 @@
 package org.infobase.web.view;
 
+import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
 
+import java.time.LocalDate;
 import java.util.Objects;
+import java.util.Optional;
 
 import org.infobase.web.component.grid.EntityGrid;
 
@@ -26,20 +29,23 @@ public class MainView extends VerticalLayout {
     private void init() {
         setPreSelectedTab();
 
-        // add tab change listener
+        // Add tab change listener
         tabsPanel.tabs.addSelectedChangeListener(event -> {
             tabsPanel.tabComponents.values().forEach(grid -> grid.getComponent().setVisible(false));
 
             EntityGrid grid = tabsPanel.tabComponents.get(tabsPanel.tabs.getSelectedTab());
+
             if (grid.getName().equals("Компании")) {
-                searchPanel.setSearchColumnVisibleAndEnable(false);
+                searchPanel.showSearchColumn(false);
             } else {
-                searchPanel.setSearchColumnVisibleAndEnable(true);
-                searchPanel.searchColumn.setItems(grid.getHeaders());
-                searchPanel.companyPicker.setCompaniesNamesAsItems(tabsPanel.employeeGrid.getCompaniesNames());
+                searchPanel.showSearchColumn(true);
+                searchPanel.disabledSearchInput();
+                searchPanel.getColumnToSearch().setItems(grid.getHeaders());
+                searchPanel.getCompanyPicker().setCompaniesNamesAsItems(tabsPanel.employeeGrid.getCompaniesNames());
             }
-            grid.disableEditButtons();
+
             grid.fill();
+            grid.disableEditButtons();
             grid.getComponent().setVisible(true);
         });
 
@@ -47,62 +53,68 @@ public class MainView extends VerticalLayout {
         tabsPanel.companyGrid.setEnableEditButtons(buttonsPanel::setEditAndDelEnabled);
         tabsPanel.employeeGrid.setEnableEditButtons(buttonsPanel::setEditAndDelEnabled);
 
-        //  Add click listeners
+        // Add click listeners
         buttonsPanel.getAddBtn().addClickListener(e -> tabsPanel.tabComponents.get(tabsPanel.tabs.getSelectedTab()).onCreate());
         buttonsPanel.getEditBtn().addClickListener(e -> tabsPanel.tabComponents.get(tabsPanel.tabs.getSelectedTab()).onEdit());
         buttonsPanel.getDelBtn().addClickListener(e -> tabsPanel.tabComponents.get(tabsPanel.tabs.getSelectedTab()).onDelete());
 
         // Search actions
-        searchPanel.searchColumn.addValueChangeListener(e -> {
-            if (Objects.isNull(e.getValue())) {
+        searchPanel.getColumnToSearch().addValueChangeListener(e -> {
+            if (Objects.nonNull(e.getValue())) {
+
+                if (e.getValue().equals("Дата Рождения")) {
+                    searchPanel.showDatePicker();
+                } else if (e.getValue().equals("Компания")) {
+                    searchPanel.showCompanyPicker();
+                } else {
+                    searchPanel.showSearchText();
+                }
+            } else {
+                searchPanel.disabledSearchInput();
+                searchPanel.clearSearchInput();
                 tabsPanel.tabComponents.get(tabsPanel.tabs.getSelectedTab()).fill();
-                searchPanel.searchText.setValue("");
-                searchPanel.setSearchTextVisibleAndEnable(true);
-            }
-            else if (e.getValue().equals("Дата Рождения")) {
-                searchPanel.setDatePickerVisibleAndEnable(true);
-            }
-            else if (e.getValue().equals("Компания")) {
-                searchPanel.setCompanyPickerVisibleAndEnable(true);
-            }
-            else {
-                searchPanel.setSearchTextVisibleAndEnable(true);
             }
         });
 
-        searchPanel.searchText.addKeyPressListener(e -> {
-            if (searchPanel.searchColumn.isEnabled() && Objects.nonNull(searchPanel.searchColumn.getValue())) {
+        searchPanel.getTextToSearch().addKeyPressListener(Key.ENTER, e -> {
+            if (searchPanel.getColumnToSearch().isEnabled() && Objects.nonNull(searchPanel.getColumnToSearch().getValue())) {
                 tabsPanel.tabComponents.get(tabsPanel.tabs.getSelectedTab())
-                                       .onSearch(searchPanel.searchColumn.getValue(), searchPanel.searchText.getValue());
+                                       .onSearch(searchPanel.getColumnToSearch().getValue(), searchPanel.getTextToSearch().getValue());
             } else {
                 tabsPanel.tabComponents.get(tabsPanel.tabs.getSelectedTab())
-                        .onSearch("", searchPanel.searchText.getValue());
+                        .onSearch("", searchPanel.getTextToSearch().getValue());
             }
         });
 
-        searchPanel.birthDatePicker.addValueChangeListener(e -> {
-            if (Objects.nonNull(searchPanel.searchColumn.getValue())) {
+        searchPanel.getBirthDatePicker().addValueChangeListener(e -> {
+            if (Objects.nonNull(searchPanel.getColumnToSearch().getValue())) {
                 tabsPanel.tabComponents.get(tabsPanel.tabs.getSelectedTab())
-                                       .onSearch(searchPanel.searchColumn.getValue(), e.getValue().toString());
+                                       .onSearch(
+                                               searchPanel.getColumnToSearch().getValue(),
+                                               Optional.ofNullable(e.getValue()).map(LocalDate::toString).orElse("")
+                                       );
             }
         });
 
-        searchPanel.companyPicker.addValueChangeListener(e -> {
-            if (Objects.nonNull(searchPanel.searchColumn.getValue())) {
+        searchPanel.getCompanyPicker().addValueChangeListener(e -> {
+            if (Objects.nonNull(searchPanel.getColumnToSearch().getValue())) {
                 tabsPanel.tabComponents.get(tabsPanel.tabs.getSelectedTab())
-                                       .onSearch(searchPanel.searchColumn.getValue(), e.getValue());
+                                       .onSearch(
+                                               searchPanel.getColumnToSearch().getValue(),
+                                               Optional.ofNullable(e.getValue()).orElse("")
+                                       );
             }
         });
 
         // Add to layout
         HorizontalLayout actions = new HorizontalLayout();
-        actions.add(buttonsPanel.getButtons(), searchPanel.filter);
+        actions.add(buttonsPanel.getButtons(), searchPanel.getFilters());
         add(actions, tabsPanel.tabs, tabsPanel.pages);
     }
 
     private void setPreSelectedTab() {
         tabsPanel.tabs.setSelectedTab(tabsPanel.companyTab);
-        searchPanel.setSearchColumnVisibleAndEnable(false);
+        searchPanel.showSearchColumn(false);
         tabsPanel.companyGrid.fill();
         tabsPanel.employeeGrid.setVisible(false);
     }
