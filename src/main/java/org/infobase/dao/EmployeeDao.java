@@ -1,6 +1,7 @@
 package org.infobase.dao;
 
 import org.infobase.model.Employee;
+import org.infobase.web.component.grid.EmployeeHeaders;
 
 import java.util.List;
 
@@ -9,6 +10,6 @@ public interface EmployeeDao {
     int update(Employee employee);
     Employee get(int id);
     List<Employee> getAll();
-    List<Employee> search(String columnName, String textToSearch);
+    List<Employee> search(EmployeeHeaders columnName, String textToSearch);
     boolean delete(int id);
 }

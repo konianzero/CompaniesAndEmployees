@@ -1,6 +1,7 @@
 package org.infobase.dao.impl;
 
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -16,6 +17,7 @@ import java.util.Objects;
 import org.infobase.model.Employee;
 import org.infobase.dao.mappers.EmployeeMapper;
 import org.infobase.dao.EmployeeDao;
+import org.infobase.web.component.grid.EmployeeHeaders;
 
 @Repository
 @Slf4j
@@ -103,23 +105,23 @@ public class EmployeeDaoImpl implements EmployeeDao {
         return result;
     }
 
-    public List<Employee> search(String columnName, String textToSearch) {
+    public List<Employee> search(EmployeeHeaders columnName, String textToSearch) {
         String sql;
         SqlParameterSource map;
         switch (columnName) {
-            case "name":
+            case FULL_NAME:
                 sql = String.format(SEARCH_QUERY, "lower(e.name) LIKE :search");
                 map = new MapSqlParameterSource("search", "%" + textToSearch.toLowerCase() + "%");
                 break;
-            case "birth_date":
+            case BIRTH_DATE:
                 sql = String.format(SEARCH_QUERY, "e.birth_date=:birth_date");
                 map = new MapSqlParameterSource("birth_date", LocalDate.parse(textToSearch));
                 break;
-            case "email":
+            case EMAIL:
                 sql = String.format(SEARCH_QUERY, "lower(e.email) LIKE :search");
                 map = new MapSqlParameterSource("search", "%" + textToSearch.toLowerCase() + "%");
                 break;
-            case "comp_name":
+            case COMPANY:
                 sql = String.format(SEARCH_QUERY, "c.name=:name");
                 map = new MapSqlParameterSource("name", textToSearch);
                 break;

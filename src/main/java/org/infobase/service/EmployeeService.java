@@ -12,6 +12,8 @@ import org.infobase.dao.impl.EmployeeDaoImpl;
 import org.infobase.to.EmployeeTo;
 import org.infobase.util.EmployeeUtil;
 
+import org.infobase.web.component.grid.EmployeeHeaders;
+
 @Service
 @Slf4j
 public class EmployeeService {
@@ -46,8 +48,8 @@ public class EmployeeService {
         return EmployeeUtil.createToList(employeeDaoImpl.getAll());
     }
 
-    public List<EmployeeTo> search(String columnName, String textToSearch) {
-        log.info("Search employees by field '{}' with \"{}\"", columnName, textToSearch);
+    public List<EmployeeTo> search(EmployeeHeaders columnName, String textToSearch) {
+        log.info("Search employees by field '{}' with \"{}\"", columnName.getHeader(), textToSearch);
         return EmployeeUtil.createToList(employeeDaoImpl.search(columnName, textToSearch));
     }
 

@@ -11,7 +11,6 @@ import org.infobase.web.component.dialog.EmployeeDialog;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 @SpringComponent
 @UIScope
@@ -23,12 +22,6 @@ public class EmployeeGrid extends EntityGrid<EmployeeTo> {
     private final EmployeeService employeeService;
     private final EmployeeDialog employeeDialog;
 
-    private final Map<String, String> headersMap = Map.of(
-            "ФИО", "name",
-            "Дата Рождения", "birth_date",
-            "Электронная почта", "email",
-            "Компания", "comp_name");
-
     public EmployeeGrid(CompanyService companyService, EmployeeService employeeService, EmployeeDialog employeeDialog) {
         this.companyService = companyService;
         this.employeeService = employeeService;
@@ -37,11 +30,11 @@ public class EmployeeGrid extends EntityGrid<EmployeeTo> {
         this.employeeDialog.setOnSave(this::fill);
 
         setHeight("300px");
-        addColumn(EmployeeTo::getId).setHeader("ID");
-        addColumn(EmployeeTo::getName).setHeader("ФИО");
-        addColumn(EmployeeTo::getBirthDate).setHeader("Дата Рождения");
-        addColumn(EmployeeTo::getEmail).setHeader("Электронная почта");
-        addColumn(EmployeeTo::getCompanyName).setHeader("Компания");
+        addColumn(EmployeeTo::getId).setHeader(EmployeeHeaders.ID.getHeader());
+        addColumn(EmployeeTo::getName).setHeader(EmployeeHeaders.FULL_NAME.getHeader());
+        addColumn(EmployeeTo::getBirthDate).setHeader(EmployeeHeaders.BIRTH_DATE.getHeader());
+        addColumn(EmployeeTo::getEmail).setHeader(EmployeeHeaders.EMAIL.getHeader());
+        addColumn(EmployeeTo::getCompanyName).setHeader(EmployeeHeaders.COMPANY.getHeader());
 
         setSelectionListener();
     }
@@ -62,7 +55,7 @@ public class EmployeeGrid extends EntityGrid<EmployeeTo> {
 
     @Override
     public Collection<String> getHeaders() {
-        return headersMap.keySet();
+        return EmployeeHeaders.getGridHeaders();
     }
 
     @Override
@@ -92,7 +85,7 @@ public class EmployeeGrid extends EntityGrid<EmployeeTo> {
 
     @Override
     public void onSearch(String columnHeader, String textToSearch) {
-        setItems(employeeService.search(headersMap.get(columnHeader), textToSearch));
+        setItems(employeeService.search(EmployeeHeaders.fromGridHeader(columnHeader), textToSearch));
     }
 
     @Override
