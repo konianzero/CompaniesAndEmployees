@@ -1,11 +1,6 @@
 package org.infobase.dao.impl;
 
 import lombok.extern.slf4j.Slf4j;
-import org.infobase.dao.EmployeeDao;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -20,6 +15,7 @@ import java.util.Objects;
 
 import org.infobase.model.Employee;
 import org.infobase.dao.mappers.EmployeeMapper;
+import org.infobase.dao.EmployeeDao;
 
 @Repository
 @Slf4j
@@ -57,7 +53,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         try {
             namedParameterJdbcTemplate.update(INSERT_QUERY, getParameterMap(employee), keyHolder, new String[]{"id"});
-        } catch (DataAccessException dae) {
+        } catch (Exception dae) {
             log.error(dae.toString());
         }
         return Objects.requireNonNull(keyHolder.getKey()).intValue();
@@ -68,7 +64,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
         int result = 0;
         try {
             result = namedParameterJdbcTemplate.update(UPDATE_QUERY, getParameterMap(employee));
-        } catch (DataAccessException dae) {
+        } catch (Exception dae) {
             log.error(dae.toString());
         }
         return result;
@@ -91,7 +87,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
                     new MapSqlParameterSource("id", id),
                     new EmployeeMapper()
             );
-        } catch (DataAccessException dae) {
+        } catch (Exception dae) {
             log.error(dae.toString());
         }
         return result;
@@ -101,7 +97,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
         List<Employee> result = null;
         try {
             result = namedParameterJdbcTemplate.query(SELECT_ALL_QUERY, new EmployeeMapper());
-        } catch (DataAccessException dae) {
+        } catch (Exception dae) {
             log.error(dae.toString());
         }
         return result;
@@ -135,7 +131,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
         List<Employee> result = null;
         try {
             result = namedParameterJdbcTemplate.query(sql, map, new EmployeeMapper());
-        } catch (DataAccessException dae) {
+        } catch (Exception dae) {
             log.error(dae.toString());
         }
         return result;
@@ -146,7 +142,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
         boolean result = false;
         try {
             result = namedParameterJdbcTemplate.update(DELETE_QUERY, new MapSqlParameterSource("id", id)) != 0;
-        } catch (DataAccessException dae) {
+        } catch (Exception dae) {
             log.error(dae.toString());
         }
         return result;

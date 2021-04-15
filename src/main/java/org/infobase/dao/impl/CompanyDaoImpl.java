@@ -1,11 +1,7 @@
 package org.infobase.dao.impl;
 
 import lombok.extern.slf4j.Slf4j;
-import org.infobase.dao.CompanyDao;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -19,6 +15,7 @@ import java.util.Objects;
 
 import org.infobase.model.Company;
 import org.infobase.dao.mappers.CompanyMapper;
+import org.infobase.dao.CompanyDao;
 
 @Repository
 @Slf4j
@@ -50,7 +47,7 @@ public class CompanyDaoImpl implements CompanyDao {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         try {
             namedParameterJdbcTemplate.update(INSERT_QUERY, getParameterMap(company), keyHolder, new String[]{"id"});
-        } catch (DataAccessException dae) {
+        } catch (Exception dae) {
             log.error(dae.toString());
         }
         return Objects.requireNonNull(keyHolder.getKey()).intValue();
@@ -61,7 +58,7 @@ public class CompanyDaoImpl implements CompanyDao {
         int result = 0;
         try {
             result = namedParameterJdbcTemplate.update(UPDATE_QUERY, getParameterMap(company));
-        } catch (DataAccessException dae) {
+        } catch (Exception dae) {
             log.error(dae.toString());
         }
         return result;
@@ -84,7 +81,7 @@ public class CompanyDaoImpl implements CompanyDao {
                     new MapSqlParameterSource("id", id),
                     new CompanyMapper()
             );
-        } catch (DataAccessException dae) {
+        } catch (Exception dae) {
             log.error(dae.toString());
         }
         return result;
@@ -98,7 +95,7 @@ public class CompanyDaoImpl implements CompanyDao {
                     new MapSqlParameterSource("name", name),
                     new CompanyMapper()
             );
-        } catch (DataAccessException dae) {
+        } catch (Exception dae) {
             log.error(dae.toString());
         }
         return result;
@@ -108,7 +105,7 @@ public class CompanyDaoImpl implements CompanyDao {
         List<Company> result = null;
         try {
             result = namedParameterJdbcTemplate.query(SELECT_ALL_QUERY, new CompanyMapper());
-        } catch (DataAccessException dae) {
+        } catch (Exception dae) {
             log.error(dae.toString());
         }
         return result;
@@ -122,7 +119,7 @@ public class CompanyDaoImpl implements CompanyDao {
                     new MapSqlParameterSource("search", "%" + textToSearch.toLowerCase() + "%"),
                     new CompanyMapper()
             );
-        } catch (DataAccessException dae) {
+        } catch (Exception dae) {
             log.error(dae.toString());
         }
         return result;
@@ -133,7 +130,7 @@ public class CompanyDaoImpl implements CompanyDao {
         boolean result = false;
         try {
             result = namedParameterJdbcTemplate.update(DELETE_QUERY, new MapSqlParameterSource("id", id)) != 0;
-        } catch (DataAccessException dae) {
+        } catch (Exception dae) {
             log.error(dae.toString());
         }
         return result;
