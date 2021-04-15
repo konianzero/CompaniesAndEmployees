@@ -15,12 +15,13 @@ import com.vaadin.flow.spring.annotation.UIScope;
 import org.infobase.service.EmployeeService;
 import org.infobase.to.EmployeeTo;
 import org.infobase.web.component.LocalizedDatePicker;
+import org.infobase.web.component.grid.OperationNotification;
 
 import java.util.List;
 
 @SpringComponent
 @UIScope
-public class EmployeeDialog extends Dialog {
+public class EmployeeDialog extends Dialog implements OperationNotification {
 
     private final EmployeeService employeeService;
     private final BeanValidationBinder<EmployeeTo> binder;
@@ -88,8 +89,12 @@ public class EmployeeDialog extends Dialog {
     private void save() {
         if (binder.validate().hasErrors()) { return; }
 
-        employeeService.saveOrUpdate(employeeTo);
-        onSave.run();
+        if (employeeService.saveOrUpdate(employeeTo) != 0) {
+            afterOperationNotification("Сотрудник добавлен!");
+            onSave.run();
+        } else {
+            afterOperationNotification("Произошла ошибка при добавлении/редактировании сотрудника!");
+        }
         close();
     }
 }

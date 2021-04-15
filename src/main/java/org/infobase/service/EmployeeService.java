@@ -53,8 +53,8 @@ public class EmployeeService {
         return EmployeeUtil.createToList(employeeDaoImpl.search(columnName, textToSearch));
     }
 
-    public void delete(int id) {
+    public boolean delete(int id) {
         log.info("Delete employee with id:{}", id);
-        employeeDaoImpl.delete(id);
+        return employeeDaoImpl.delete(id);
     }
 }

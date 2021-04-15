@@ -14,7 +14,7 @@ import java.util.List;
 
 @SpringComponent
 @UIScope
-public class EmployeeGrid extends EntityGrid<EmployeeTo> {
+public class EmployeeGrid extends EntityGrid<EmployeeTo> implements OperationNotification {
 
     private static final String NAME = "Сотрудники";
 
@@ -96,8 +96,12 @@ public class EmployeeGrid extends EntityGrid<EmployeeTo> {
     }
 
     private void deleteEmployee() {
-        employeeService.delete(getSelectedEmployee().getId());
-        fill();
+        if (employeeService.delete(getSelectedEmployee().getId())) {
+            afterOperationNotification("Сотрудник удалён!");
+            fill();
+        } else {
+            afterOperationNotification("Произошла ошибка при удалении!");
+        }
     }
 
     private EmployeeTo getSelectedEmployee() { return getSelectedItems().stream().findFirst().orElseThrow(); }

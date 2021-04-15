@@ -12,7 +12,7 @@ import java.util.*;
 
 @SpringComponent
 @UIScope
-public class CompanyGrid extends EntityGrid<Company> {
+public class CompanyGrid extends EntityGrid<Company> implements OperationNotification {
 
     private static final String NAME = "Компании";
 
@@ -89,7 +89,11 @@ public class CompanyGrid extends EntityGrid<Company> {
     }
 
     private void deleteCompany() {
-        companyService.delete(getSelectedCompany().getId());
-        fill();
+        if (companyService.delete(getSelectedCompany().getId())) {
+            afterOperationNotification("Компания и все её сотрудники удалены!");
+            fill();
+        } else {
+            afterOperationNotification("Произошла ошибка при удалении!");
+        }
     }
 }

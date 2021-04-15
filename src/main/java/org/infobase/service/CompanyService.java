@@ -52,8 +52,8 @@ public class CompanyService {
         return companyDaoImpl.search(textToSearch);
     }
 
-    public void delete(int id) {
+    public boolean delete(int id) {
         log.info("Delete company with id:{}", id);
-        companyDaoImpl.delete(id);
+        return companyDaoImpl.delete(id);
     }
 }

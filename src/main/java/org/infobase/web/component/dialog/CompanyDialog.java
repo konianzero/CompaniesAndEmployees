@@ -13,10 +13,11 @@ import com.vaadin.flow.spring.annotation.UIScope;
 
 import org.infobase.model.Company;
 import org.infobase.service.CompanyService;
+import org.infobase.web.component.grid.OperationNotification;
 
 @SpringComponent
 @UIScope
-public class CompanyDialog extends Dialog {
+public class CompanyDialog extends Dialog implements OperationNotification {
 
     private final CompanyService companyService;
     private final BeanValidationBinder<Company> binder;
@@ -81,8 +82,12 @@ public class CompanyDialog extends Dialog {
     private void save() {
         if (binder.validate().hasErrors()) { return; }
 
-        companyService.saveOrUpdate(company);
-        onSave.run();
+        if (companyService.saveOrUpdate(company) != 0) {
+            afterOperationNotification("Компания добавлена!");
+            onSave.run();
+        } else {
+            afterOperationNotification("Произошла ошибка при добавлении/редактировании компании!");
+        }
         close();
     }
 }
