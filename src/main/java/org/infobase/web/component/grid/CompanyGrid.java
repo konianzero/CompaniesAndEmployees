@@ -19,11 +19,7 @@ public class CompanyGrid extends EntityGrid<Company> {
     private final CompanyService companyService;
     private final CompanyDialog companyDialog;
 
-    private final Map<String, String> headersMap = Map.of(
-            "Название", "name",
-            "ИНН", "tin",
-            "Адрес", "address",
-            "Телефон", "phone_number");
+    private final List<String> headersList = List.of("ID", "Название", "ИНН", "Адрес", "Телефон");
 
     public CompanyGrid(CompanyService companyService, CompanyDialog companyDialog) {
         this.companyService = companyService;
@@ -32,11 +28,11 @@ public class CompanyGrid extends EntityGrid<Company> {
         this.companyDialog.setOnSave(this::fill);
 
         setHeight("300px");
-        addColumn(Company::getId).setHeader("ID");
-        addColumn(Company::getName).setHeader("Название");
-        addColumn(Company::getTin).setHeader("ИНН");
-        addColumn(Company::getAddress).setHeader("Адрес");
-        addColumn(Company::getPhoneNumber).setHeader("Телефон");
+        addColumn(Company::getId).setHeader(headersList.get(0));
+        addColumn(Company::getName).setHeader(headersList.get(1));
+        addColumn(Company::getTin).setHeader(headersList.get(2));
+        addColumn(Company::getAddress).setHeader(headersList.get(3));
+        addColumn(Company::getPhoneNumber).setHeader(headersList.get(4));
 
         setSelectionListener();
     }
@@ -52,7 +48,7 @@ public class CompanyGrid extends EntityGrid<Company> {
     }
 
     public Collection<String> getHeaders() {
-        return headersMap.keySet();
+        return headersList;
     }
 
     @Override
