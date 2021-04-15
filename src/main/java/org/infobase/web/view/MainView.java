@@ -5,19 +5,35 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
 
-import java.time.LocalDate;
 import java.util.Objects;
 import java.util.Optional;
 
 import org.infobase.web.component.grid.EntityGrid;
 
+/**
+ * Интерфейс, состоит из:
+ * - панели кнопок
+ * - панели поиска
+ * - панели вкладок
+ * @see ButtonsPanel
+ * @see SearchPanel
+ * @see TabsPanel
+ */
 @Route
 public class MainView extends VerticalLayout {
-
+    /** Панель вкладок */
     private final TabsPanel tabsPanel;
+    /** Панель кнопок */
     private final ButtonsPanel buttonsPanel;
+    /** Панель поиска */
     private final SearchPanel searchPanel;
 
+    /**
+     * Создание интерфейса
+     * @param tabsPanel панели вкладок
+     * @param buttonsPanel панели кнопок
+     * @param searchPanel панели поиска
+     */
     public MainView(TabsPanel tabsPanel, ButtonsPanel buttonsPanel, SearchPanel searchPanel) {
         this.tabsPanel = tabsPanel;
         this.buttonsPanel = buttonsPanel;
@@ -26,22 +42,28 @@ public class MainView extends VerticalLayout {
         init();
     }
 
+    /**
+     * Инициализация интерфейса
+     */
     private void init() {
         setPreSelectedTab();
 
-        // Add tab change listener
-        tabsPanel.tabs.addSelectedChangeListener(event -> {
-            tabsPanel.tabComponents.values().forEach(grid -> grid.getComponent().setVisible(false));
+        // Действия при изменении вкладок
+        tabsPanel.getTabs().addSelectedChangeListener(event -> {
+            tabsPanel.getTabComponents().values().forEach(grid -> grid.getComponent().setVisible(false));
 
-            EntityGrid grid = tabsPanel.tabComponents.get(tabsPanel.tabs.getSelectedTab());
+            EntityGrid grid = tabsPanel.getSelectedGrid();
 
+            // Для вкладки компаний
             if (grid.getName().equals("Компании")) {
                 searchPanel.showSearchColumn(false);
-            } else {
+            }
+            // Для вкладки сотрудников
+            else {
                 searchPanel.showSearchColumn(true);
                 searchPanel.disabledSearchInput();
                 searchPanel.getColumnToSearch().setItems(grid.getHeaders());
-                searchPanel.getCompanyPicker().setCompaniesNamesAsItems(tabsPanel.employeeGrid.getCompaniesNames());
+                searchPanel.getCompanyPicker().setCompaniesNamesAsItems(tabsPanel.getEmployeeGrid().getCompaniesNames());
             }
 
             grid.fill();
@@ -49,16 +71,17 @@ public class MainView extends VerticalLayout {
             grid.getComponent().setVisible(true);
         });
 
-        // Enable edit and del buttons when grid item selected, otherwise disabled
-        tabsPanel.companyGrid.setEnableEditButtons(buttonsPanel::setEditAndDelEnabled);
-        tabsPanel.employeeGrid.setEnableEditButtons(buttonsPanel::setEditAndDelEnabled);
+        // Включить кнопки edit и del при выборе элемента сетки, иначе отключить
+        tabsPanel.getCompanyGrid().setEnableEditButtons(buttonsPanel::setEditAndDelEnabled);
+        tabsPanel.getEmployeeGrid().setEnableEditButtons(buttonsPanel::setEditAndDelEnabled);
 
-        // Add click listeners
-        buttonsPanel.getAddBtn().addClickListener(e -> tabsPanel.tabComponents.get(tabsPanel.tabs.getSelectedTab()).onCreate());
-        buttonsPanel.getEditBtn().addClickListener(e -> tabsPanel.tabComponents.get(tabsPanel.tabs.getSelectedTab()).onEdit());
-        buttonsPanel.getDelBtn().addClickListener(e -> tabsPanel.tabComponents.get(tabsPanel.tabs.getSelectedTab()).onDelete());
+        // Действия для кнопок
+        buttonsPanel.getAddBtn().addClickListener(e -> tabsPanel.getSelectedGrid().onCreate());
+        buttonsPanel.getEditBtn().addClickListener(e -> tabsPanel.getSelectedGrid().onEdit());
+        buttonsPanel.getDelBtn().addClickListener(e -> tabsPanel.getSelectedGrid().onDelete());
 
-        // Search actions
+        // Поисковые действия
+        // Выбор колонки для поиска
         searchPanel.getColumnToSearch().addValueChangeListener(e -> {
             if (Objects.nonNull(e.getValue())) {
 
@@ -69,53 +92,67 @@ public class MainView extends VerticalLayout {
                 } else {
                     searchPanel.showSearchText();
                 }
-            } else {
+            } else { // Если не выбрана колонка для поиска, затеняет поля ввода
                 searchPanel.disabledSearchInput();
                 searchPanel.clearSearchInput();
-                tabsPanel.tabComponents.get(tabsPanel.tabs.getSelectedTab()).fill();
             }
+            // При выборе другой колонки для поиска заполняет сетку всеми значениями
+            tabsPanel.getSelectedGrid().fill();
         });
 
+        // Поиск по тексту (Сотрудники: Имя, Электронная почта; Компании: все поля)
         searchPanel.getTextToSearch().addKeyPressListener(Key.ENTER, e -> {
+            // Для вкладки сотрудников
             if (searchPanel.getColumnToSearch().isEnabled() && Objects.nonNull(searchPanel.getColumnToSearch().getValue())) {
-                tabsPanel.tabComponents.get(tabsPanel.tabs.getSelectedTab())
-                                       .onSearch(searchPanel.getColumnToSearch().getValue(), searchPanel.getTextToSearch().getValue());
-            } else {
-                tabsPanel.tabComponents.get(tabsPanel.tabs.getSelectedTab())
-                        .onSearch("", searchPanel.getTextToSearch().getValue());
+                tabsPanel.getSelectedGrid()
+                         .onSearch(searchPanel.getColumnToSearch().getValue(), searchPanel.getTextToSearch().getValue());
+            }
+            // Для вкладки компаний
+            else {
+                tabsPanel.getSelectedGrid()
+                         .onSearch("", searchPanel.getTextToSearch().getValue());
             }
         });
 
+        // Поиск по даты рождения
         searchPanel.getBirthDatePicker().addValueChangeListener(e -> {
             if (Objects.nonNull(searchPanel.getColumnToSearch().getValue())) {
-                tabsPanel.tabComponents.get(tabsPanel.tabs.getSelectedTab())
-                                       .onSearch(
-                                               searchPanel.getColumnToSearch().getValue(),
-                                               Optional.ofNullable(e.getValue()).map(LocalDate::toString).orElse("")
-                                       );
+                Optional.ofNullable(e.getValue())
+                        .ifPresent(
+                                birthDate ->
+                                        tabsPanel.getSelectedGrid().onSearch(
+                                                searchPanel.getColumnToSearch().getValue(),
+                                                birthDate.toString()
+                                        )
+
+                        );
             }
         });
 
+        // Поиск по компании
         searchPanel.getCompanyPicker().addValueChangeListener(e -> {
             if (Objects.nonNull(searchPanel.getColumnToSearch().getValue())) {
-                tabsPanel.tabComponents.get(tabsPanel.tabs.getSelectedTab())
-                                       .onSearch(
-                                               searchPanel.getColumnToSearch().getValue(),
-                                               Optional.ofNullable(e.getValue()).orElse("")
-                                       );
+                Optional.ofNullable(e.getValue())
+                        .ifPresent(
+                                companyName ->
+                                        tabsPanel.getSelectedGrid().onSearch(
+                                                searchPanel.getColumnToSearch().getValue(),
+                                                companyName
+                                        )
+                        );
             }
         });
 
-        // Add to layout
         HorizontalLayout actions = new HorizontalLayout();
         actions.add(buttonsPanel.getButtons(), searchPanel.getFilters());
-        add(actions, tabsPanel.tabs, tabsPanel.pages);
+        add(actions, tabsPanel.getTabs(), tabsPanel.getPages());
     }
 
+    /**
+     * Устанавливает вкладку компаний по умолчанию
+     */
     private void setPreSelectedTab() {
-        tabsPanel.tabs.setSelectedTab(tabsPanel.companyTab);
+        tabsPanel.setPreSelectedTab();
         searchPanel.showSearchColumn(false);
-        tabsPanel.companyGrid.fill();
-        tabsPanel.employeeGrid.setVisible(false);
     }
 }
