@@ -8,7 +8,6 @@ import com.vaadin.flow.spring.annotation.UIScope;
 
 import lombok.Getter;
 
-import org.infobase.web.component.CompanyComboBox;
 import org.infobase.web.component.LocalizedDatePicker;
 
 /**
@@ -30,7 +29,7 @@ public class SearchPanel {
     /** Поле выбора даты рождения */
     private final LocalizedDatePicker birthDatePicker;
     /** Выпадающий список с названиями компаний */
-    private final CompanyComboBox<String> companyPicker;
+    private final ComboBox<String> companyPicker;
 
     /** Контейнер для компонентов */
     private final HorizontalLayout filters;
@@ -47,10 +46,10 @@ public class SearchPanel {
         textToSearch = new TextField("", "Поиск");
         textToSearch.setClearButtonVisible(true);
         birthDatePicker = new LocalizedDatePicker();
-        companyPicker = new CompanyComboBox<>();
+        companyPicker = new ComboBox<>();
 
         birthDatePicker.setClearButtonVisible(false);
-        companyPicker.setClearButtonVisible(false);
+//        companyPicker.setClearButtonVisible(false);
 
         filters = new HorizontalLayout(columnToSearch, textToSearch, birthDatePicker, companyPicker);
     }

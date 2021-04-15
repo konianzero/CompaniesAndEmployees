@@ -62,7 +62,7 @@ public class MainView extends VerticalLayout {
             else {
                 searchPanel.showSearchColumn(true);
                 searchPanel.getColumnToSearch().setItems(grid.getHeaders());
-                searchPanel.getCompanyPicker().setCompaniesNamesAsItems(tabsPanel.getEmployeeGrid().getCompaniesNames());
+                searchPanel.getCompanyPicker().setItems(tabsPanel.getEmployeeGrid().getCompaniesNames());
             }
 
             grid.fill();
@@ -113,7 +113,7 @@ public class MainView extends VerticalLayout {
             }
         });
 
-        // Поиск по даты рождения
+        // Поиск по дате рождения
         searchPanel.getBirthDatePicker().addValueChangeListener(e -> {
             if (Objects.nonNull(searchPanel.getColumnToSearch().getValue())) {
                 Optional.ofNullable(e.getValue())
