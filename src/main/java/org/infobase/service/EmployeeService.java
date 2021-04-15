@@ -1,7 +1,7 @@
 package org.infobase.service;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,8 +13,8 @@ import org.infobase.to.EmployeeTo;
 import org.infobase.util.EmployeeUtil;
 
 @Service
+@Slf4j
 public class EmployeeService {
-    private static final Logger log = LoggerFactory.getLogger(EmployeeService.class);
 
     private final EmployeeDaoImpl employeeDaoImpl;
     private final CompanyDaoImpl companyDaoImpl;
