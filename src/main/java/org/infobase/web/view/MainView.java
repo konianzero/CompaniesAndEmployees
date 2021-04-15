@@ -12,9 +12,9 @@ import org.infobase.web.component.grid.EntityGrid;
 
 /**
  * Интерфейс, состоит из:
- * - панели кнопок
- * - панели поиска
- * - панели вкладок
+ * <br>- панели кнопок
+ * <br>- панели поиска
+ * <br>- панели вкладок
  * @see ButtonsPanel
  * @see SearchPanel
  * @see TabsPanel
@@ -61,7 +61,6 @@ public class MainView extends VerticalLayout {
             // Для вкладки сотрудников
             else {
                 searchPanel.showSearchColumn(true);
-                searchPanel.disabledSearchInput();
                 searchPanel.getColumnToSearch().setItems(grid.getHeaders());
                 searchPanel.getCompanyPicker().setCompaniesNamesAsItems(tabsPanel.getEmployeeGrid().getCompaniesNames());
             }
