@@ -35,12 +35,12 @@ public class CompanyService {
     }
 
     public List<Company> getAll() {
-        log.debug("Get all companies");
+        log.info("Get all companies");
         return companyDaoImpl.getAll();
     }
 
     public List<String> getNames() {
-        log.debug("Get all companies");
+        log.info("Get all companies names");
         return companyDaoImpl.getAll()
                              .stream()
                              .map(Company::getName)

@@ -5,7 +5,9 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
+
 import lombok.Getter;
+
 import org.infobase.web.component.CompanyComboBox;
 import org.infobase.web.component.LocalizedDatePicker;
 

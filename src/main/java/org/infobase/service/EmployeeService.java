@@ -42,7 +42,7 @@ public class EmployeeService {
     }
 
     public List<EmployeeTo> getAll() {
-        log.debug("Get all employees");
+        log.info("Get all employees");
         return EmployeeUtil.createToList(employeeDaoImpl.getAll());
     }
 
