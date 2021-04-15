@@ -1,5 +1,6 @@
 package org.infobase.dao.impl;
 
+import lombok.extern.slf4j.Slf4j;
 import org.infobase.dao.EmployeeDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,8 +22,8 @@ import org.infobase.model.Employee;
 import org.infobase.dao.mappers.EmployeeMapper;
 
 @Repository
+@Slf4j
 public class EmployeeDaoImpl implements EmployeeDao {
-    private static final Logger log = LoggerFactory.getLogger(EmployeeDaoImpl.class);
 
     private static final String INSERT_QUERY = "INSERT INTO employees (name, birth_date, email, company_id)" +
                                                " VALUES (:name, :birth_date, :email, :company_id)";

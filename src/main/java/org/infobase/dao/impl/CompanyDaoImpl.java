@@ -1,5 +1,6 @@
 package org.infobase.dao.impl;
 
+import lombok.extern.slf4j.Slf4j;
 import org.infobase.dao.CompanyDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,8 +21,8 @@ import org.infobase.model.Company;
 import org.infobase.dao.mappers.CompanyMapper;
 
 @Repository
+@Slf4j
 public class CompanyDaoImpl implements CompanyDao {
-    private static final Logger log = LoggerFactory.getLogger(CompanyDaoImpl.class);
 
     private static final String INSERT_QUERY = "INSERT INTO companies (name, tin, address, phone_number)" +
                                                " VALUES (:name, :tin, :address, :phone_number)";
