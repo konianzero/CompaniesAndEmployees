@@ -9,22 +9,25 @@ import com.vaadin.flow.spring.annotation.UIScope;
 import java.util.HashMap;
 import java.util.Map;
 
+import lombok.Getter;
+
 import org.infobase.web.component.grid.CompanyGrid;
 import org.infobase.web.component.grid.EmployeeGrid;
 import org.infobase.web.component.grid.EntityGrid;
 
 @SpringComponent
 @UIScope
+@Getter
 public class TabsPanel {
 
-    final CompanyGrid companyGrid;
-    final EmployeeGrid employeeGrid;
+    private final CompanyGrid companyGrid;
+    private final EmployeeGrid employeeGrid;
 
-    final Tab companyTab;
-    final Tab employeeTab;
-    final Tabs tabs;
-    final Map<Tab, EntityGrid> tabComponents;
-    final Div pages;
+    private final Tab companyTab;
+    private final Tab employeeTab;
+    private final Tabs tabs;
+    private final Map<Tab, EntityGrid> tabComponents;
+    private final Div pages;
 
     public TabsPanel(CompanyGrid companyGrid, EmployeeGrid employeeGrid) {
         this.companyGrid = companyGrid;
@@ -40,5 +43,15 @@ public class TabsPanel {
 
         pages = new Div(this.companyGrid, this.employeeGrid);
         pages.setSizeFull();
+    }
+
+    public EntityGrid getSelectedGrid() {
+        return tabComponents.get(tabs.getSelectedTab());
+    }
+
+    public void setPreSelectedTab() {
+        tabs.setSelectedTab(companyTab);
+        companyGrid.fill();
+        employeeGrid.setVisible(false);
     }
 }
