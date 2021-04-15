@@ -48,9 +48,9 @@ public class MainView extends VerticalLayout {
         tabsPanel.employeeGrid.setEnableEditButtons(buttonsPanel::setEditAndDelEnabled);
 
         //  Add click listeners
-        buttonsPanel.addBtn.addClickListener(e -> tabsPanel.tabComponents.get(tabsPanel.tabs.getSelectedTab()).onCreate());
-        buttonsPanel.editBtn.addClickListener(e -> tabsPanel.tabComponents.get(tabsPanel.tabs.getSelectedTab()).onEdit());
-        buttonsPanel.delBtn.addClickListener(e -> tabsPanel.tabComponents.get(tabsPanel.tabs.getSelectedTab()).onDelete());
+        buttonsPanel.getAddBtn().addClickListener(e -> tabsPanel.tabComponents.get(tabsPanel.tabs.getSelectedTab()).onCreate());
+        buttonsPanel.getEditBtn().addClickListener(e -> tabsPanel.tabComponents.get(tabsPanel.tabs.getSelectedTab()).onEdit());
+        buttonsPanel.getDelBtn().addClickListener(e -> tabsPanel.tabComponents.get(tabsPanel.tabs.getSelectedTab()).onDelete());
 
         // Search actions
         searchPanel.searchColumn.addValueChangeListener(e -> {
@@ -96,7 +96,7 @@ public class MainView extends VerticalLayout {
 
         // Add to layout
         HorizontalLayout actions = new HorizontalLayout();
-        actions.add(buttonsPanel.buttons, searchPanel.filter);
+        actions.add(buttonsPanel.getButtons(), searchPanel.filter);
         add(actions, tabsPanel.tabs, tabsPanel.pages);
     }
 

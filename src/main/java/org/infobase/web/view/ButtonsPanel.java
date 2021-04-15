@@ -6,15 +6,18 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
 
+import lombok.Getter;
+
 @SpringComponent
 @UIScope
+@Getter
 public class ButtonsPanel {
 
-    final Button addBtn;
-    final Button editBtn;
-    final Button delBtn;
+    private final Button addBtn;
+    private final Button editBtn;
+    private final Button delBtn;
 
-    final HorizontalLayout buttons;
+    private final HorizontalLayout buttons;
 
     public ButtonsPanel() {
         addBtn = new Button("Добавить", VaadinIcon.PLUS.create());
