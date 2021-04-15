@@ -15,20 +15,36 @@ import org.infobase.web.component.grid.CompanyGrid;
 import org.infobase.web.component.grid.EmployeeGrid;
 import org.infobase.web.component.grid.EntityGrid;
 
+/**
+ * Панель вкладок, содержит вкладки:
+ * <br>- Компании
+ * <br>- Сотрудники
+ */
 @SpringComponent
 @UIScope
 @Getter
 public class TabsPanel {
-
+    /** Таблица компаний */
     private final CompanyGrid companyGrid;
+    /** Таблица сотрудников */
     private final EmployeeGrid employeeGrid;
 
+    /** Вкладка компаний */
     private final Tab companyTab;
+    /** Вкладка сотрудников */
     private final Tab employeeTab;
+    /** Все вкладки */
     private final Tabs tabs;
+    /** Словарь Вкладки - Таблицы */
     private final Map<Tab, EntityGrid> tabComponents;
+    /** Все таблицы */
     private final Div pages;
 
+    /**
+     * Инициализация панели вкладок
+     * @param companyGrid таблица компаний
+     * @param employeeGrid таблица сотрудников
+     */
     public TabsPanel(CompanyGrid companyGrid, EmployeeGrid employeeGrid) {
         this.companyGrid = companyGrid;
         this.employeeGrid = employeeGrid;
@@ -45,10 +61,17 @@ public class TabsPanel {
         pages.setSizeFull();
     }
 
+    /**
+     * Получить выбранную таблицу
+     * @return EntityGrid - общая сущность таблиц
+     */
     public EntityGrid getSelectedGrid() {
         return tabComponents.get(tabs.getSelectedTab());
     }
 
+    /**
+     * Задать вкладку компаний по умолчанию
+     */
     public void setPreSelectedTab() {
         tabs.setSelectedTab(companyTab);
         companyGrid.fill();

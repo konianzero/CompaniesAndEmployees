@@ -8,17 +8,29 @@ import com.vaadin.flow.spring.annotation.UIScope;
 
 import lombok.Getter;
 
+/**
+ * Панель кнопок, содержит кнопки:
+ * <br>- Добавить
+ * <br>- Редактировать
+ * <br>- Удалить
+ */
 @SpringComponent
 @UIScope
 @Getter
 public class ButtonsPanel {
-
+    /** Кнопка добавления */
     private final Button addBtn;
+    /** Кнопка редактирования */
     private final Button editBtn;
+    /** Кнопка удаления */
     private final Button delBtn;
 
+    /** Контейнер для кнопок */
     private final HorizontalLayout buttons;
 
+    /**
+     * Инициализация понели кнопок
+     */
     public ButtonsPanel() {
         addBtn = new Button("Добавить", VaadinIcon.PLUS.create());
         editBtn = new Button("Редактировать", VaadinIcon.PENCIL.create());
@@ -30,6 +42,11 @@ public class ButtonsPanel {
         buttons = new HorizontalLayout(addBtn, editBtn, delBtn);
     }
 
+    /**
+     * Сделать видимыми и доступными кнопки редактирования и удаления
+     * @param bool если true - отображать кнопки,
+     *             false - не отображать
+     */
     public void setEditAndDelEnabled(Boolean bool) {
         editBtn.setEnabled(bool);
         delBtn.setEnabled(bool);
