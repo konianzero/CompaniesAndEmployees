@@ -7,6 +7,7 @@ import com.vaadin.flow.spring.annotation.UIScope;
 import org.infobase.service.CompanyService;
 import org.infobase.to.EmployeeTo;
 import org.infobase.service.EmployeeService;
+import org.infobase.web.component.OperationNotification;
 import org.infobase.web.component.dialog.EmployeeDialog;
 
 import java.util.Collection;

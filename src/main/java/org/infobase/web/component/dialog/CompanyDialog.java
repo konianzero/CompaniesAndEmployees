@@ -2,7 +2,6 @@ package org.infobase.web.component.dialog;
 
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
-import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -13,7 +12,7 @@ import com.vaadin.flow.spring.annotation.UIScope;
 
 import org.infobase.model.Company;
 import org.infobase.service.CompanyService;
-import org.infobase.web.component.grid.OperationNotification;
+import org.infobase.web.component.OperationNotification;
 
 import org.vaadin.textfieldformatter.CustomStringBlockFormatter;
 

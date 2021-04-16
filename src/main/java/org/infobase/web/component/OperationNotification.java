@@ -1,4 +1,4 @@
-package org.infobase.web.component.grid;
+package org.infobase.web.component;
 
 import com.vaadin.flow.component.notification.Notification;
 
