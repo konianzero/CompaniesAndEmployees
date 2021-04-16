@@ -21,7 +21,7 @@ public class CompanyService {
     }
 
     public int saveOrUpdate(Company company) {
-        if (company.getId() == null) {
+        if (company.isNew()) {
             log.info("Save {}", company);
             return companyDaoImpl.save(company);
         }

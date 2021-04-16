@@ -2,6 +2,8 @@ package org.infobase.to;
 
 import lombok.*;
 
+import org.infobase.model.HasId;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -16,7 +18,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @ToString
-public class EmployeeTo {
+public class EmployeeTo implements HasId {
     /** Поле ID */
     private Integer id;
 

@@ -30,11 +30,11 @@ public class EmployeeService {
         Employee employee = EmployeeUtil.createEntity(employeeTo);
         employee.setCompany(companyDaoImpl.getByName(employeeTo.getCompanyName()));
 
-        if (employee.getId() == null) {
+        if (employee.isNew()) {
             log.info("Save {}", employeeTo);
             return employeeDaoImpl.save(employee);
         }
-        log.info("Save {}", employeeTo);
+        log.info("Update {}", employeeTo);
         return employeeDaoImpl.update(employee);
     }
 
