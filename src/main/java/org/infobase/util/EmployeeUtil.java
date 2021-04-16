@@ -9,6 +9,8 @@ import org.infobase.util.mapper.EmployeeMapper;
 
 public class EmployeeUtil {
 
+    private EmployeeUtil() { }
+
     public static EmployeeTo createTo(Employee employee) {
         return EmployeeMapper.INSTANCE.toEmployeeTo(employee);
     }
