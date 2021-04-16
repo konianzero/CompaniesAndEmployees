@@ -2,6 +2,7 @@ package org.infobase.web.component.dialog;
 
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -13,6 +14,8 @@ import com.vaadin.flow.spring.annotation.UIScope;
 import org.infobase.model.Company;
 import org.infobase.service.CompanyService;
 import org.infobase.web.component.grid.OperationNotification;
+
+import org.vaadin.textfieldformatter.CustomStringBlockFormatter;
 
 @SpringComponent
 @UIScope
@@ -28,12 +31,14 @@ public class CompanyDialog extends Dialog implements OperationNotification {
     private TextField tin = new TextField("ИНН");
     private TextField address = new TextField("Адрес");
     private TextField phoneNumber = new TextField("Телефон");
+    private CustomStringBlockFormatter phone;
     private Button saveBtn = new Button("Сохранить");
     private Button cancelBtn = new Button("Отменить");
 
     public CompanyDialog(CompanyService companyService) {
         this.companyService = companyService;
 
+        addInputMask();
         binding();
 
         saveBtn.addClickListener(e -> save());
@@ -45,16 +50,34 @@ public class CompanyDialog extends Dialog implements OperationNotification {
         add(layout);
     }
 
-    public void binding() {
+    private void binding() {
+        binder.forField(tin)
+                .withValidator(
+                        new RegexpValidator(
+                                "Не соответствует формату, необходимо ввести 10 цифр",
+                                "\\d{10}"
+                        )
+                )
+                .bind(Company::getTin, Company::setTin);
         binder.forField(phoneNumber)
                 .withValidator(
                         new RegexpValidator(
-                                "Указанный номер не соответствует формату",
-                                "^(8|\\+7) \\(\\d{3}\\) \\d{3}-\\d{2}-\\d{2}$"
+                                "Не соответствует формату: +7 (###) ###-##-##",
+                                "^\\+7 \\(\\d{3}\\) \\d{3}-\\d{2}-\\d{2}$"
                         )
                 )
                 .bind(Company::getPhoneNumber, Company::setPhoneNumber);
         binder.bindInstanceFields(this);
+    }
+
+    private void addInputMask() {
+        CustomStringBlockFormatter.Options options = new CustomStringBlockFormatter.Options();
+        options.setPrefix("+", false);
+        options.setBlocks(2,3,3,2,2);
+        options.setDelimiters(" (",") ","-", "-");
+        options.setNumericOnly(true);
+        phone = new CustomStringBlockFormatter(options);
+        phone.extend(phoneNumber);
     }
 
     public void setOnSave(Runnable onSave) {
