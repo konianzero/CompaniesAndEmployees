@@ -4,9 +4,10 @@ import com.vaadin.flow.component.notification.Notification;
 
 public interface OperationNotification {
     default void afterOperationNotification(String notificationMessage) {
-        new Notification(
+        Notification.show(
                 notificationMessage,
-                3000
-        ).open();
+                3000,
+                Notification.Position.BOTTOM_START
+        );
     }
 }

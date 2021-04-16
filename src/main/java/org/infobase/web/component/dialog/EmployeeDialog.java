@@ -90,7 +90,7 @@ public class EmployeeDialog extends Dialog implements OperationNotification {
         if (binder.validate().hasErrors()) { return; }
 
         if (employeeService.saveOrUpdate(employeeTo) != 0) {
-            afterOperationNotification("Сотрудник добавлен!");
+            afterOperationNotification(employeeTo.isNew() ? "Сотрудник добавлен!" : "Сотрудник отредактирован!");
             onSave.run();
         } else {
             afterOperationNotification("Произошла ошибка при добавлении/редактировании сотрудника!");

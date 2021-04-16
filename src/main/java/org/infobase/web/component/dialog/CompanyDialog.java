@@ -103,7 +103,7 @@ public class CompanyDialog extends Dialog implements OperationNotification {
         if (binder.validate().hasErrors()) { return; }
 
         if (companyService.saveOrUpdate(company) != 0) {
-            afterOperationNotification("Компания добавлена!");
+            afterOperationNotification(company.isNew() ? "Компания добавлена!" : "Компания отредактирована!");
             onSave.run();
         } else {
             afterOperationNotification("Произошла ошибка при добавлении/редактировании компании!");
