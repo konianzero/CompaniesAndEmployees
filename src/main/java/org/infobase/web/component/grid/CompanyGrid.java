@@ -6,6 +6,7 @@ import com.vaadin.flow.spring.annotation.UIScope;
 
 import org.infobase.model.Company;
 import org.infobase.service.CompanyService;
+import org.infobase.util.formatter.PhoneFormatter;
 import org.infobase.web.component.notification.OperationNotification;
 import org.infobase.web.component.dialog.CompanyDialog;
 
@@ -33,7 +34,7 @@ public class CompanyGrid extends EntityGrid<Company> implements OperationNotific
         addColumn(Company::getName).setHeader(headersList.get(1));
         addColumn(Company::getTin).setHeader(headersList.get(2));
         addColumn(Company::getAddress).setHeader(headersList.get(3));
-        addColumn(Company::getPhoneNumber).setHeader(headersList.get(4));
+        addColumn(PhoneFormatter.formatPhoneNumberProvider()).setHeader(headersList.get(4));
 
         setSelectionListener();
     }

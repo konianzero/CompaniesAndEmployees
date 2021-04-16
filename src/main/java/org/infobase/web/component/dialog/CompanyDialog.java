@@ -12,9 +12,10 @@ import com.vaadin.flow.spring.annotation.UIScope;
 
 import org.infobase.model.Company;
 import org.infobase.service.CompanyService;
+import org.infobase.util.formatter.PhoneFormatter;
 import org.infobase.web.component.notification.OperationNotification;
 
-import org.vaadin.textfieldformatter.CustomStringBlockFormatter;
+import java.util.Optional;
 
 @SpringComponent
 @UIScope
@@ -30,14 +31,13 @@ public class CompanyDialog extends Dialog implements OperationNotification {
     private TextField tin = new TextField("ИНН");
     private TextField address = new TextField("Адрес");
     private TextField phoneNumber = new TextField("Телефон");
-    private CustomStringBlockFormatter phone;
     private Button saveBtn = new Button("Сохранить");
     private Button cancelBtn = new Button("Отменить");
 
     public CompanyDialog(CompanyService companyService) {
         this.companyService = companyService;
 
-        addPhoneNumberInputMask();
+        PhoneFormatter.addPhoneNumberInputMask(phoneNumber);
         binding();
 
         saveBtn.addClickListener(e -> save());
@@ -65,18 +65,14 @@ public class CompanyDialog extends Dialog implements OperationNotification {
                                 "^\\+7 \\(\\d{3}\\) \\d{3}-\\d{2}-\\d{2}$"
                         )
                 )
+                .withConverter(
+                        p -> Optional.ofNullable(p)
+                                     .map(phone -> phone.replaceAll("[^0-9]", ""))
+                                     .orElse(""),
+                        PhoneFormatter::formatPhoneNumber
+                )
                 .bind(Company::getPhoneNumber, Company::setPhoneNumber);
         binder.bindInstanceFields(this);
-    }
-
-    private void addPhoneNumberInputMask() {
-        CustomStringBlockFormatter.Options options = new CustomStringBlockFormatter.Options();
-        options.setPrefix("+", false);
-        options.setBlocks(2,3,3,2,2);
-        options.setDelimiters(" (",") ","-", "-");
-        options.setNumericOnly(true);
-        phone = new CustomStringBlockFormatter(options);
-        phone.extend(phoneNumber);
     }
 
     public void setOnSave(Runnable onSave) {
@@ -88,6 +84,8 @@ public class CompanyDialog extends Dialog implements OperationNotification {
             close();
             return;
         }
+
+        PhoneFormatter.formatPhoneNumber("79001234567");
 
         if (!company.isNew()) {
             this.company = companyService.get(company.getId());

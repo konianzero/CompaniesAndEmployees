@@ -40,6 +40,7 @@ public class EmployeeDialog extends Dialog implements OperationNotification {
 
         birthDate.setLabel("Дата Рождения");
         companyName.setLabel("Компания");
+        companyName.setClearButtonVisible(true);
 
         binding();
 
