@@ -90,7 +90,7 @@ public class CompanyDialog extends Dialog implements OperationNotification {
             return;
         }
 
-        if (company.getId() != null) {
+        if (!company.isNew()) {
             this.company = companyService.get(company.getId());
         } else {
             this.company = company;

@@ -77,7 +77,7 @@ public class EmployeeDialog extends Dialog implements OperationNotification {
             return;
         }
 
-        if (employeeTo.getId() != null) {
+        if (!employeeTo.isNew()) {
             this.employeeTo = employeeService.get(employeeTo.getId());
         } else {
             this.employeeTo = employeeTo;
