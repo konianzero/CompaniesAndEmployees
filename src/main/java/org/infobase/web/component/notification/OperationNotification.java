@@ -1,4 +1,4 @@
-package org.infobase.web.component;
+package org.infobase.web.component.notification;
 
 import com.vaadin.flow.component.notification.Notification;
 

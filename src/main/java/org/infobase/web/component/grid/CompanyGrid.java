@@ -6,7 +6,7 @@ import com.vaadin.flow.spring.annotation.UIScope;
 
 import org.infobase.model.Company;
 import org.infobase.service.CompanyService;
-import org.infobase.web.component.OperationNotification;
+import org.infobase.web.component.notification.OperationNotification;
 import org.infobase.web.component.dialog.CompanyDialog;
 
 import java.util.*;

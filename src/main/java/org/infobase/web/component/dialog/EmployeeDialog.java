@@ -14,7 +14,7 @@ import com.vaadin.flow.spring.annotation.UIScope;
 import org.infobase.service.EmployeeService;
 import org.infobase.to.EmployeeTo;
 import org.infobase.web.component.LocalizedDatePicker;
-import org.infobase.web.component.OperationNotification;
+import org.infobase.web.component.notification.OperationNotification;
 
 import java.util.List;
 

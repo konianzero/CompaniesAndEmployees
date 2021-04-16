@@ -12,7 +12,7 @@ import com.vaadin.flow.spring.annotation.UIScope;
 
 import org.infobase.model.Company;
 import org.infobase.service.CompanyService;
-import org.infobase.web.component.OperationNotification;
+import org.infobase.web.component.notification.OperationNotification;
 
 import org.vaadin.textfieldformatter.CustomStringBlockFormatter;
 
@@ -37,7 +37,7 @@ public class CompanyDialog extends Dialog implements OperationNotification {
     public CompanyDialog(CompanyService companyService) {
         this.companyService = companyService;
 
-        addInputMask();
+        addPhoneNumberInputMask();
         binding();
 
         saveBtn.addClickListener(e -> save());
@@ -69,7 +69,7 @@ public class CompanyDialog extends Dialog implements OperationNotification {
         binder.bindInstanceFields(this);
     }
 
-    private void addInputMask() {
+    private void addPhoneNumberInputMask() {
         CustomStringBlockFormatter.Options options = new CustomStringBlockFormatter.Options();
         options.setPrefix("+", false);
         options.setBlocks(2,3,3,2,2);

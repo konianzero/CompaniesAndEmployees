@@ -1,4 +1,4 @@
-package org.infobase.web.component.grid;
+package org.infobase.web.component.notification;
 
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Label;

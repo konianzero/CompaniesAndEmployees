@@ -2,6 +2,7 @@ package org.infobase.web.component.grid;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.grid.Grid;
+import org.infobase.web.component.notification.OnRemoveNotification;
 
 import java.util.Collection;
 import java.util.function.Consumer;
