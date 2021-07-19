@@ -43,7 +43,7 @@ public class CompanyDialog extends Dialog implements OperationNotification {
         saveBtn.addClickListener(e -> save());
         cancelBtn.addClickListener(e -> close());
 
-        VerticalLayout inputLayout = new VerticalLayout(name, tin, address,  phoneNumber);
+        VerticalLayout inputLayout = new VerticalLayout(name, tin, address, phoneNumber);
         HorizontalLayout actionLayout = new HorizontalLayout(saveBtn, cancelBtn);
         VerticalLayout layout = new VerticalLayout(inputLayout, actionLayout);
         add(layout);

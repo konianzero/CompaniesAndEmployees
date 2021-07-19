@@ -45,8 +45,8 @@ public class PhoneFormatter {
     public static void addPhoneNumberInputMask(TextField phoneNumber) {
         CustomStringBlockFormatter.Options options = new CustomStringBlockFormatter.Options();
         options.setPrefix("+", false);
-        options.setBlocks(2,3,3,2,2);
-        options.setDelimiters(" (",") ","-", "-");
+        options.setBlocks(2, 3, 3, 2, 2);
+        options.setDelimiters(" (", ") ", "-", "-");
         options.setNumericOnly(true);
         CustomStringBlockFormatter phone = new CustomStringBlockFormatter(options);
         phone.extend(phoneNumber);
