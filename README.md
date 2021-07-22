@@ -7,10 +7,7 @@ _**Spring/Vaadin/PostgreSQL**_
 
 ---
 
-_Скрипты для базы_
-```
-src/main/resources/db/
-```
+_Скрипты для базы_: [src/main/resources/db/](src/main/resources/db/)
 
 ---
 
