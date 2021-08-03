@@ -1,26 +1,46 @@
 package org.infobase.service;
 
 import org.infobase.model.Company;
+
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+
+import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 
 import java.util.List;
 
 import static org.infobase.CompanyTestData.*;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 @SpringBootTest
-@Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class CompanyServiceTest {
 
     @Autowired
     private CompanyService companyService;
 
     @Test
+    @Order(1)
+    void get() {
+        Company actual = companyService.get(COMPANY_1_ID);
+        COMPANY_MATCHER.assertMatch(actual, COMPANY_1);
+    }
+
+    @Test
+    @Order(2)
+    void getAll() {
+        List<Company> actual = companyService.getAll();
+        COMPANY_MATCHER.assertMatch(actual, ALL_COMPANIES);
+    }
+
+    @Test
+    @Order(3)
     void save() {
         Company newCompany = getNew();
         int id = companyService.saveOrUpdate(newCompany);
@@ -29,6 +49,7 @@ class CompanyServiceTest {
     }
 
     @Test
+    @Order(4)
     void update() {
         Company updated = getUpdated();
         companyService.saveOrUpdate(updated);
@@ -36,20 +57,9 @@ class CompanyServiceTest {
     }
 
     @Test
-    void get() {
-        Company actual = companyService.get(COMPANY_1_ID);
-        COMPANY_MATCHER.assertMatch(actual, COMPANY_1);
-    }
-
-    @Test
-    void getAll() {
-        List<Company> actual = companyService.getAll();
-        COMPANY_MATCHER.assertMatch(actual, ALL_COMPANIES);
-    }
-
-    @Test
+    @Order(5)
     void delete() {
         companyService.delete(COMPANY_1_ID);
-        assertThrows(EmptyResultDataAccessException.class, () -> companyService.get(COMPANY_1_ID));
+        assertNull(companyService.get(COMPANY_1_ID));
     }
 }
