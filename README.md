@@ -1,13 +1,9 @@
 Информационная система по кампаниям и их сотрудникам
 ----------------------------------------------------
 
-_**Spring/Vaadin/PostgreSQL**_
+_**Spring JDBC/Spring Boot/Vaadin**_
 
 Приложение позволяет добавлять/удалять/редактировать компании и сотрудников через веб интерфейс (Vaadin).
-
----
-
-_Скрипты для базы_: [src/main/resources/db/](src/main/resources/db/)
 
 ---
 
@@ -15,4 +11,6 @@ _Скрипты для базы_: [src/main/resources/db/](src/main/resources/db
 ```
  mvn spring-boot:run
 ```
+
+[http://localhost:8080/](http://localhost:8080/)
 
