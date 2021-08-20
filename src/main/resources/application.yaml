@@ -14,5 +14,13 @@ spring:
       mode: always
       # data-locations: classpath:schema.sql, classpath:data.sql
 
+logging:
+  charset:
+    console: "UTF-8"
+  pattern:
+    console: "%clr(%d{HH:mm:ss.SSS}){faint} %clr(%5p) %clr([%15.15t]){faint} %clr(%-40.40logger{0}){cyan} %clr(:){faint} %m%n"
+  level:
+    org.springframework: INFO
+
 server:
   port: 8080
