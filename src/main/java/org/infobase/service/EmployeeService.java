@@ -1,5 +1,6 @@
 package org.infobase.service;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.stereotype.Service;
@@ -19,22 +20,13 @@ import org.infobase.web.component.grid.EmployeeHeaders;
  */
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class EmployeeService {
 
     /** Класс доступа к данным сотрудников */
     private final EmployeeDaoImpl employeeDaoImpl;
     /** Класс доступа к данным компаний */
     private final CompanyDaoImpl companyDaoImpl;
-
-    /**
-     * Создание класс бизнес логики для сущностей сотрудников
-     * @param employeeDaoImpl Класс доступа к данным сотрудников
-     * @param companyDaoImpl Класс доступа к данным компаний
-     */
-    public EmployeeService(EmployeeDaoImpl employeeDaoImpl, CompanyDaoImpl companyDaoImpl) {
-        this.employeeDaoImpl = employeeDaoImpl;
-        this.companyDaoImpl = companyDaoImpl;
-    }
 
     /**
      * Сохранение сущности нового сотрудника или обновление существующей

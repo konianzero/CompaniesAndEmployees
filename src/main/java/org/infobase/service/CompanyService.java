@@ -1,5 +1,6 @@
 package org.infobase.service;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.stereotype.Service;
@@ -15,18 +16,11 @@ import org.infobase.dao.impl.CompanyDaoImpl;
  */
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class CompanyService {
 
     /** Класс доступа к данным компаний */
     private final CompanyDaoImpl companyDaoImpl;
-
-    /**
-     * Создание класса бизнес логики для сущностей компаний
-     * @param companyDaoImpl Класс доступа к данным компаний
-     */
-    public CompanyService(CompanyDaoImpl companyDaoImpl) {
-        this.companyDaoImpl = companyDaoImpl;
-    }
 
     /**
      * Сохранение сущности новой компании или обновление существующей

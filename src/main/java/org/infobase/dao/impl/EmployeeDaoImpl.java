@@ -1,7 +1,9 @@
 package org.infobase.dao.impl;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import org.jooq.DSLContext;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -21,6 +23,7 @@ import org.infobase.web.component.grid.EmployeeHeaders;
 
 @Repository
 @Slf4j
+@RequiredArgsConstructor
 public class EmployeeDaoImpl implements EmployeeDao {
 
     private static final String INSERT_QUERY = "INSERT INTO employees (name, birth_date, email, company_id)" +
@@ -45,10 +48,6 @@ public class EmployeeDaoImpl implements EmployeeDao {
     private static final String DELETE_QUERY = "DELETE FROM employees WHERE id=:id";
 
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-
-    public EmployeeDaoImpl(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
-        this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
-    }
 
     @Transactional
     public int save(Employee employee) {
