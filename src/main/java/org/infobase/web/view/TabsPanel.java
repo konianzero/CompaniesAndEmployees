@@ -16,9 +16,11 @@ import org.infobase.web.component.grid.EmployeeGrid;
 import org.infobase.web.component.grid.EntityGrid;
 
 /**
- * Панель вкладок, содержит вкладки:
- * <br>- Компании
- * <br>- Сотрудники
+ * Панель вкладок:
+ * <ul>
+ *      <li> Компании
+ *      <li> Сотрудники
+ * </ul>
  */
 @SpringComponent
 @UIScope

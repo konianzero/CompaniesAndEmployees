@@ -11,12 +11,16 @@ import lombok.Getter;
 import org.infobase.web.component.LocalizedDatePicker;
 
 /**
- * Панель поиска, содержит:
- * <br>- Выпадающий список с названиями столбцов таблицы (Только для вкладки сотрудников)
- * <br><br>- Поля ввода:
- * <br>- Выпадающий список с названиями компаний (Только для вкладки сотрудников)
- * <br>- Поле выбора даты рождения (Только для вкладки сотрудников)
- * <br>- Поле для текстового поиска
+ * Панель поиска:
+ * <ul>
+ *      <li> Выпадающий список с названиями столбцов таблицы (Только для вкладки сотрудников)
+ *      <li> Поля ввода:
+ *      <ul>
+ *          <li> Выпадающий список с названиями компаний (Только для вкладки сотрудников)
+ *          <li> Поле выбора даты рождения (Только для вкладки сотрудников)
+ *          <li> Поле для текстового поиска
+ *      </ul>
+ * </ul>
  */
 @SpringComponent
 @UIScope
@@ -49,7 +53,6 @@ public class SearchPanel {
         companyPicker = new ComboBox<>();
 
         birthDatePicker.setClearButtonVisible(false);
-//        companyPicker.setClearButtonVisible(false);
 
         filters = new HorizontalLayout(columnToSearch, textToSearch, birthDatePicker, companyPicker);
     }

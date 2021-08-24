@@ -9,10 +9,12 @@ import com.vaadin.flow.spring.annotation.UIScope;
 import lombok.Getter;
 
 /**
- * Панель кнопок, содержит кнопки:
- * <br>- Добавить
- * <br>- Редактировать
- * <br>- Удалить
+ * Панель кнопок:
+ * <ul>
+ *      <li> Добавить
+ *      <li> Редактировать
+ *      <li> Удалить
+ * </ul>
  */
 @SpringComponent
 @UIScope
