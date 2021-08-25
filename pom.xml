@@ -63,6 +63,12 @@
             <groupId>org.vaadin</groupId>
             <artifactId>textfieldformatter</artifactId>
             <version>${vaadin.textfieldformatter.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-simple</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <!-- Lombok -->
         <dependency>
