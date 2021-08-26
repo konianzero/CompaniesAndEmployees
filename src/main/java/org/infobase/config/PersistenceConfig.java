@@ -6,35 +6,32 @@ import org.jooq.ExecuteContext;
 import org.jooq.SQLDialect;
 import org.jooq.impl.*;
 
-import org.springframework.boot.jdbc.DataSourceBuilder;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.r2dbc.R2dbcAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
 import org.springframework.jdbc.support.SQLErrorCodeSQLExceptionTranslator;
 import org.springframework.jdbc.support.SQLExceptionTranslator;
-import org.springframework.jdbc.support.SQLStateSQLExceptionTranslator;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
+/*
+    Eliminate application failure to determine a suitable R2DBC Connection URL !!!
+    https://stackoverflow.com/a/68297496
+ */
+@EnableAutoConfiguration(exclude = { R2dbcAutoConfiguration.class })
 
 @Configuration
 @EnableTransactionManagement
 @RequiredArgsConstructor
-public class PersistenceContext {
+public class PersistenceConfig {
 
-    @Bean
-    public DataSource dataSource() {
-        DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
-        dataSourceBuilder.driverClassName("org.postgresql.Driver");
-        dataSourceBuilder.url("jdbc:postgresql://localhost:5432/info");
-        dataSourceBuilder.username("user");
-        dataSourceBuilder.password("password");
-        return dataSourceBuilder.build();
-    }
+    private final DataSource dataSource;
 
     @Bean
     public DataSourceConnectionProvider connectionProvider() {
-        return new DataSourceConnectionProvider(new TransactionAwareDataSourceProxy(dataSource()));
+        return new DataSourceConnectionProvider(new TransactionAwareDataSourceProxy(dataSource));
     }
 
     @Bean
