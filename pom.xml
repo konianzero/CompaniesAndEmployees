@@ -21,7 +21,9 @@
         <java.version>11</java.version>
         <vaadin.version>14.5.1</vaadin.version>
         <vaadin.textfieldformatter.version>5.2.0</vaadin.textfieldformatter.version>
+<!--        <postgressql.version>42.2.23</postgres.version>-->
         <hibernate-validator.version>6.1.6.Final</hibernate-validator.version>
+        <jooq.version>3.15.2</jooq.version>
         <mapstruct.version>1.4.2.Final</mapstruct.version>
         <lombok.version>1.18.20</lombok.version>
     </properties>
@@ -31,6 +33,7 @@
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
+            <version>${postgresql.version}</version>
             <scope>runtime</scope>
         </dependency>
         <dependency>
@@ -45,9 +48,13 @@
             <version>${mapstruct.version}</version>
         </dependency>
         <!-- Spring Boot -->
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.boot</groupId>-->
+<!--            <artifactId>spring-boot-starter-data-jdbc</artifactId>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jdbc</artifactId>
+            <artifactId>spring-boot-starter-jooq</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -132,6 +139,69 @@
                     </excludes>
                 </configuration>
             </plugin>
+
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>jooq-codegen</id>
+            <build>
+                <plugins>
+                    <!-- JOOQ code generation -->
+                    <plugin>
+                        <groupId>org.jooq</groupId>
+                        <artifactId>jooq-codegen-maven</artifactId>
+                        <executions>
+                            <execution>
+                                <!-- <id>jooq-codegen</id> -->
+                                <!-- <phase>generate-sources</phase> -->
+                                <goals>
+                                    <goal>generate</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <dependencies>
+                            <!--
+                                Because we use the PostgreSQL database, we have to add it as the dependency
+                                of this plugin.
+                            -->
+                            <dependency>
+                                <groupId>org.postgresql</groupId>
+                                <artifactId>postgresql</artifactId>
+                                <version>${postgresql.version}</version>
+                            </dependency>
+                        </dependencies>
+                        <configuration>
+                            <jdbc>
+                                <driver>org.postgresql.Driver</driver>
+                                <url>jdbc:postgresql://localhost:5432/info</url>
+                                <user>user</user>
+                                <password>password</password>
+                            </jdbc>
+                            <generator>
+                                <name>org.jooq.util.DefaultGenerator</name>
+                                <database>
+                                    <!-- The database type. The format here is: org.util.[database].[database]Database -->
+                                    <name>org.jooq.util.postgres.PostgresDatabase</name>
+                                    <!-- The database schema (or in the absence of schema support, in your RDBMS this
+                                    can be the owner, user, database name) to be generated -->
+                                    <inputSchema>info</inputSchema>
+                                    <!-- Include all tables found from the PUBLIC schema -->
+                                    <includes>.*</includes>
+                                    <excludes />
+                                </database>
+                                <target>
+                                    <!-- The destination package of your generated classes (within the destination directory) -->
+                                    <packageName>org.infobase</packageName>
+                                    <!-- The destination directory of your generated classes -->
+                                    <directory>src/main/java</directory>
+                                </target>
+                            </generator>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
