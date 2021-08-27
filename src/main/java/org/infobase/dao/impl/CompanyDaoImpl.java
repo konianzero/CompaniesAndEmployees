@@ -3,84 +3,102 @@ package org.infobase.dao.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.core.namedparam.SqlParameterSource;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
+import org.jooq.DSLContext;
+import org.jooq.exception.DataAccessException;
+import org.jooq.impl.DSL;
+
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 import org.infobase.model.Company;
-import org.infobase.dao.mappers.CompanyMapper;
 import org.infobase.dao.CompanyDao;
+
+import static org.infobase.db.generated.Tables.COMPANIES;
 
 @Repository
 @Slf4j
 @RequiredArgsConstructor
 public class CompanyDaoImpl implements CompanyDao {
 
-    private static final String INSERT_QUERY = "INSERT INTO companies (name, tin, address, phone_number)" +
-                                               " VALUES (:name, :tin, :address, :phone_number)";
-    private static final String UPDATE_QUERY = "UPDATE companies" +
-                                               " SET name=:name, tin=:tin, address=:address, phone_number=:phone_number" +
-                                               " WHERE id=:id";
-    private static final String SELECT_BY_ID_QUERY = "SELECT id, name, tin, address, phone_number FROM companies WHERE id=:id";
-    private static final String SELECT_BY_NAME_QUERY = "SELECT id, name, tin, address, phone_number FROM companies WHERE name=:name";
-    private static final String SELECT_ALL_QUERY = "SELECT id, name, tin, address, phone_number FROM companies";
-    private static final String SEARCH_QUERY = "SELECT id, name, tin, address, phone_number FROM companies " +
-                                               "WHERE lower(name) LIKE :search " +
-                                               "OR lower(tin) LIKE :search " +
-                                               "OR lower(address) LIKE :search " +
-                                               "OR lower(phone_number) LIKE :search ";
-    private static final String DELETE_QUERY = "DELETE FROM companies WHERE id=:id";
-
-    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+    private final DSLContext dslContext;
 
     @Transactional
     public int save(Company company) {
-        KeyHolder keyHolder = new GeneratedKeyHolder();
+        int id = 0;
         try {
-            namedParameterJdbcTemplate.update(INSERT_QUERY, getParameterMap(company), keyHolder, new String[]{"id"});
-        } catch (Exception dae) {
-            log.error(dae.toString());
+            /* TODO - Don't insert, cause - ?
+            InsertQuery<CompaniesRecord> insertQuery = dslContext.insertQuery(COMPANIES);
+            insertQuery.addValues(getMap(company));
+            id = insertQuery.getReturnedRecord().into(Company.class).getId();
+            */
+            // https://www.jooq.org/doc/latest/manual/sql-building/sql-statements/insert-statement/insert-values/
+            id = dslContext.insertInto(COMPANIES)
+                    .set(COMPANIES.NAME, company.getName())
+                    .set(COMPANIES.TIN, company.getTin())
+                    .set(COMPANIES.ADDRESS, company.getAddress())
+                    .set(COMPANIES.PHONE_NUMBER, company.getPhoneNumber())
+                    .returning(COMPANIES.ID)
+                    .fetchOptional()
+                    .orElseThrow(() -> new DataAccessException("Error inserting entity: " + company.getId()))
+                    .getId();
+        } catch (Exception e) {
+            log.error(e.toString());
         }
-        return Objects.requireNonNull(keyHolder.getKey()).intValue();
+        return id;
     }
 
     @Transactional
     public int update(Company company) {
         int result = 0;
         try {
-            result = namedParameterJdbcTemplate.update(UPDATE_QUERY, getParameterMap(company));
+            /* TODO - Produce BadSqlGrammarException, cause - add '"public"."companies".' to column names
+            UpdateQuery<CompaniesRecord> updateQuery = dslContext.updateQuery(COMPANIES);
+            updateQuery.addValues(getMap(company));
+            updateQuery.addConditions(COMPANIES.ID.eq(company.getId()));
+            result = updateQuery.execute();
+             */
+            result = dslContext.update(COMPANIES)
+                    .set(DSL.field( "name"), company.getName())
+                    .set(DSL.field( "tin"), company.getTin())
+                    .set(DSL.field( "address"), company.getAddress())
+                    .set(DSL.field( "phone_number"), company.getPhoneNumber())
+                    /* TODO - Produce BadSqlGrammarException, cause - add '"public"."companies".' to column names
+                    .set(COMPANIES.NAME, company.getName())
+                    .set(COMPANIES.TIN, company.getTin())
+                    .set(COMPANIES.ADDRESS, company.getAddress())
+                    .set(COMPANIES.PHONE_NUMBER, company.getPhoneNumber())
+                     */
+                    .where(COMPANIES.ID.eq(company.getId()))
+                    .returning(COMPANIES.ID)
+                    .fetchOptional()
+                    .orElseThrow(() -> new DataAccessException("Error updating entity: " + company.getId()))
+                    .getId();
         } catch (Exception dae) {
             log.error(dae.toString());
         }
         return result;
     }
 
-    private SqlParameterSource getParameterMap(Company company) {
-        return new MapSqlParameterSource()
-                .addValue("id", company.getId())
-                .addValue("name", company.getName())
-                .addValue("tin", company.getTin())
-                .addValue("address", company.getAddress())
-                .addValue("phone_number", company.getPhoneNumber());
+    private Map getMap(Company company) {
+        return Map.of(
+                "name", company.getName(),
+                "tin", company.getTin(),
+                "address", company.getAddress(),
+                "phone_number", company.getPhoneNumber()
+        );
     }
 
     public Company getById(int id) {
         Company result = null;
         try {
-            result = namedParameterJdbcTemplate.queryForObject(
-                    SELECT_BY_ID_QUERY,
-                    new MapSqlParameterSource("id", id),
-                    new CompanyMapper()
-            );
-        } catch (Exception dae) {
-            log.error(dae.toString());
+            result = dslContext.selectFrom(COMPANIES)
+                    .where(COMPANIES.ID.eq(id))
+                    .fetchOne()
+                    .into(Company.class);
+        } catch (Exception e) {
+            log.error(e.toString());
         }
         return result;
     }
@@ -88,11 +106,10 @@ public class CompanyDaoImpl implements CompanyDao {
     public Company getByName(String name) {
         Company result = null;
         try {
-            result = namedParameterJdbcTemplate.queryForObject(
-                    SELECT_BY_NAME_QUERY,
-                    new MapSqlParameterSource("name", name),
-                    new CompanyMapper()
-            );
+            result = dslContext.selectFrom(COMPANIES)
+                    .where(COMPANIES.NAME.eq(name))
+                    .fetchOne()
+                    .into(Company.class);
         } catch (Exception dae) {
             log.error(dae.toString());
         }
@@ -102,7 +119,7 @@ public class CompanyDaoImpl implements CompanyDao {
     public List<Company> getAll() {
         List<Company> result = null;
         try {
-            result = namedParameterJdbcTemplate.query(SELECT_ALL_QUERY, new CompanyMapper());
+            result = dslContext.selectFrom(COMPANIES).fetch().into(Company.class);
         } catch (Exception dae) {
             log.error(dae.toString());
         }
@@ -110,13 +127,17 @@ public class CompanyDaoImpl implements CompanyDao {
     }
 
     public List<Company> search(String textToSearch) {
+        String pattern = "%" + textToSearch.toLowerCase(Locale.ROOT) + "%";
         List<Company> result = null;
         try {
-            result = namedParameterJdbcTemplate.query(
-                    SEARCH_QUERY,
-                    new MapSqlParameterSource("search", "%" + textToSearch.toLowerCase() + "%"),
-                    new CompanyMapper()
-            );
+            result = dslContext.selectFrom(COMPANIES)
+                    .where(
+                            COMPANIES.NAME.like(pattern)
+                            .or(COMPANIES.TIN.like(pattern))
+                            .or(COMPANIES.ADDRESS.like(pattern))
+                            .or(COMPANIES.PHONE_NUMBER.like(pattern))
+                    ).fetch()
+                    .into(Company.class);
         } catch (Exception dae) {
             log.error(dae.toString());
         }
@@ -125,12 +146,12 @@ public class CompanyDaoImpl implements CompanyDao {
 
     @Transactional
     public boolean delete(int id) {
-        boolean result = false;
+        boolean success = false;
         try {
-            result = namedParameterJdbcTemplate.update(DELETE_QUERY, new MapSqlParameterSource("id", id)) != 0;
+            success = dslContext.deleteFrom(COMPANIES).where(COMPANIES.ID.eq(id)).execute() != 0;
         } catch (Exception dae) {
             log.error(dae.toString());
         }
-        return result;
+        return success;
     }
 }
