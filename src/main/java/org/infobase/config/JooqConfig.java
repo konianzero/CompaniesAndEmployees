@@ -16,8 +16,9 @@ import org.springframework.jdbc.support.SQLExceptionTranslator;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
+
 /*
-    Eliminate application failure to determine a suitable R2DBC Connection URL !!!
+    Eliminates application failure to determine a suitable R2DBC Connection URL !!!
     https://stackoverflow.com/a/68297496
  */
 @EnableAutoConfiguration(exclude = { R2dbcAutoConfiguration.class })
@@ -25,7 +26,7 @@ import javax.sql.DataSource;
 @Configuration
 @EnableTransactionManagement
 @RequiredArgsConstructor
-public class PersistenceConfig {
+public class JooqConfig {
 
     private final DataSource dataSource;
 
