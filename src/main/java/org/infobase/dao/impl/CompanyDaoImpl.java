@@ -42,8 +42,7 @@ public class CompanyDaoImpl implements CompanyDao {
     @Transactional
     public int update(Company company) {
         int result = 0;
-        try {
-            UpdateQuery<CompaniesRecord> updateQuery = dslContext.updateQuery(COMPANIES);
+        try (UpdateQuery<CompaniesRecord> updateQuery = dslContext.updateQuery(COMPANIES)) {
             updateQuery.addValues(getMap(company));
             updateQuery.addConditions(COMPANIES.ID.eq(company.getId()));
             result = updateQuery.execute();

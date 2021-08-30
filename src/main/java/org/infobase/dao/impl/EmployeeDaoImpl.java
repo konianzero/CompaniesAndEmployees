@@ -46,8 +46,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
     @Transactional
     public int save(Employee employee) {
         int id = 0;
-        try {
-            InsertQuery<EmployeesRecord> insertQuery = dslContext.insertQuery(EMPLOYEES);
+        try (InsertQuery<EmployeesRecord> insertQuery = dslContext.insertQuery(EMPLOYEES)) {
             insertQuery.setReturning(EMPLOYEES.ID);
             insertQuery.addValues(getMap(employee));
             insertQuery.execute();
@@ -61,8 +60,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
     @Transactional
     public int update(Employee employee) {
         int result = 0;
-        try {
-            UpdateQuery<EmployeesRecord> updateQuery = dslContext.updateQuery(EMPLOYEES);
+        try (UpdateQuery<EmployeesRecord> updateQuery = dslContext.updateQuery(EMPLOYEES)) {
             updateQuery.addValues(getMap(employee));
             updateQuery.addConditions(EMPLOYEES.ID.eq(employee.getId()));
             result = updateQuery.execute();
