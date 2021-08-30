@@ -3,10 +3,7 @@ package org.infobase.dao.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-
 import org.jooq.*;
-import org.jooq.exception.DataAccessException;
-import org.jooq.impl.DSL;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +19,7 @@ import org.infobase.web.component.grid.EmployeeHeaders;
 import org.infobase.dao.mappers.EmployeeMapper;
 import org.infobase.db.generated.tables.Companies;
 import org.infobase.db.generated.tables.Employees;
+import org.infobase.db.generated.tables.records.EmployeesRecord;
 
 import static org.infobase.db.generated.Tables.COMPANIES;
 import static org.infobase.db.generated.Tables.EMPLOYEES;
@@ -49,20 +47,11 @@ public class EmployeeDaoImpl implements EmployeeDao {
     public int save(Employee employee) {
         int id = 0;
         try {
-            /* TODO - Don't insert, cause - ?
             InsertQuery<EmployeesRecord> insertQuery = dslContext.insertQuery(EMPLOYEES);
+            insertQuery.setReturning(EMPLOYEES.ID);
             insertQuery.addValues(getMap(employee));
-            id = insertQuery.getReturnedRecord().into(Employee.class).getId();
-            */
-            id = dslContext.insertInto(EMPLOYEES)
-                    .set(EMPLOYEES.NAME, employee.getName())
-                    .set(EMPLOYEES.BIRTH_DATE, employee.getBirthDate())
-                    .set(EMPLOYEES.EMAIL, employee.getEmail())
-                    .set(EMPLOYEES.COMPANY_ID, employee.getCompany().getId())
-                    .returning(EMPLOYEES.ID)
-                    .fetchOptional()
-                    .orElseThrow(() -> new DataAccessException("Error inserting entity: " + employee.getId()))
-                    .getId();
+            insertQuery.execute();
+            id = insertQuery.getReturnedRecord().getId();
         } catch (Exception e) {
             log.error(e.toString());
         }
@@ -73,28 +62,10 @@ public class EmployeeDaoImpl implements EmployeeDao {
     public int update(Employee employee) {
         int result = 0;
         try {
-            /* TODO - Produce BadSqlGrammarException, cause - add '"public"."employees".' to column names
             UpdateQuery<EmployeesRecord> updateQuery = dslContext.updateQuery(EMPLOYEES);
             updateQuery.addValues(getMap(employee));
             updateQuery.addConditions(EMPLOYEES.ID.eq(employee.getId()));
             result = updateQuery.execute();
-             */
-            result = dslContext.update(EMPLOYEES)
-                    .set(DSL.field( "name"), employee.getName())
-                    .set(DSL.field( "birth_date"), employee.getBirthDate())
-                    .set(DSL.field( "email"), employee.getEmail())
-                    .set(DSL.field( "company_id"), employee.getCompany().getId())
-                    /* TODO - Produce BadSqlGrammarException, cause - add '"public"."employees".' to column names
-                    .set(EMPLOYEES.NAME, employee.getName())
-                    .set(EMPLOYEES.BIRTH_DATE, employee.getBirthDate())
-                    .set(EMPLOYEES.EMAIL, employee.getEmail())
-                    .set(EMPLOYEES.COMPANY_ID, employee.getCompany().getId())
-                     */
-                    .where(EMPLOYEES.ID.eq(employee.getId()))
-                    .returning(EMPLOYEES.ID)
-                    .fetchOptional()
-                    .orElseThrow(() -> new DataAccessException("Error updating entity: " + employee.getId()))
-                    .getId();
         } catch (Exception dae) {
             log.error(dae.toString());
         }
