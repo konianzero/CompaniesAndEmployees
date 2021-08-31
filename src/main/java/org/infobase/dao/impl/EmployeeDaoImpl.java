@@ -3,7 +3,6 @@ package org.infobase.dao.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import org.jooq.DSLContext;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -31,20 +30,12 @@ public class EmployeeDaoImpl implements EmployeeDao {
     private static final String UPDATE_QUERY = "UPDATE employees" +
                                                " SET name=:name, birth_date=:birth_date, email=:email, company_id=:company_id" +
                                                " WHERE id=:id";
-    private static final String SELECT_BY_ID_QUERY = "SELECT e.id emp_id, e.name emp_name, e.birth_date, e.email," +
-                                                            " c.id comp_id, c.name comp_name, c.tin, c.address, c.phone_number " +
-                                                     "FROM employees AS e " +
-                                                     "LEFT JOIN companies AS c ON c.id = e.company_id " +
-                                                     "WHERE e.id=:id";
     private static final String SELECT_ALL_QUERY = "SELECT e.id emp_id, e.name emp_name, e.birth_date, e.email," +
                                                    " c.id comp_id, c.name comp_name, c.tin, c.address, c.phone_number " +
                                                    "FROM employees AS e " +
                                                    "LEFT JOIN companies AS c ON c.id = e.company_id ";
-    private static final String SEARCH_QUERY = "SELECT e.id emp_id, e.name AS emp_name, e.birth_date, e.email," +
-                                               " c.id comp_id, c.name comp_name, c.tin, c.address, c.phone_number " +
-                                               "FROM employees AS e " +
-                                               "LEFT JOIN companies AS c ON c.id = e.company_id " +
-                                               "WHERE %s";
+    private static final String SELECT_BY_ID_QUERY = SELECT_ALL_QUERY + "WHERE e.id=:id";
+    private static final String SEARCH_QUERY = SELECT_ALL_QUERY + "WHERE %s";
     private static final String DELETE_QUERY = "DELETE FROM employees WHERE id=:id";
 
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
