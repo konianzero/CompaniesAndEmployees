@@ -29,6 +29,11 @@ ___
 
 База данных Postgres, для работы с БД используется JOOQ DSLContext.
 
+- Генерация схемы базы данных
+```shell
+mvn clean org.jooq:jooq-codegen-maven:3.15.2:generate -P jooq-codegen
+```
+
 ---
 
 **Запуск**
