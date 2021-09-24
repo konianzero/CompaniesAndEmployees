@@ -27,7 +27,10 @@ ___
 
 ![](images/notofication.png)
 
-База данных Postgres, для работы с БД используется JOOQ DSLContext.
+База данных Postgres, для работы с БД используется JOOQ DSLContext (
+[EmployeeDaoImpl](src/main/java/org/infobase/dao/impl/EmployeeDaoImpl.java),
+[CompanyDaoImpl](src/main/java/org/infobase/dao/impl/CompanyDaoImpl.java)
+).
 
 - Генерация схемы базы данных
 ```shell
