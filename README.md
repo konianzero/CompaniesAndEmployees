@@ -36,7 +36,14 @@ mvn clean org.jooq:jooq-codegen-maven:3.15.2:generate -P jooq-codegen
 
 ---
 
-**Запуск**
+### Требования
+
+- JDK 11
+- Maven 3
+
+---
+
+### Запуск
 ```
  mvn spring-boot:run
 ```
