@@ -27,7 +27,10 @@ ___
 
 ![](images/notofication.png)
 
-База данных Postgres, для работы с БД используется NamedParameterJdbcTemplate от Spring.
+База данных Postgres, для работы с БД используется NamedParameterJdbcTemplate от Spring (
+[EmployeeDaoImpl](src/main/java/org/infobase/dao/impl/EmployeeDaoImpl.java), 
+[CompanyDaoImpl](src/main/java/org/infobase/dao/impl/CompanyDaoImpl.java)
+).
 
 ---
 
