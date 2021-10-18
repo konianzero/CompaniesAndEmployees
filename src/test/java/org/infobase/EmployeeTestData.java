@@ -10,7 +10,7 @@ import java.util.List;
 
 import static org.infobase.CompanyTestData.COMPANY_1;
 import static org.infobase.CompanyTestData.COMPANY_2;
-import static org.infobase.model.AbstractBaseEntity.START_SEQ;
+import static org.infobase.model.BaseEntity.START_SEQ;
 
 public class EmployeeTestData {
     public static final TestMatcher<EmployeeTo> EMPLOYEE_TO_MATCHER = TestMatcher.usingEqualsComparator(EmployeeTo.class);

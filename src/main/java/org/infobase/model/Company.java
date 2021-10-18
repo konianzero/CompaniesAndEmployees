@@ -12,7 +12,7 @@ import javax.validation.constraints.Size;
 @Getter
 @Setter
 @ToString
-public class Company extends AbstractNamedEntity {
+public class Company extends NamedEntity {
     /** ИНН */
     @NotBlank
     @Size(min = 10, max = 10)
