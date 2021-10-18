@@ -28,7 +28,7 @@ public class CompanyDaoImpl implements CompanyDao {
     private static final String UPDATE_QUERY = "UPDATE companies" +
                                                " SET name=:name, tin=:tin, address=:address, phone_number=:phone_number" +
                                                " WHERE id=:id";
-    private static final String SELECT_ALL_QUERY = "SELECT id, name, tin, address, phone_number FROM companies";
+    private static final String SELECT_ALL_QUERY = "SELECT id, name, tin, address, phone_number FROM companies ";
     private static final String SELECT_BY_ID_QUERY = SELECT_ALL_QUERY + " WHERE id=:id";
     private static final String SELECT_BY_NAME_QUERY = SELECT_ALL_QUERY + "WHERE name=:name";
     private static final String SEARCH_QUERY = SELECT_ALL_QUERY +
