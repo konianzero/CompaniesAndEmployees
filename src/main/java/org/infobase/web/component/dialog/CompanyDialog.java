@@ -17,16 +17,24 @@ import org.infobase.web.component.notification.OperationNotification;
 
 import java.util.Optional;
 
+/**
+ * Диалоговое окно для редактирования данных компаний
+ */
 @SpringComponent
 @UIScope
 public class CompanyDialog extends Dialog implements OperationNotification {
 
+    /** Класс бизнес логики для сущностей компаний */
     private final CompanyService companyService;
+    /** Класс для валидации сущности компании */
     private final BeanValidationBinder<Company> binder = new BeanValidationBinder<>(Company.class);
 
+    /** Класс сущности компании */
     private Company company;
+    /** Действие для выполнения после сохранения */
     private Runnable onSave;
 
+    /* Поля и кнопки */
     private TextField name = new TextField("Название");
     private TextField tin = new TextField("ИНН");
     private TextField address = new TextField("Адрес");
@@ -49,6 +57,9 @@ public class CompanyDialog extends Dialog implements OperationNotification {
         add(layout);
     }
 
+    /**
+     * Валидация телефонного номера и ИНН
+     */
     private void binding() {
         binder.forField(tin)
                 .withValidator(
@@ -75,10 +86,18 @@ public class CompanyDialog extends Dialog implements OperationNotification {
         binder.bindInstanceFields(this);
     }
 
+    /**
+     * Установка действия для выполнения после сохранения
+     * @param onSave действия для выполнения после сохранения
+     */
     public void setOnSave(Runnable onSave) {
         this.onSave = onSave;
     }
 
+    /**
+     * Редактирование сущности компании
+     * @param company сущность компании
+     */
     public void edit(Company company) {
         if (company == null) {
             close();
@@ -96,6 +115,9 @@ public class CompanyDialog extends Dialog implements OperationNotification {
         binder.setBean(this.company);
     }
 
+    /**
+     * Сохранение сущности компании
+     */
     private void save() {
         if (binder.validate().hasErrors()) { return; }
 

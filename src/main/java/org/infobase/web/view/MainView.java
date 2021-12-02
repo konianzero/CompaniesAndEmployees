@@ -99,10 +99,10 @@ public class MainView extends VerticalLayout {
      */
     private void onButtonPush() {
         // Включить кнопки edit и del при выборе элемента сетки, иначе отключить
-        tabsPanel.getCompanyGrid().setEnableEditButtons(buttonsPanel::setEditAndDelEnabled);
-        tabsPanel.getEmployeeGrid().setEnableEditButtons(buttonsPanel::setEditAndDelEnabled);
+        tabsPanel.getCompanyGrid().onEnableEditButtons(buttonsPanel::setEditAndDelEnabled);
+        tabsPanel.getEmployeeGrid().onEnableEditButtons(buttonsPanel::setEditAndDelEnabled);
 
-        // Действия для кнопок
+        // Действия для кнопок Создания/Редактирования/Удаления
         buttonsPanel.getAddBtn().addClickListener(e -> tabsPanel.getSelectedGrid().onCreate());
         buttonsPanel.getEditBtn().addClickListener(e -> tabsPanel.getSelectedGrid().onEdit());
         buttonsPanel.getDelBtn().addClickListener(e -> tabsPanel.getSelectedGrid().onDelete());

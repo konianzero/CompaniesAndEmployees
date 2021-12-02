@@ -5,6 +5,9 @@ import com.vaadin.flow.component.datepicker.DatePicker;
 import java.util.Arrays;
 import java.util.Locale;
 
+/**
+ * Локализованный (русифицированный) календарь
+ */
 public class LocalizedDatePicker extends DatePicker {
 
     public LocalizedDatePicker() {

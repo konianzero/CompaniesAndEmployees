@@ -18,16 +18,24 @@ import org.infobase.web.component.notification.OperationNotification;
 
 import java.util.List;
 
+/**
+ * Диалоговое окно для редактирования данных сотрудников
+ */
 @SpringComponent
 @UIScope
 public class EmployeeDialog extends Dialog implements OperationNotification {
 
+    /** Класс бизнес логики для сущностей сотрудников */
     private final EmployeeService employeeService;
+    /** Класс для валидации сущности сотрудника */
     private final BeanValidationBinder<EmployeeTo> binder = new BeanValidationBinder<>(EmployeeTo.class);
 
+    /** Класс сущности сотрудника */
     private EmployeeTo employeeTo;
+    /** Действие для выполнения после сохранения */
     private Runnable onSave;
 
+    /* Поля и кнопки */
     private TextField name = new TextField("ФИО");
     private LocalizedDatePicker birthDate = new LocalizedDatePicker();
     private TextField email = new TextField("Электронная почта");
@@ -53,6 +61,9 @@ public class EmployeeDialog extends Dialog implements OperationNotification {
         add(layout);
     }
 
+    /**
+     * Валидация даты рождения и электронной почты
+     */
     public void binding() {
         binder.forField(birthDate)
                 .asRequired("Пожалуйста, выберите дату")
@@ -64,14 +75,26 @@ public class EmployeeDialog extends Dialog implements OperationNotification {
         binder.bindInstanceFields(this);
     }
 
+    /**
+     * Установка имен компаний в выпадающий список
+     * @param companiesNames
+     */
     public void setItemsToCompanyComboBox(List<String> companiesNames) {
         companyName.setItems(companiesNames);
     }
 
+    /**
+     * Установка действия для выполнения после сохранения
+     * @param onSave действия для выполнения после сохранения
+     */
     public void setOnSave(Runnable onSave) {
         this.onSave = onSave;
     }
 
+    /**
+     * Редактирование сущности сотрудника
+     * @param employeeTo сущность сотрудника для отображения в интерфейсе
+     */
     public void edit(EmployeeTo employeeTo) {
         if (employeeTo == null) {
             close();
@@ -87,6 +110,9 @@ public class EmployeeDialog extends Dialog implements OperationNotification {
         binder.setBean(this.employeeTo);
     }
 
+    /**
+     * Сохранение сущности сотрудника
+     */
     private void save() {
         if (binder.validate().hasErrors()) { return; }
 

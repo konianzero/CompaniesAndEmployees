@@ -5,8 +5,15 @@ import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 
+/**
+ * Интерфейс уведомления при удалении
+ */
 public interface OnRemoveNotification {
-
+    /**
+     * Уведомить об удалении и выполнить переданное действие
+     * @param deleteCallback действие при удалении
+     * @param notificationMessage текст уведомления
+     */
     default void preRemoveNotification(Runnable deleteCallback, String notificationMessage) {
         Button yes = new Button("Да");
         Button no = new Button("Нет");

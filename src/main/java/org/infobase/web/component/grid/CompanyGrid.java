@@ -12,15 +12,21 @@ import org.infobase.web.component.dialog.CompanyDialog;
 
 import java.util.*;
 
+/**
+ * Таблица компаний
+ */
 @SpringComponent
 @UIScope
 public class CompanyGrid extends EntityGrid<Company> implements OperationNotification {
-
+    /** Имя таблицы */
     private static final String NAME = "Компании";
 
+    /** Класс бизнес логики для сущностей компаний */
     private final CompanyService companyService;
+    /** Диалоговое окно для редактирования данных компаний */
     private final CompanyDialog companyDialog;
 
+    /** Список заголовков таблицы */
     private final List<String> headersList = List.of("ID", "Название", "ИНН", "Адрес", "Телефон");
 
     public CompanyGrid(CompanyService companyService, CompanyDialog companyDialog) {
@@ -39,11 +45,17 @@ public class CompanyGrid extends EntityGrid<Company> implements OperationNotific
         setSelectionListener();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getName() {
         return NAME;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Component getComponent() {
         return this;
@@ -53,15 +65,17 @@ public class CompanyGrid extends EntityGrid<Company> implements OperationNotific
         return headersList;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void fill() {
         setItems(companyService.getAll());
     }
 
-    private Company getSelectedCompany() {
-        return getSelectedItems().stream().findFirst().orElseThrow();
-    }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onCreate() {
         if (!isVisible()) { return; }
@@ -70,6 +84,9 @@ public class CompanyGrid extends EntityGrid<Company> implements OperationNotific
         companyDialog.open();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onEdit() {
         if (!isVisible()) { return; }
@@ -78,11 +95,25 @@ public class CompanyGrid extends EntityGrid<Company> implements OperationNotific
         companyDialog.open();
     }
 
+    /**
+     * Получить сущность выбранной в таблице компании
+     * @return сущность выбранной компании
+     */
+    private Company getSelectedCompany() {
+        return getSelectedItems().stream().findFirst().orElseThrow();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onSearch(String columnHeader, String textToSearch) {
         setItems(companyService.search(textToSearch));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onDelete() {
         if (!isVisible()) { return; }
@@ -90,6 +121,9 @@ public class CompanyGrid extends EntityGrid<Company> implements OperationNotific
         preRemoveNotification(this::deleteCompany, "Будет удалена компания и все её сотрудники.");
     }
 
+    /**
+     * Удаление компании
+     */
     private void deleteCompany() {
         if (companyService.delete(getSelectedCompany().getId())) {
             afterOperationNotification("Компания и все её сотрудники удалены!");
