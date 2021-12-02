@@ -18,11 +18,15 @@ import org.infobase.model.Company;
 import org.infobase.dao.mappers.CompanyMapper;
 import org.infobase.dao.CompanyDao;
 
+/**
+ * Класс доступа к данным компаний
+ */
 @Repository
 @Slf4j
 @RequiredArgsConstructor
 public class CompanyDaoImpl implements CompanyDao {
 
+    /* Запросы к базе */
     private static final String INSERT_QUERY = "INSERT INTO companies (name, tin, address, phone_number)" +
                                                " VALUES (:name, :tin, :address, :phone_number)";
     private static final String UPDATE_QUERY = "UPDATE companies" +
@@ -40,6 +44,9 @@ public class CompanyDaoImpl implements CompanyDao {
 
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
+    /**
+     * {@inheritDoc}
+     */
     @Transactional
     public int save(Company company) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -51,6 +58,9 @@ public class CompanyDaoImpl implements CompanyDao {
         return Objects.requireNonNull(keyHolder.getKey()).intValue();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Transactional
     public int update(Company company) {
         int result = 0;
@@ -62,6 +72,11 @@ public class CompanyDaoImpl implements CompanyDao {
         return result;
     }
 
+    /**
+     * Данные сотрудников в виде ассоциативного массива
+     * @param company сущность компании для отображения данных из базы
+     * @return ассоциативный массив данных сотрудника
+     */
     private SqlParameterSource getParameterMap(Company company) {
         return new MapSqlParameterSource()
                 .addValue("id", company.getId())
@@ -71,6 +86,9 @@ public class CompanyDaoImpl implements CompanyDao {
                 .addValue("phone_number", company.getPhoneNumber());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public Company getById(int id) {
         Company result = null;
         try {
@@ -85,6 +103,9 @@ public class CompanyDaoImpl implements CompanyDao {
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public Company getByName(String name) {
         Company result = null;
         try {
@@ -99,6 +120,9 @@ public class CompanyDaoImpl implements CompanyDao {
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public List<Company> getAll() {
         List<Company> result = null;
         try {
@@ -109,6 +133,9 @@ public class CompanyDaoImpl implements CompanyDao {
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public List<Company> search(String textToSearch) {
         List<Company> result = null;
         try {
@@ -123,6 +150,9 @@ public class CompanyDaoImpl implements CompanyDao {
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Transactional
     public boolean delete(int id) {
         boolean result = false;

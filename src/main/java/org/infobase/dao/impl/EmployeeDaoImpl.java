@@ -20,11 +20,15 @@ import org.infobase.dao.mappers.EmployeeMapper;
 import org.infobase.dao.EmployeeDao;
 import org.infobase.web.component.grid.EmployeeHeaders;
 
+/**
+ * Класс доступа к данным сотрудников
+ */
 @Repository
 @Slf4j
 @RequiredArgsConstructor
 public class EmployeeDaoImpl implements EmployeeDao {
 
+    /* Запросы к базе */
     private static final String INSERT_QUERY = "INSERT INTO employees (name, birth_date, email, company_id)" +
                                                " VALUES (:name, :birth_date, :email, :company_id)";
     private static final String UPDATE_QUERY = "UPDATE employees" +
@@ -40,6 +44,9 @@ public class EmployeeDaoImpl implements EmployeeDao {
 
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
+    /**
+     * {@inheritDoc}
+     */
     @Transactional
     public int save(Employee employee) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -51,6 +58,9 @@ public class EmployeeDaoImpl implements EmployeeDao {
         return Objects.requireNonNull(keyHolder.getKey()).intValue();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Transactional
     public int update(Employee employee) {
         int result = 0;
@@ -62,6 +72,11 @@ public class EmployeeDaoImpl implements EmployeeDao {
         return result;
     }
 
+    /**
+     * Данные сотрудников в виде ассоциативного массива
+     * @param employee сущность сотрудника для отображения данных из базы
+     * @return ассоциативный массив данных сотрудника
+     */
     private SqlParameterSource getParameterMap(Employee employee) {
         return new MapSqlParameterSource()
                 .addValue("id", employee.getId())
@@ -71,6 +86,9 @@ public class EmployeeDaoImpl implements EmployeeDao {
                 .addValue("company_id", employee.getCompany().getId());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public Employee get(int id) {
         Employee result = null;
         try {
@@ -85,6 +103,9 @@ public class EmployeeDaoImpl implements EmployeeDao {
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public List<Employee> getAll() {
         List<Employee> result = null;
         try {
@@ -95,6 +116,9 @@ public class EmployeeDaoImpl implements EmployeeDao {
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public List<Employee> search(EmployeeHeaders columnName, String textToSearch) {
         String sql;
         SqlParameterSource map;
@@ -129,6 +153,9 @@ public class EmployeeDaoImpl implements EmployeeDao {
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Transactional
     public boolean delete(int id) {
         boolean result = false;

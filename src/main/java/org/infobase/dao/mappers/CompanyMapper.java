@@ -7,6 +7,9 @@ import java.sql.SQLException;
 
 import org.infobase.model.Company;
 
+/**
+ * Класс для сопоставления строк результирующего набора с сущностью компании
+ */
 public final class CompanyMapper implements RowMapper<Company> {
     public Company mapRow(ResultSet rs, int rowNum) throws SQLException {
         Company company = new Company();
