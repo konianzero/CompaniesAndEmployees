@@ -7,10 +7,12 @@ import org.mapstruct.factory.Mappers;
 import org.infobase.model.Employee;
 import org.infobase.to.EmployeeTo;
 
+import java.util.List;
+
 /**
  * Утилитный интерфейс для конвертирования объектов базы данных в объекты отображения и наоборот
  */
-@Mapper
+@Mapper(componentModel="spring")
 public interface EmployeeMapper {
     /** Экземпляр класса отображения */
     EmployeeMapper  INSTANCE = Mappers.getMapper(EmployeeMapper.class);
@@ -29,4 +31,11 @@ public interface EmployeeMapper {
      * @return сущность сотрудника для базы данных
      */
     Employee toEmployee(EmployeeTo employeeTo);
+
+    /**
+     * Конвертирует список сущностей сотрудников из базы данных в список сущностей для отображения в интерфейсе
+     * @param employees список сущностей сотрудников из базы данных
+     * @return список сущностей сотрудников из базы данных
+     */
+    List<EmployeeTo> toEmployeeToList(List<Employee> employees);
 }

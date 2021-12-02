@@ -3,6 +3,7 @@ package org.infobase.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import org.infobase.util.mapper.EmployeeMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,7 +12,6 @@ import org.infobase.model.Employee;
 import org.infobase.dao.impl.CompanyDaoImpl;
 import org.infobase.dao.impl.EmployeeDaoImpl;
 import org.infobase.to.EmployeeTo;
-import org.infobase.util.EmployeeUtil;
 
 import org.infobase.web.component.grid.EmployeeHeaders;
 
@@ -27,6 +27,8 @@ public class EmployeeService {
     private final EmployeeDaoImpl employeeDaoImpl;
     /** Класс доступа к данным компаний */
     private final CompanyDaoImpl companyDaoImpl;
+    /** Класс конвертирования объектов базы данных в объекты отображения и наоборот */
+    private final EmployeeMapper mapper;
 
     /**
      * Сохранение сущности нового сотрудника или обновление существующей
@@ -35,7 +37,7 @@ public class EmployeeService {
      *         число больше нуля если операция прошла успешно
      */
     public int saveOrUpdate(EmployeeTo employeeTo) {
-        Employee employee = EmployeeUtil.createEntity(employeeTo);
+        Employee employee = mapper.toEmployee(employeeTo);
         employee.setCompany(companyDaoImpl.getByName(employeeTo.getCompanyName()));
 
         if (employee.isNew()) {
@@ -53,7 +55,7 @@ public class EmployeeService {
      */
     public EmployeeTo get(int id) {
         log.info("Get employee with id:{}", id);
-        return EmployeeUtil.createTo(employeeDaoImpl.get(id));
+        return mapper.toEmployeeTo(employeeDaoImpl.get(id));
     }
 
     /**
@@ -62,7 +64,7 @@ public class EmployeeService {
      */
     public List<EmployeeTo> getAll() {
         log.info("Get all employees");
-        return EmployeeUtil.createToList(employeeDaoImpl.getAll());
+        return mapper.toEmployeeToList(employeeDaoImpl.getAll());
     }
 
     /**
@@ -73,7 +75,7 @@ public class EmployeeService {
      */
     public List<EmployeeTo> search(EmployeeHeaders columnName, String textToSearch) {
         log.info("Search employees by field '{}' with \"{}\"", columnName.getHeader(), textToSearch);
-        return EmployeeUtil.createToList(employeeDaoImpl.search(columnName, textToSearch));
+        return mapper.toEmployeeToList(employeeDaoImpl.search(columnName, textToSearch));
     }
 
     /**
