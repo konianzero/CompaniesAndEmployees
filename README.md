@@ -42,8 +42,21 @@ ___
 ---
 
 ### Запуск
+
+Локально
+```shell
+mvn spring-boot:run
 ```
- mvn spring-boot:run
+
+В контейнере
+```shell
+mvn clean package -DskipTests -Pproduction
+```
+```shell
+docker build -t infobase/companies-employees .
+```
+```shell
+docker-compose up
 ```
 
 [http://localhost:8080/](http://localhost:8080/)

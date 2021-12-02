@@ -20,7 +20,8 @@
     <properties>
         <java.version>11</java.version>
         <vaadin.version>14.5.1</vaadin.version>
-        <vaadin.textfieldformatter.version>5.2.0</vaadin.textfieldformatter.version>
+        <vaadin.flow.version>9.0.0</vaadin.flow.version>
+        <vaadin.textfieldformatter.version>5.3.0</vaadin.textfieldformatter.version>
         <hibernate-validator.version>6.1.6.Final</hibernate-validator.version>
         <mapstruct.version>1.4.2.Final</mapstruct.version>
         <lombok.version>1.18.20</lombok.version>
@@ -81,7 +82,7 @@
     <repositories>
         <repository>
             <id>vaadin-addons</id>
-            <url>http://maven.vaadin.com/vaadin-addons</url>
+            <url>https://maven.vaadin.com/vaadin-addons</url>
         </repository>
     </repositories>
 
@@ -98,6 +99,8 @@
     </dependencyManagement>
 
     <build>
+        <defaultGoal>spring-boot:run</defaultGoal>
+        <finalName>infobase</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -124,6 +127,10 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
+                    <!-- Clean build and startup time for Vaadin apps sometimes may exceed
+                         the default Spring Boot's 30sec timeout.  -->
+                    <wait>500</wait>
+                    <maxAttempts>240</maxAttempts>
                     <excludes>
                         <exclude>
                             <groupId>org.projectlombok</groupId>
@@ -132,6 +139,55 @@
                     </excludes>
                 </configuration>
             </plugin>
+            <!--
+                Take care of synchronizing java dependencies and imports in
+                package.json and main.js files.
+                It also creates webpack.config.js if not exists yet.
+            -->
+            <plugin>
+                <groupId>com.vaadin</groupId>
+                <artifactId>vaadin-maven-plugin</artifactId>
+                <version>${vaadin.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>prepare-frontend</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <!--
+                Production mode is activated using -Pproduction.
+                https://vaadin.com/docs/v14/tools/mpr/configuration/production-mode
+                Need for run application in container without error
+                https://stackoverflow.com/questions/65540236/vaadin-14-4-4-application-failed-to-determine-project-directory-for-dev-mode
+            -->
+            <id>production</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.vaadin</groupId>
+                        <artifactId>vaadin-maven-plugin</artifactId>
+                        <version>${vaadin.version}</version>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>build-frontend</goal>
+                                </goals>
+                                <phase>compile</phase>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <productionMode>true</productionMode>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
