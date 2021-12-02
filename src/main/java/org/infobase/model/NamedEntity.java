@@ -28,7 +28,7 @@ public class NamedEntity extends BaseEntity {
      * @param name имя сущности
      * @see Employee#Employee(Integer, String, LocalDate, String, Company)
      * @see Company#Company(Integer, String, String, String, String)
-     * @see BaseEntity#AbstractBaseEntity(Integer)
+     * @see BaseEntity#BaseEntity(Integer)
      */
     protected NamedEntity(Integer id, String name) {
         super(id);

@@ -6,7 +6,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 /**
- * Класс описывающий компанию, используется для отображение данных из базы и в интерфейс
+ * Класс описывающий компанию, используется для отображения данных из базы и в интерфейс
  */
 @NoArgsConstructor
 @Getter

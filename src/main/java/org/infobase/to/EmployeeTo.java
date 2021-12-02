@@ -11,7 +11,7 @@ import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
 /**
- * Класс описывающий сотрудника, используется для отображение данных в интерфейсе
+ * Класс описывающий сотрудника, используется для отображения данных в интерфейсе
  */
 @AllArgsConstructor
 @NoArgsConstructor
