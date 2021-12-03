@@ -163,9 +163,7 @@
         <profile>
             <!--
                 Production mode is activated using -Pproduction.
-                https://vaadin.com/docs/v14/tools/mpr/configuration/production-mode
-                Need for run application in container without error
-                https://stackoverflow.com/questions/65540236/vaadin-14-4-4-application-failed-to-determine-project-directory-for-dev-mode
+                Need for run application in container without error (https://stackoverflow.com/a/65550420)
             -->
             <id>production</id>
             <build>

@@ -1,6 +1,6 @@
 .idea
+frontend
 node_modules
-out
 target
 *.iml
 *.js

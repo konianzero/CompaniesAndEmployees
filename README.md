@@ -38,6 +38,7 @@ ___
 
 - JDK 11
 - Maven 3
+- Docker 20
 
 ---
 
@@ -59,5 +60,10 @@ docker build -t infobase/companies-employees .
 docker-compose up
 ```
 
-[http://localhost:8080/](http://localhost:8080/)
+URL: [http://localhost:8080/](http://localhost:8080/)
 
+Если при запуске выводит ошибку `FATAL:  database "info" does not exist`, попробуйте:
+```shell
+docker-compose down --volumes
+docker-compose up --build
+```
