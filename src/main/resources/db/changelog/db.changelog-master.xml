@@ -13,6 +13,7 @@
                         startValue="1000"
         />
     </changeSet>
+    
     <changeSet id="creating companies table" author="konianzero">
         <createTable tableName="companies">
             <column name="id" type="INTEGER" defaultValueSequenceNext="global_seq">
@@ -51,7 +52,7 @@
         <addNotNullConstraint columnName="company_id" columnDataType="INTEGER" tableName="employees"/>
 
         <addForeignKeyConstraint  baseTableName="employees"
-                                  baseColumnNames="person_id"
+                                  baseColumnNames="company_id"
                                   referencedTableName="companies"
                                   referencedColumnNames="id"
                                   onDelete="CASCADE"
@@ -61,5 +62,35 @@
             <column name="company_id"/>
             <column name="name"/>
         </createIndex>
+    </changeSet>
+    
+    <changeSet id="filling companies table" author="konianzero">
+        <insert tableName="companies">
+            <column name="name" value="Компания_1"/>
+            <column name="tin" value="1234123412"/>
+            <column name="address" value="Улица 1"/>
+            <column name="phone_number" value="79005554466"/>
+        </insert>
+        <insert tableName="companies">
+            <column name="name" value="Компания_2"/>
+            <column name="tin" value="5678567856"/>
+            <column name="address" value="Проспект 2"/>
+            <column name="phone_number" value="75008887799"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="filling employees table" author="konianzero">
+        <insert tableName="employees">
+            <column name="name" value="Иванов Иван Иванович"/>
+            <column name="birth_date" value="2000-01-01"/>
+            <column name="email" value="ivan@mail.com"/>
+            <column name="company_id" value="1000"/>
+        </insert>
+        <insert tableName="employees">
+            <column name="name" value="Петров Петр Петрович"/>
+            <column name="birth_date" value="2000-02-02"/>
+            <column name="email" value="petr@mail.com"/>
+            <column name="company_id" value="1001"/>
+        </insert>
     </changeSet>
 </databaseChangeLog>

@@ -32,6 +32,8 @@ ___
 [CompanyDaoImpl](src/main/java/org/infobase/dao/impl/CompanyDaoImpl.java)
 ).
 
+Так же используется версионирование структуры БД при помощи Liquibase ([changelog](src/main/resources/db/changelog/db.changelog-master.xml))
+
 ---
 
 ### Требования
@@ -62,7 +64,7 @@ docker-compose up
 
 URL: [http://localhost:8080/](http://localhost:8080/)
 
-Если при запуске выводит ошибку `FATAL:  database "info" does not exist`, попробуйте:
+Если при запуске выводит похожие ошибки (`FATAL: database "info" does not exist`, `ERROR: relation "companies" already exists`), попробуйте:
 ```shell
 docker-compose down --volumes
 docker-compose up --build
