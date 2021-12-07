@@ -9,21 +9,22 @@
 ```
 ___
 
-Приложение позволяет добавлять/удалять/редактировать компании и сотрудников через веб интерфейс (Vaadin 14).
+Приложение позволяет добавлять/удалять/редактировать компании и сотрудников через [веб интерфейс](src/main/java/org/infobase/web) (Vaadin 14).  
+Данные отображаются в [табличном виде](src/main/java/org/infobase/web/component/grid).
 
 ![компании](images/companies_tab.png)
 ![сотрудники](images/employee_tab.png)
 
-Редактирование происходит в модальном окне. Установлены диапазон допустимых значений для вводимых параметров,
-маска телефонного номера, русифицированный календарь, в редакторе сотрудника выпадающий список компаний.
+Редактирование происходит в [модальном окне](src/main/java/org/infobase/web/component/dialog). Установлены диапазон допустимых значений для вводимых параметров,
+маска телефонного номера, [русифицированный календарь](src/main/java/org/infobase/web/component/LocalizedDatePicker.java), в редакторе сотрудника выпадающий список компаний.  
 
 ![](images/company_edit.png) ![](images/company_edit_valid.png) ![](images/calendar.png) ![](images/companies_drop-down.png)
 
-Общий поиск для компаний (по всем полям), для сотрудников по отдельному полю.
+Общий [поиск](src/main/java/org/infobase/web/view/SearchPanel.java) для компаний (по всем полям), для сотрудников по отдельному полю.
 
 ![](images/search_by_company.png)
 
-Всплывающие уведомления при добавлении/удалении.
+Всплывающие [уведомления](src/main/java/org/infobase/web/component/notification) при добавлении/удалении.
 
 ![](images/notofication.png)
 
@@ -34,8 +35,10 @@ ___
 
 - Генерация схемы базы данных
 ```shell
-mvn clean org.jooq:jooq-codegen-maven:3.15.2:generate -P jooq-codegen
+mvn clean org.jooq:jooq-codegen-maven:3.15.2:generate -Pjooq-codegen
 ```
+
+Так же используется версионирование структуры БД при помощи Liquibase ([changelog](src/main/resources/db/changelog/db.changelog-master.xml))
 
 ---
 
@@ -43,13 +46,32 @@ mvn clean org.jooq:jooq-codegen-maven:3.15.2:generate -P jooq-codegen
 
 - JDK 11
 - Maven 3
+- Docker 20
 
 ---
 
 ### Запуск
-```
- mvn spring-boot:run
+
+Локально
+```shell
+mvn spring-boot:run
 ```
 
-[http://localhost:8080/](http://localhost:8080/)
+В контейнере
+```shell
+mvn clean package -DskipTests -Pproduction
+```
+```shell
+docker build -t infobase/companies-employees .
+```
+```shell
+docker-compose up
+```
 
+URL: [http://localhost:8080/](http://localhost:8080/)
+
+Если при запуске выводит похожие ошибки (`FATAL: database "info" does not exist`, `ERROR: relation "companies" already exists`), попробуйте:
+```shell
+docker-compose down --volumes
+docker-compose up --build
+```
