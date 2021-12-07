@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd
+  http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-3.8.xsd">
+
+    <changeSet id="creating sequence" author="konianzero">
+        <createSequence sequenceName="global_seq"
+                        dataType="INTEGER"
+                        incrementBy="1"
+                        startValue="1000"
+        />
+    </changeSet>
+    <changeSet id="creating companies table" author="konianzero">
+        <createTable tableName="companies">
+            <column name="id" type="INTEGER" defaultValueSequenceNext="global_seq">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="tin" type="VARCHAR(10)"/>
+            <column name="address" type="VARCHAR(255)"/>
+            <column name="phone_number" type="VARCHAR(12)"/>
+        </createTable>
+
+        <addNotNullConstraint columnName="name" columnDataType="VARCHAR" tableName="companies"/>
+        <addNotNullConstraint columnName="tin" columnDataType="VARCHAR" tableName="companies"/>
+        <addNotNullConstraint columnName="address" columnDataType="VARCHAR" tableName="companies"/>
+        <addNotNullConstraint columnName="phone_number" columnDataType="VARCHAR" tableName="companies"/>
+
+        <createIndex indexName="companies_unique_idx" tableName="companies" unique="true">
+            <column name="name"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="creating employees table" author="konianzero">
+        <createTable tableName="employees">
+            <column name="id" type="INTEGER" defaultValueSequenceNext="global_seq">
+                <constraints nullable="false" primaryKey="true" />
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="birth_date" type="DATE"/>
+            <column name="email" type="VARCHAR(255)"/>
+            <column name="company_id" type="INTEGER"/>
+        </createTable>
+
+        <addNotNullConstraint columnName="name" columnDataType="VARCHAR" tableName="employees"/>
+        <addNotNullConstraint columnName="birth_date" columnDataType="DATE" tableName="employees"/>
+        <addNotNullConstraint columnName="email" columnDataType="VARCHAR" tableName="employees"/>
+        <addNotNullConstraint columnName="company_id" columnDataType="INTEGER" tableName="employees"/>
+
+        <addForeignKeyConstraint  baseTableName="employees"
+                                  baseColumnNames="person_id"
+                                  referencedTableName="companies"
+                                  referencedColumnNames="id"
+                                  onDelete="CASCADE"
+                                  constraintName="fk_emp_com_id"/>
+
+        <createIndex indexName="employees_unique_idx" tableName="employees" unique="true">
+            <column name="company_id"/>
+            <column name="name"/>
+        </createIndex>
+    </changeSet>
+</databaseChangeLog>

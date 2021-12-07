@@ -13,7 +13,7 @@
 
     <groupId>org.infobase</groupId>
     <artifactId>companies-employees</artifactId>
-    <version>1.1-SNAPSHOT</version>
+    <version>1.3-SNAPSHOT</version>
 
     <name>Companies and employees</name>
 
@@ -22,7 +22,8 @@
         <vaadin.version>14.5.1</vaadin.version>
         <vaadin.flow.version>9.0.0</vaadin.flow.version>
         <vaadin.textfieldformatter.version>5.3.0</vaadin.textfieldformatter.version>
-        <hibernate-validator.version>6.1.6.Final</hibernate-validator.version>
+        <hibernate-validator.version>7.0.1.Final</hibernate-validator.version>
+        <liquibase.version>4.6.1</liquibase.version>
         <mapstruct.version>1.4.2.Final</mapstruct.version>
         <lombok.version>1.18.20</lombok.version>
     </properties>
@@ -38,6 +39,11 @@
             <groupId>org.hibernate.validator</groupId>
             <artifactId>hibernate-validator</artifactId>
             <version>${hibernate-validator.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+            <version>${liquibase.version}</version>
         </dependency>
         <!-- MapStruct -->
         <dependency>

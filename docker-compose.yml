@@ -24,6 +24,6 @@ services:
       POSTGRES_DB: info
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
-    volumes:
-      - ./src/main/resources/schema.sql:/docker-entrypoint-initdb.d/1-schema.sql
-      - ./src/main/resources/data.sql:/docker-entrypoint-initdb.d/2-data.sql
+#    volumes:
+#      - ./src/main/resources/schema.sql:/docker-entrypoint-initdb.d/1-schema.sql
+#      - ./src/main/resources/data.sql:/docker-entrypoint-initdb.d/2-data.sql
