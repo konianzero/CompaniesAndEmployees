@@ -13,8 +13,8 @@ spring:
   #  init:
   #    mode: always
   #    data-locations: classpath:db/schema.sql, classpath:db/data.sql
-  liquibase:
-    change-log: classpath:db/changelog/db.changelog-master.xml
+  #liquibase:
+  #  change-log: classpath:db/changelog/db.changelog-master.xml
 
 logging:
   charset:

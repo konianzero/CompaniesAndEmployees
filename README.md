@@ -33,13 +33,15 @@ ___
 [CompanyDaoImpl](src/main/java/org/infobase/dao/impl/CompanyDaoImpl.java)
 ).
 
-- Генерация схемы базы данных
+Так же используется версионирование структуры БД при помощи Liquibase ([changelog](src/main/resources/db/changelog/db.changelog-master.xml))
+Обновление базы
+```shell
+mvn liquibase:update
+```
+Генерация классов на основе базы
 ```shell
 mvn clean org.jooq:jooq-codegen-maven:3.15.2:generate -Pjooq-codegen
 ```
-
-Так же используется версионирование структуры БД при помощи Liquibase ([changelog](src/main/resources/db/changelog/db.changelog-master.xml))
-
 ---
 
 ### Требования
@@ -57,7 +59,7 @@ mvn clean org.jooq:jooq-codegen-maven:3.15.2:generate -Pjooq-codegen
 mvn spring-boot:run
 ```
 
-В контейнере
+~~В контейнере~~ **(В процессе разработки)**
 ```shell
 mvn clean package -DskipTests -Pproduction
 ```

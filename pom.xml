@@ -39,11 +39,11 @@
             <artifactId>hibernate-validator</artifactId>
             <version>${hibernate-validator.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.liquibase</groupId>
-            <artifactId>liquibase-core</artifactId>
-            <version>${liquibase.version}</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.liquibase</groupId>-->
+<!--            <artifactId>liquibase-core</artifactId>-->
+<!--            <version>${liquibase.version}</version>-->
+<!--        </dependency>-->
         <!-- MapStruct -->
         <dependency>
             <groupId>org.mapstruct</groupId>
@@ -60,6 +60,17 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <!-- JOOQ -->
+<!--        <dependency>-->
+<!--            <groupId>org.jooq</groupId>-->
+<!--            <artifactId>jooq-meta</artifactId>-->
+<!--            <version>${jooq.version}</version>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>org.jooq</groupId>-->
+<!--            <artifactId>jooq-codegen</artifactId>-->
+<!--            <version>${jooq.version}</version>-->
+<!--        </dependency>-->
         <!-- Vaadin -->
         <dependency>
             <groupId>com.vaadin</groupId>
@@ -142,6 +153,16 @@
                             <artifactId>lombok</artifactId>
                         </exclude>
                     </excludes>
+                </configuration>
+            </plugin>
+            <!-- TODO jooqgen-liquibase-postgres -> https://github.com/jango89/jooqgen-liquibase-postgres -->
+            <plugin>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-maven-plugin</artifactId>
+                <version>3.8.9</version>
+                <configuration>
+                    <propertyFile>src/main/resources/liquibase.properties</propertyFile>
+                    <changeLogFile>src/main/resources/db/changelog/db.changelog-master.xml</changeLogFile>
                 </configuration>
             </plugin>
             <!--
@@ -228,16 +249,16 @@
                                 <password>password</password>
                             </jdbc>
                             <generator>
-                                <name>org.jooq.codegen.DefaultGenerator</name>
+                                <name>org.jooq.codegen.JavaGenerator</name>
                                 <database>
-                                    <!-- The database type. The format here is: org.util.[database].[database]Database -->
+                                    <!-- The database type. The format here is: org.jooq.meta.[database].[database]Database -->
                                     <name>org.jooq.meta.postgres.PostgresDatabase</name>
                                     <!-- The database schema (or in the absence of schema support, in your RDBMS this
                                     can be the owner, user, database name) to be generated -->
                                     <inputSchema>public</inputSchema>
                                     <!-- Include all tables found from the PUBLIC schema -->
                                     <includes>.*</includes>
-                                    <excludes />
+                                    <excludes>databasechangelog | databasechangeloglock</excludes>
                                 </database>
                                 <target>
                                     <!-- The destination package of your generated classes (within the destination directory) -->
