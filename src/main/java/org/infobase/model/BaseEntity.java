@@ -12,7 +12,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @EqualsAndHashCode
-public class AbstractBaseEntity implements HasId {
+public class BaseEntity implements HasId {
     /** Начальное значение для последовательности ID, используется для тестов */
     public static final int START_SEQ = 1000;
     /** Поле ID */
@@ -21,9 +21,9 @@ public class AbstractBaseEntity implements HasId {
     /**
      * Конструктор с указанием ID
      * @param id уникальный идентификатор
-     * @see AbstractNamedEntity#AbstractNamedEntity(Integer, String)
+     * @see NamedEntity#NamedEntity(Integer, String)
      */
-    protected AbstractBaseEntity(Integer id) {
+    protected BaseEntity(Integer id) {
         this.id = id;
     }
 }

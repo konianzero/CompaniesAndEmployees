@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.infobase.model.AbstractBaseEntity.START_SEQ;
+import static org.infobase.model.BaseEntity.START_SEQ;
 
 public class CompanyTestData {
     public static final TestMatcher<Company> COMPANY_MATCHER = TestMatcher.usingEqualsComparator(Company.class);

@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @ToString
-public class Employee extends AbstractNamedEntity {
+public class Employee extends NamedEntity {
     /** Дата рождения */
     private LocalDate birthDate;
     /** Электронная почта */

@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Getter
 @Setter
-public class AbstractNamedEntity extends AbstractBaseEntity {
+public class NamedEntity extends BaseEntity {
 
     /** Имя сущности */
     @NotBlank
@@ -27,9 +27,9 @@ public class AbstractNamedEntity extends AbstractBaseEntity {
      * @param name имя сущности
      * @see Employee#Employee(Integer, String, LocalDate, String, Company)
      * @see Company#Company(Integer, String, String, String, String)
-     * @see AbstractBaseEntity#AbstractBaseEntity(Integer)
+     * @see BaseEntity#BaseEntity(Integer)
      */
-    protected AbstractNamedEntity(Integer id, String name) {
+    protected NamedEntity(Integer id, String name) {
         super(id);
         this.name = name;
     }
