@@ -2,6 +2,7 @@ package org.infobase.util.formatter;
 
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.function.ValueProvider;
+import lombok.experimental.UtilityClass;
 import org.infobase.model.Company;
 import org.vaadin.textfieldformatter.CustomStringBlockFormatter;
 
@@ -10,9 +11,8 @@ import java.util.Optional;
 /**
  * Утилитный класс для форматирования телефонного номера
  */
+@UtilityClass
 public class PhoneFormatter {
-
-    private PhoneFormatter() { }
 
     /**
      * Провайдер форматированного телефонного номера для метода добавления колонки в Grid
