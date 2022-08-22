@@ -35,6 +35,11 @@ ___
 
 Так же используется версионирование структуры БД при помощи Liquibase ([changelog](src/main/resources/db/changelog/db.changelog-master.xml))
 
+Обновление базы
+```shell
+mvn liquibase:update
+```
+
 ---
 
 ### Требования
@@ -53,6 +58,7 @@ mvn spring-boot:run
 ```
 
 В контейнере
+
 ```shell
 mvn clean package -Pproduction
 ```
