@@ -16,12 +16,13 @@ public class EmployeeTestData {
     public static final TestMatcher<EmployeeTo> EMPLOYEE_TO_MATCHER = TestMatcher.usingEqualsComparator(EmployeeTo.class);
 
     public static final int EMPLOYEE_1_ID = START_SEQ + 2;
+    public static final int EMPLOYEE_2_ID = START_SEQ + 3;
 
     public static final Employee EMPLOYEE_1 = new Employee(EMPLOYEE_1_ID,
             "Иванов Иван Иванович",
             LocalDate.of(2000, 1, 1),
             "ivan@mail.com", COMPANY_1);
-    public static final Employee EMPLOYEE_2 = new Employee(EMPLOYEE_1_ID + 1,
+    public static final Employee EMPLOYEE_2 = new Employee(EMPLOYEE_2_ID,
             "Петров Петр Петрович",
             LocalDate.of(2000, 2, 2),
             "petr@mail.com", COMPANY_2);

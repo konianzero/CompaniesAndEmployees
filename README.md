@@ -54,7 +54,7 @@ mvn spring-boot:run
 
 В контейнере
 ```shell
-mvn clean package -DskipTests -Pproduction
+mvn clean package -Pproduction
 ```
 ```shell
 docker build -t infobase/companies-employees .
