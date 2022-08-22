@@ -53,21 +53,23 @@ mvn liquibase:update
 
 ### Запуск
 
-Локально
-```shell
-mvn spring-boot:run
-```
+* Запустить с указанным JDK: [run_app.sh](run_app.sh)
 
-В контейнере
-```shell
-mvn clean package -DskipTests -Pproduction
-```
-```shell
-docker build -t infobase/companies-employees .
-```
-```shell
-docker-compose up
-```
+* Локально
+    ```shell
+    mvn spring-boot:run
+    ```
+
+* В контейнере
+    ```shell
+    mvn clean package -DskipTests -Pproduction
+    ```
+    ```shell
+    docker build -t infobase/companies-employees .
+    ```
+    ```shell
+    docker-compose up
+    ```
 
 URL: [http://localhost:8080/](http://localhost:8080/)
 
