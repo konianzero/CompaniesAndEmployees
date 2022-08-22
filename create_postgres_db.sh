@@ -4,7 +4,7 @@
 set -e
 
 # Default params
-DB_NAME=${1:-test}
+DB_NAME=${1:-info}
 DB_USER=${2:-user}
 DB_USER_PASS=${3:-password}
 

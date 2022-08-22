@@ -46,6 +46,7 @@ mvn liquibase:update
 
 - JDK 11
 - Maven 3
+- Liquibase 4
 - Docker 20
 
 ---
@@ -58,9 +59,8 @@ mvn spring-boot:run
 ```
 
 В контейнере
-
 ```shell
-mvn clean package -Pproduction
+mvn clean package -DskipTests -Pproduction
 ```
 ```shell
 docker build -t infobase/companies-employees .
