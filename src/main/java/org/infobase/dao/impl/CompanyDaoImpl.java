@@ -43,6 +43,7 @@ public class CompanyDaoImpl implements CompanyDao {
     private static final String DELETE_QUERY = "DELETE FROM companies WHERE id=:id";
 
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+    private final CompanyMapper mapper;
 
     /**
      * {@inheritDoc}
@@ -95,7 +96,7 @@ public class CompanyDaoImpl implements CompanyDao {
             result = namedParameterJdbcTemplate.queryForObject(
                     SELECT_BY_ID_QUERY,
                     new MapSqlParameterSource("id", id),
-                    new CompanyMapper()
+                    mapper
             );
         } catch (Exception dae) {
             log.error(dae.toString());
@@ -112,7 +113,7 @@ public class CompanyDaoImpl implements CompanyDao {
             result = namedParameterJdbcTemplate.queryForObject(
                     SELECT_BY_NAME_QUERY,
                     new MapSqlParameterSource("name", name),
-                    new CompanyMapper()
+                    mapper
             );
         } catch (Exception dae) {
             log.error(dae.toString());
@@ -126,7 +127,7 @@ public class CompanyDaoImpl implements CompanyDao {
     public List<Company> getAll() {
         List<Company> result = null;
         try {
-            result = namedParameterJdbcTemplate.query(SELECT_ALL_QUERY, new CompanyMapper());
+            result = namedParameterJdbcTemplate.query(SELECT_ALL_QUERY, mapper);
         } catch (Exception dae) {
             log.error(dae.toString());
         }
@@ -142,7 +143,7 @@ public class CompanyDaoImpl implements CompanyDao {
             result = namedParameterJdbcTemplate.query(
                     SEARCH_QUERY,
                     new MapSqlParameterSource("search", "%" + textToSearch.toLowerCase() + "%"),
-                    new CompanyMapper()
+                    mapper
             );
         } catch (Exception dae) {
             log.error(dae.toString());

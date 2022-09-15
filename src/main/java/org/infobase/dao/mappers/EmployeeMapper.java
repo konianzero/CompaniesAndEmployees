@@ -7,10 +7,13 @@ import java.sql.SQLException;
 
 import org.infobase.model.Company;
 import org.infobase.model.Employee;
+import org.springframework.stereotype.Component;
 
+// TODO - Make a Bean
 /**
  * Класс для сопоставления строк результирующего набора с сущностью сотрудника
  */
+@Component
 public final class EmployeeMapper implements RowMapper<Employee> {
     public Employee mapRow(ResultSet rs, int rowNum) throws SQLException {
         Employee employee = new Employee();

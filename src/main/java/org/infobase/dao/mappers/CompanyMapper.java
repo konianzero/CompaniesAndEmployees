@@ -6,10 +6,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.infobase.model.Company;
+import org.springframework.stereotype.Component;
 
 /**
  * Класс для сопоставления строк результирующего набора с сущностью компании
  */
+@Component
 public final class CompanyMapper implements RowMapper<Company> {
     public Company mapRow(ResultSet rs, int rowNum) throws SQLException {
         Company company = new Company();

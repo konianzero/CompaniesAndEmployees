@@ -43,6 +43,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
     private static final String DELETE_QUERY = "DELETE FROM employees WHERE id=:id";
 
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+    private final EmployeeMapper mapper;
 
     /**
      * {@inheritDoc}
@@ -95,7 +96,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
             result = namedParameterJdbcTemplate.queryForObject(
                     SELECT_BY_ID_QUERY,
                     new MapSqlParameterSource("id", id),
-                    new EmployeeMapper()
+                    mapper
             );
         } catch (Exception dae) {
             log.error(dae.toString());
@@ -109,7 +110,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
     public List<Employee> getAll() {
         List<Employee> result = null;
         try {
-            result = namedParameterJdbcTemplate.query(SELECT_ALL_QUERY, new EmployeeMapper());
+            result = namedParameterJdbcTemplate.query(SELECT_ALL_QUERY, mapper);
         } catch (Exception dae) {
             log.error(dae.toString());
         }
@@ -143,10 +144,9 @@ public class EmployeeDaoImpl implements EmployeeDao {
                 return getAll();
         }
 
-
         List<Employee> result = null;
         try {
-            result = namedParameterJdbcTemplate.query(sql, map, new EmployeeMapper());
+            result = namedParameterJdbcTemplate.query(sql, map, mapper);
         } catch (Exception dae) {
             log.error(dae.toString());
         }
