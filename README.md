@@ -56,13 +56,15 @@ mvn liquibase:update
 * Запустить с указанным JDK: [run_app.sh](run_app.sh)
 
 * Локально
-    ```shell
-    mvn spring-boot:run
-    ```
+    - Cоздать базу [create_postgresql_db.sh](create_postgresql_db.sh)
+    - Запустить
+      ```shell
+      mvn spring-boot:run
+      ```
 
 * В контейнере
     ```shell
-    mvn clean package -DskipTests -Pproduction
+    mvn clean package -Pproduction
     ```
     ```shell
     docker build -t infobase/companies-employees .

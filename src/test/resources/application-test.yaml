@@ -1,9 +1,6 @@
 spring:
-  test:
-    database:
-      replace: none
-  datasource:
-    driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
-    url: jdbc:tc:postgresql:10:////test_db
+#  datasource:
+#    driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
+#    url: jdbc:tc:postgresql:10:////test_db
   liquibase:
     contexts: test

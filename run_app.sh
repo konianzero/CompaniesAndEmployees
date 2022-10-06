@@ -5,9 +5,10 @@ export JAVA_HOME="/opt/java/amazon_jdk/amazon-corretto-11.0.11.9.1-linux-x64"
 echo JAVA_HOME=\"$JAVA_HOME\"
 
 # Run application
+#source create_postgresql_db.sh
 #mvn spring-boot:run
 
 ## Run in container
-mvn clean package -DskipTests -Pproduction
+mvn clean package -Pproduction
 docker build -t infobase/companies-employees .
 docker-compose up
